@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="ff74338d3a08444fb542e51b208bd719" Name="Diagram1" ZoomLevel="55">
+        <EntityTypeShape EntityType="BusinessBookModel.Client" Width="1.5" PointX="7.5" PointY="13.875" />
+        <EntityTypeShape EntityType="BusinessBookModel.Company" Width="1.5" PointX="9.75" PointY="9.375" />
+        <EntityTypeShape EntityType="BusinessBookModel.District" Width="1.5" PointX="3" PointY="8.5" />
+        <EntityTypeShape EntityType="BusinessBookModel.Employee" Width="1.5" PointX="7.5" PointY="8.625" />
+        <EntityTypeShape EntityType="BusinessBookModel.Inventory" Width="1.5" PointX="14.25" PointY="9.375" />
+        <EntityTypeShape EntityType="BusinessBookModel.Local" Width="1.5" PointX="12" PointY="9.375" />
+        <EntityTypeShape EntityType="BusinessBookModel.Location" Width="1.5" PointX="5.25" PointY="8.375" />
+        <EntityTypeShape EntityType="BusinessBookModel.Product" Width="1.5" PointX="12" PointY="5.5" />
+        <EntityTypeShape EntityType="BusinessBookModel.Proveedor" Width="1.5" PointX="15" PointY="5.625" />
+        <EntityTypeShape EntityType="BusinessBookModel.Province" Width="1.5" PointX="0.75" PointY="8.75" />
+        <EntityTypeShape EntityType="BusinessBookModel.Purchase" Width="1.5" PointX="17.25" PointY="9.25" />
+        <EntityTypeShape EntityType="BusinessBookModel.PurchaseDetail" Width="1.5" PointX="19.5" PointY="9.375" />
+        <EntityTypeShape EntityType="BusinessBookModel.Sale" Width="1.5" PointX="9.75" PointY="13.375" />
+        <EntityTypeShape EntityType="BusinessBookModel.SaleDetail" Width="1.5" PointX="12" PointY="13.75" />
+        <AssociationConnector Association="BusinessBookModel.FK_Client_Location" />
+        <AssociationConnector Association="BusinessBookModel.FK_Sale_Client" />
+        <AssociationConnector Association="BusinessBookModel.FK_Company_Employee" />
+        <AssociationConnector Association="BusinessBookModel.FK_Company_Location" />
+        <AssociationConnector Association="BusinessBookModel.FK_Local_Company" />
+        <AssociationConnector Association="BusinessBookModel.FK_District_Province" />
+        <AssociationConnector Association="BusinessBookModel.FK_Location_District" />
+        <AssociationConnector Association="BusinessBookModel.FK_Employee_Location" />
+        <AssociationConnector Association="BusinessBookModel.FK_Sale_Employee" />
+        <AssociationConnector Association="BusinessBookModel.FK_Inventory_Local" />
+        <AssociationConnector Association="BusinessBookModel.FK_Inventory_Product" />
+        <AssociationConnector Association="BusinessBookModel.FK_Purchase_Local" />
+        <AssociationConnector Association="BusinessBookModel.FK_Sale_Local" />
+        <AssociationConnector Association="BusinessBookModel.FK_PurchaseDetail_Product" />
+        <AssociationConnector Association="BusinessBookModel.FK_SaleDetail_Product" />
+        <AssociationConnector Association="BusinessBookModel.FK_Purchase_Proveedor" />
+        <AssociationConnector Association="BusinessBookModel.FK_PurchaseDetail_Purchase" />
+        <AssociationConnector Association="BusinessBookModel.FK_SaleDetail_Sale" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
