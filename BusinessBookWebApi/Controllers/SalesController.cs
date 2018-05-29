@@ -125,6 +125,46 @@ namespace BusinessBookWebApi.Controllers
         }
 
         [Authorize]
+        [Route("sales/{saleId}/items")]
+        [HttpPost]
+        public HttpResponseMessage AddSaleDetail(Int32 SaleId, SaleDetailEntities model)
+        {
+            var Httpresponse = new HttpResponseMessage();
+            try
+            {
+                if (model == null || SaleId == null)
+                {
+                    Httpresponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
+                    return Httpresponse;
+                }
+                else
+                {
+                    var sale = context.Sale.FirstOrDefault(x => x.SaleId == SaleId);
+                    foreach (var sD in model.listProductSale) {
+
+                        var saleDetail = new SaleDetail();
+                        context.SaleDetail.Add(saleDetail);
+
+                        saleDetail.SaleId = SaleId;
+                        saleDetail.ProductId = sD.Item1;
+                        saleDetail.Quantity = sD.Item2;
+                        saleDetail.UnitPrice = sD.Item3;
+                        saleDetail.PriceSubTotal = sD.Item4;
+                        saleDetail.State = ConstantHelper.Status.ACTIVE;
+                        context.SaveChanges();
+                    }
+                }
+                Httpresponse = new HttpResponseMessage(HttpStatusCode.OK);
+                return Httpresponse;
+            }
+            catch
+            {
+                Httpresponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
+                return Httpresponse;
+            }
+        }
+
+        [Authorize]
         [Route("sales/{saleId}")]
         [HttpDelete]
         public HttpResponseMessage DeleteSale(Int16 SaleId)

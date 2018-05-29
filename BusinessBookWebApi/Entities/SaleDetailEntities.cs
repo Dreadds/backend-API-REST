@@ -7,12 +7,7 @@ namespace BusinessBookWebApi.Entities
 {
     public class SaleDetailEntities
     {
-        public Int32? saleDetailId { set; get; }
-        public Int32 saleId { set; get; }
-        public Int32 productId { set; get; }
-        public float priceSubTotal { set; get; }
-        public Int32 quantity { set; get; }
-        public String state { set; get; }
-        public float unitPrice { set; get; }
+        //Product - Quantity - UnitPrice - PriceSubTotal
+        public List<Tuple<Int32, Int32, float, float>> listProductSale { set; get; } = new List<Tuple<int?, int?, float, float>>();
     }
 }
