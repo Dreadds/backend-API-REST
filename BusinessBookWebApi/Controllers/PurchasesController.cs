@@ -7,6 +7,8 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Web.Http;
+using BusinessBookWebApi.Models;
+using BusinessBookWebApi.Entities;
 
 namespace BusinessBookWebApi.Controllers
 {
@@ -69,6 +71,151 @@ namespace BusinessBookWebApi.Controllers
                 }
                 Httpresponse.Content = new StringContent(JsonConvert.SerializeObject(response));
                 Httpresponse.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                return Httpresponse;
+            }
+            catch
+            {
+                Httpresponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
+                return Httpresponse;
+            }
+        }
+        [Authorize]
+        [Route("purchases")]
+        [HttpPost]
+        public HttpResponseMessage AddPurchase(PurchaseEntities model)
+        {
+            var Httpresponse = new HttpResponseMessage();
+            try
+            {
+                if (model == null)
+                {
+                    Httpresponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
+                    return Httpresponse;
+                }
+                else
+                {
+                    var purchase = new Purchase();
+                    context.Purchase.Add(purchase);
+
+                    purchase.PurchaseId = model.purchaseId;
+                    purchase.DateCreation = DateTime.Today;
+                    purchase.CodeGuide = model.codeGuide;
+                    purchase.LocalId = model.localId;
+                    purchase.State = ConstantHelper.Status.ACTIVE;
+                    purchase.PriceTotal = model.priceTotal;
+
+                    context.SaveChanges();
+                }
+                Httpresponse = new HttpResponseMessage(HttpStatusCode.OK);
+                return Httpresponse;
+            }
+            catch
+            {
+                Httpresponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
+                return Httpresponse;
+            }
+        }
+
+        [Authorize]
+        [Route("purchases/{purchaseId}/items")]
+        [HttpPost]
+        public HttpResponseMessage AddPurchaseDetail(Int32 PurchaseId, PurchaseDetailEntities model)
+        {
+            var Httpresponse = new HttpResponseMessage();
+            try
+            {
+                if (model == null || PurchaseId == null)
+                {
+                    Httpresponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
+                    return Httpresponse;
+                }
+                else
+                {
+                    var purchase = context.Purchase.FirstOrDefault(x => x.PurchaseId == PurchaseId);
+                    foreach (var pD in model.listPurchaseDetail)
+                    {
+
+                        var purchaseDetail = new PurchaseDetail();
+                        context.PurchaseDetail.Add(purchaseDetail);
+
+                        purchaseDetail.PurchaseId = PurchaseId;
+                        purchaseDetail.ProductId = pD.Item1;
+                        purchaseDetail.Quantity = pD.Item2;
+                        purchaseDetail.UnitPrice = pD.Item3;
+                        purchaseDetail.PriceSubTotal = pD.Item4;
+                        purchaseDetail.State = ConstantHelper.Status.ACTIVE;
+                        context.SaveChanges();
+                    }
+                }
+                Httpresponse = new HttpResponseMessage(HttpStatusCode.OK);
+                return Httpresponse;
+            }
+            catch
+            {
+                Httpresponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
+                return Httpresponse;
+            }
+        }
+
+        [Authorize]
+        [Route("purchases/{purchaseId}")]
+        [HttpDelete]
+        public HttpResponseMessage DeletePurchase(Int16 PurchaseId)
+        {
+            var Httpresponse = new HttpResponseMessage();
+            try
+            {
+                if (PurchaseId == null)
+                {
+                    Httpresponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
+                    return Httpresponse;
+                }
+                else
+                {
+                    var purchase = new Purchase();
+                    purchase = context.Purchase.FirstOrDefault(x => x.PurchaseId == PurchaseId);
+                    purchase.State = ConstantHelper.Status.INACTIVE;
+                    context.SaveChanges();
+                }
+
+                Httpresponse = new HttpResponseMessage(HttpStatusCode.OK);
+                return Httpresponse;
+            }
+            catch
+            {
+                Httpresponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
+                return Httpresponse;
+            }
+        }
+
+        [Authorize]
+        [Route("purchases")]
+        [HttpPut]
+        public HttpResponseMessage UpdatePurchases(PurchaseEntities model)
+        {
+            var Httpresponse = new HttpResponseMessage();
+            try
+            {
+
+                if (model == null)
+                {
+                    Httpresponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
+                    return Httpresponse;
+                }
+                else
+                {
+
+                    var purchase = context.Purchase.FirstOrDefault(x => x.State == ConstantHelper.Status.ACTIVE && x.PurchaseId == model.purchaseId);
+
+                    purchase.PurchaseId = model.purchaseId;
+                    purchase.CodeGuide = model.codeGuide;
+                    purchase.LocalId = model.localId;
+                    purchase.PriceTotal = model.priceTotal;
+
+                    context.SaveChanges();
+                }
+
+                Httpresponse = new HttpResponseMessage(HttpStatusCode.OK);
                 return Httpresponse;
             }
             catch

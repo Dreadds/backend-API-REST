@@ -109,6 +109,7 @@ namespace BusinessBookWebApi.Controllers
                     sale.CodeGuide = model.codeGuide;
                     sale.LocalId = model.localId;
                     sale.EmployeeId = model.EmployeeId;
+                    sale.PriceTotal = model.priceTotal;
                     sale.ClientId = model.clientId;
                     sale.State = ConstantHelper.Status.ACTIVE;
                     sale.StateDelivery = ConstantHelper.Status.ACTIVE;
@@ -140,7 +141,7 @@ namespace BusinessBookWebApi.Controllers
                 else
                 {
                     var sale = context.Sale.FirstOrDefault(x => x.SaleId == SaleId);
-                    foreach (var sD in model.listProductSale) {
+                    foreach (var sD in model.listSaleDetail) {
 
                         var saleDetail = new SaleDetail();
                         context.SaleDetail.Add(saleDetail);
@@ -219,7 +220,7 @@ namespace BusinessBookWebApi.Controllers
                     sale.LocalId = model.localId;
                     sale.EmployeeId = model.EmployeeId;
                     sale.ClientId = model.clientId;
-                    sale.StateDelivery = ConstantHelper.Status.ACTIVE;
+                    sale.PriceTotal = model.priceTotal;
 
                     context.SaveChanges();
                 }
