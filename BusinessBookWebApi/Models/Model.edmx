@@ -58,8 +58,8 @@
           <Property Name="State" Type="varchar" MaxLength="3" Nullable="false" />
           <Property Name="Sex" Type="varchar" MaxLength="1" Nullable="false" />
           <Property Name="Users" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="Password" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="Token" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="500" />
+          <Property Name="TokenEmployeeId" Type="int" />
         </EntityType>
         <EntityType Name="Inventory">
           <Key>
@@ -100,11 +100,11 @@
           <Property Name="UnitPrice" Type="float" />
           <Property Name="State" Type="varchar" MaxLength="3" />
         </EntityType>
-        <EntityType Name="Proveedor">
+        <EntityType Name="Provider">
           <Key>
-            <PropertyRef Name="ProveedorId" />
+            <PropertyRef Name="ProviderId" />
           </Key>
-          <Property Name="ProveedorId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProviderId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="State" Type="varchar" MaxLength="3" Nullable="false" />
           <Property Name="Phone" Type="varchar" MaxLength="50" Nullable="false" />
@@ -124,7 +124,7 @@
           </Key>
           <Property Name="PurchaseId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CodeGuide" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="ProveedorId" Type="int" Nullable="false" />
+          <Property Name="ProviderId" Type="int" Nullable="false" />
           <Property Name="PriceTotal" Type="float" Nullable="false" />
           <Property Name="DateCreation" Type="datetime" Nullable="false" />
           <Property Name="State" Type="varchar" MaxLength="3" Nullable="false" />
@@ -167,6 +167,29 @@
           <Property Name="Quantity" Type="int" Nullable="false" />
           <Property Name="State" Type="varchar" MaxLength="3" Nullable="false" />
           <Property Name="UnitPrice" Type="float" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="TokenEmployee">
+          <Key>
+            <PropertyRef Name="TokenEmployeeId" />
+          </Key>
+          <Property Name="TokenEmployeeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AccessToken" Type="varchar" MaxLength="500" />
+          <Property Name="TypeToken" Type="varchar" MaxLength="500" />
+          <Property Name="ExpireInToken" Type="int" />
+          <Property Name="RefreshToken" Type="varchar" MaxLength="500" />
+          <Property Name="ErrorToken" Type="varchar" MaxLength="500" />
+          <Property Name="Issued" Type="datetime" />
+          <Property Name="Expires" Type="datetime" />
         </EntityType>
         <Association Name="FK_Client_Location">
           <End Role="Location" Type="Self.Location" Multiplicity="1" />
@@ -225,6 +248,18 @@
             </Principal>
             <Dependent Role="Employee">
               <PropertyRef Name="LocationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Employee_TokenEmployee">
+          <End Role="TokenEmployee" Type="Self.TokenEmployee" Multiplicity="0..1" />
+          <End Role="Employee" Type="Self.Employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TokenEmployee">
+              <PropertyRef Name="TokenEmployeeId" />
+            </Principal>
+            <Dependent Role="Employee">
+              <PropertyRef Name="TokenEmployeeId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -289,14 +324,14 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Purchase_Proveedor">
-          <End Role="Proveedor" Type="Self.Proveedor" Multiplicity="1" />
+          <End Role="Provider" Type="Self.Provider" Multiplicity="1" />
           <End Role="Purchase" Type="Self.Purchase" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Proveedor">
-              <PropertyRef Name="ProveedorId" />
+            <Principal Role="Provider">
+              <PropertyRef Name="ProviderId" />
             </Principal>
             <Dependent Role="Purchase">
-              <PropertyRef Name="ProveedorId" />
+              <PropertyRef Name="ProviderId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -393,12 +428,14 @@
           <EntitySet Name="Local" EntityType="Self.Local" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Location" EntityType="Self.Location" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Proveedor" EntityType="Self.Proveedor" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Provider" EntityType="Self.Provider" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Province" EntityType="Self.Province" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Purchase" EntityType="Self.Purchase" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PurchaseDetail" EntityType="Self.PurchaseDetail" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Sale" EntityType="Self.Sale" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SaleDetail" EntityType="Self.SaleDetail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TokenEmployee" EntityType="Self.TokenEmployee" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Client_Location" Association="Self.FK_Client_Location">
             <End Role="Location" EntitySet="Location" />
             <End Role="Client" EntitySet="Client" />
@@ -417,6 +454,10 @@
           </AssociationSet>
           <AssociationSet Name="FK_Employee_Location" Association="Self.FK_Employee_Location">
             <End Role="Location" EntitySet="Location" />
+            <End Role="Employee" EntitySet="Employee" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Employee_TokenEmployee" Association="Self.FK_Employee_TokenEmployee">
+            <End Role="TokenEmployee" EntitySet="TokenEmployee" />
             <End Role="Employee" EntitySet="Employee" />
           </AssociationSet>
           <AssociationSet Name="FK_Inventory_Local" Association="Self.FK_Inventory_Local">
@@ -440,7 +481,7 @@
             <End Role="Purchase" EntitySet="Purchase" />
           </AssociationSet>
           <AssociationSet Name="FK_Purchase_Proveedor" Association="Self.FK_Purchase_Proveedor">
-            <End Role="Proveedor" EntitySet="Proveedor" />
+            <End Role="Provider" EntitySet="Provider" />
             <End Role="Purchase" EntitySet="Purchase" />
           </AssociationSet>
           <AssociationSet Name="FK_PurchaseDetail_Product" Association="Self.FK_PurchaseDetail_Product">
@@ -485,12 +526,14 @@
           <EntitySet Name="Local" EntityType="BusinessBookModel.Local" />
           <EntitySet Name="Location" EntityType="BusinessBookModel.Location" />
           <EntitySet Name="Product" EntityType="BusinessBookModel.Product" />
-          <EntitySet Name="Proveedor" EntityType="BusinessBookModel.Proveedor" />
+          <EntitySet Name="Provider" EntityType="BusinessBookModel.Provider" />
           <EntitySet Name="Province" EntityType="BusinessBookModel.Province" />
           <EntitySet Name="Purchase" EntityType="BusinessBookModel.Purchase" />
           <EntitySet Name="PurchaseDetail" EntityType="BusinessBookModel.PurchaseDetail" />
           <EntitySet Name="Sale" EntityType="BusinessBookModel.Sale" />
           <EntitySet Name="SaleDetail" EntityType="BusinessBookModel.SaleDetail" />
+          <EntitySet Name="sysdiagrams" EntityType="BusinessBookModel.sysdiagrams" />
+          <EntitySet Name="TokenEmployee" EntityType="BusinessBookModel.TokenEmployee" />
           <AssociationSet Name="FK_Client_Location" Association="BusinessBookModel.FK_Client_Location">
             <End Role="Location" EntitySet="Location" />
             <End Role="Client" EntitySet="Client" />
@@ -523,6 +566,10 @@
             <End Role="Location" EntitySet="Location" />
             <End Role="Employee" EntitySet="Employee" />
           </AssociationSet>
+          <AssociationSet Name="FK_Employee_TokenEmployee" Association="BusinessBookModel.FK_Employee_TokenEmployee">
+            <End Role="TokenEmployee" EntitySet="TokenEmployee" />
+            <End Role="Employee" EntitySet="Employee" />
+          </AssociationSet>
           <AssociationSet Name="FK_Sale_Employee" Association="BusinessBookModel.FK_Sale_Employee">
             <End Role="Employee" EntitySet="Employee" />
             <End Role="Sale" EntitySet="Sale" />
@@ -552,7 +599,7 @@
             <End Role="SaleDetail" EntitySet="SaleDetail" />
           </AssociationSet>
           <AssociationSet Name="FK_Purchase_Proveedor" Association="BusinessBookModel.FK_Purchase_Proveedor">
-            <End Role="Proveedor" EntitySet="Proveedor" />
+            <End Role="Provider" EntitySet="Provider" />
             <End Role="Purchase" EntitySet="Purchase" />
           </AssociationSet>
           <AssociationSet Name="FK_PurchaseDetail_Purchase" Association="BusinessBookModel.FK_PurchaseDetail_Purchase">
@@ -624,10 +671,11 @@
           <Property Name="State" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="false" />
           <Property Name="Sex" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
           <Property Name="Users" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Password" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Token" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="TokenEmployeeId" Type="Int32" />
           <NavigationProperty Name="Company" Relationship="BusinessBookModel.FK_Company_Employee" FromRole="Employee" ToRole="Company" />
           <NavigationProperty Name="Location" Relationship="BusinessBookModel.FK_Employee_Location" FromRole="Employee" ToRole="Location" />
+          <NavigationProperty Name="TokenEmployee" Relationship="BusinessBookModel.FK_Employee_TokenEmployee" FromRole="Employee" ToRole="TokenEmployee" />
           <NavigationProperty Name="Sale" Relationship="BusinessBookModel.FK_Sale_Employee" FromRole="Employee" ToRole="Sale" />
         </EntityType>
         <EntityType Name="Inventory">
@@ -682,16 +730,16 @@
           <NavigationProperty Name="PurchaseDetail" Relationship="BusinessBookModel.FK_PurchaseDetail_Product" FromRole="Product" ToRole="PurchaseDetail" />
           <NavigationProperty Name="SaleDetail" Relationship="BusinessBookModel.FK_SaleDetail_Product" FromRole="Product" ToRole="SaleDetail" />
         </EntityType>
-        <EntityType Name="Proveedor">
+        <EntityType Name="Provider">
           <Key>
-            <PropertyRef Name="ProveedorId" />
+            <PropertyRef Name="ProviderId" />
           </Key>
-          <Property Name="ProveedorId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProviderId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="State" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="false" />
           <Property Name="Phone" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="email" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Purchase" Relationship="BusinessBookModel.FK_Purchase_Proveedor" FromRole="Proveedor" ToRole="Purchase" />
+          <NavigationProperty Name="Purchase" Relationship="BusinessBookModel.FK_Purchase_Proveedor" FromRole="Provider" ToRole="Purchase" />
         </EntityType>
         <EntityType Name="Province">
           <Key>
@@ -708,13 +756,13 @@
           </Key>
           <Property Name="PurchaseId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CodeGuide" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="ProveedorId" Type="Int32" Nullable="false" />
+          <Property Name="ProviderId" Type="Int32" Nullable="false" />
           <Property Name="PriceTotal" Type="Double" Nullable="false" />
           <Property Name="DateCreation" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="State" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="false" />
           <Property Name="LocalId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Local" Relationship="BusinessBookModel.FK_Purchase_Local" FromRole="Purchase" ToRole="Local" />
-          <NavigationProperty Name="Proveedor" Relationship="BusinessBookModel.FK_Purchase_Proveedor" FromRole="Purchase" ToRole="Proveedor" />
+          <NavigationProperty Name="Provider" Relationship="BusinessBookModel.FK_Purchase_Proveedor" FromRole="Purchase" ToRole="Provider" />
           <NavigationProperty Name="PurchaseDetail" Relationship="BusinessBookModel.FK_PurchaseDetail_Purchase" FromRole="Purchase" ToRole="PurchaseDetail" />
         </EntityType>
         <EntityType Name="PurchaseDetail">
@@ -762,6 +810,30 @@
           <Property Name="UnitPrice" Type="Double" Nullable="false" />
           <NavigationProperty Name="Product" Relationship="BusinessBookModel.FK_SaleDetail_Product" FromRole="SaleDetail" ToRole="Product" />
           <NavigationProperty Name="Sale" Relationship="BusinessBookModel.FK_SaleDetail_Sale" FromRole="SaleDetail" ToRole="Sale" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="TokenEmployee">
+          <Key>
+            <PropertyRef Name="TokenEmployeeId" />
+          </Key>
+          <Property Name="TokenEmployeeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AccessToken" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="TypeToken" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="ExpireInToken" Type="Int32" />
+          <Property Name="RefreshToken" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="ErrorToken" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Issued" Type="DateTime" Precision="3" />
+          <Property Name="Expires" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Employee" Relationship="BusinessBookModel.FK_Employee_TokenEmployee" FromRole="TokenEmployee" ToRole="Employee" />
         </EntityType>
         <Association Name="FK_Client_Location">
           <End Type="BusinessBookModel.Location" Role="Location" Multiplicity="1" />
@@ -859,6 +931,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Employee_TokenEmployee">
+          <End Type="BusinessBookModel.TokenEmployee" Role="TokenEmployee" Multiplicity="0..1" />
+          <End Type="BusinessBookModel.Employee" Role="Employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TokenEmployee">
+              <PropertyRef Name="TokenEmployeeId" />
+            </Principal>
+            <Dependent Role="Employee">
+              <PropertyRef Name="TokenEmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Sale_Employee">
           <End Type="BusinessBookModel.Employee" Role="Employee" Multiplicity="1" />
           <End Type="BusinessBookModel.Sale" Role="Sale" Multiplicity="*" />
@@ -944,14 +1028,14 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Purchase_Proveedor">
-          <End Type="BusinessBookModel.Proveedor" Role="Proveedor" Multiplicity="1" />
+          <End Type="BusinessBookModel.Provider" Role="Provider" Multiplicity="1" />
           <End Type="BusinessBookModel.Purchase" Role="Purchase" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Proveedor">
-              <PropertyRef Name="ProveedorId" />
+            <Principal Role="Provider">
+              <PropertyRef Name="ProviderId" />
             </Principal>
             <Dependent Role="Purchase">
-              <PropertyRef Name="ProveedorId" />
+              <PropertyRef Name="ProviderId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -979,7 +1063,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -1027,7 +1111,7 @@
           <EntitySetMapping Name="Employee">
             <EntityTypeMapping TypeName="BusinessBookModel.Employee">
               <MappingFragment StoreEntitySet="Employee">
-                <ScalarProperty Name="Token" ColumnName="Token" />
+                <ScalarProperty Name="TokenEmployeeId" ColumnName="TokenEmployeeId" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="Users" ColumnName="Users" />
                 <ScalarProperty Name="Sex" ColumnName="Sex" />
@@ -1088,14 +1172,14 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Proveedor">
-            <EntityTypeMapping TypeName="BusinessBookModel.Proveedor">
-              <MappingFragment StoreEntitySet="Proveedor">
+          <EntitySetMapping Name="Provider">
+            <EntityTypeMapping TypeName="BusinessBookModel.Provider">
+              <MappingFragment StoreEntitySet="Provider">
                 <ScalarProperty Name="email" ColumnName="email" />
                 <ScalarProperty Name="Phone" ColumnName="Phone" />
                 <ScalarProperty Name="State" ColumnName="State" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="ProveedorId" ColumnName="ProveedorId" />
+                <ScalarProperty Name="ProviderId" ColumnName="ProviderId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1115,7 +1199,7 @@
                 <ScalarProperty Name="State" ColumnName="State" />
                 <ScalarProperty Name="DateCreation" ColumnName="DateCreation" />
                 <ScalarProperty Name="PriceTotal" ColumnName="PriceTotal" />
-                <ScalarProperty Name="ProveedorId" ColumnName="ProveedorId" />
+                <ScalarProperty Name="ProviderId" ColumnName="ProviderId" />
                 <ScalarProperty Name="CodeGuide" ColumnName="CodeGuide" />
                 <ScalarProperty Name="PurchaseId" ColumnName="PurchaseId" />
               </MappingFragment>
@@ -1159,6 +1243,31 @@
                 <ScalarProperty Name="ProductId" ColumnName="ProductId" />
                 <ScalarProperty Name="SaleId" ColumnName="SaleId" />
                 <ScalarProperty Name="SaleDetailId" ColumnName="SaleDetailId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="BusinessBookModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="definition" ColumnName="definition" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TokenEmployee">
+            <EntityTypeMapping TypeName="BusinessBookModel.TokenEmployee">
+              <MappingFragment StoreEntitySet="TokenEmployee">
+                <ScalarProperty Name="Expires" ColumnName="Expires" />
+                <ScalarProperty Name="Issued" ColumnName="Issued" />
+                <ScalarProperty Name="ErrorToken" ColumnName="ErrorToken" />
+                <ScalarProperty Name="RefreshToken" ColumnName="RefreshToken" />
+                <ScalarProperty Name="ExpireInToken" ColumnName="ExpireInToken" />
+                <ScalarProperty Name="TypeToken" ColumnName="TypeToken" />
+                <ScalarProperty Name="AccessToken" ColumnName="AccessToken" />
+                <ScalarProperty Name="TokenEmployeeId" ColumnName="TokenEmployeeId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

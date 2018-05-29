@@ -10,13 +10,17 @@ using System.Web.Http;
 
 namespace BusinessBookWebApi.Controllers
 {
-    [RoutePrefix("sales")]
+    
+    [RoutePrefix("businessbookapi/v1")]
     public class SalesController : BaseApiController
     {
+        [Authorize]
         [HttpGet]
-        [Route("{saleId}")]
-        public HttpResponseMessage ListSaless(Int32? SaleId)
+        [Route("sales")]
+        //[Route("sales/{saleId}")]
+        public HttpResponseMessage ListSales()
         {
+            Int32? SaleId = null;
             var Httpresponse = new HttpResponseMessage();
             try
             {
