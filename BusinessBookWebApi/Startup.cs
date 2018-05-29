@@ -31,7 +31,7 @@ namespace BusinessBookWebApi {
             {
                 TokenEndpointPath = new PathString("/oauth/token"),
                 Provider = new AuthorizationServerProvider(),
-                AccessTokenExpireTimeSpan = TimeSpan.FromDays(1),
+                AccessTokenExpireTimeSpan = TimeSpan.FromMinutes(30),
                 AllowInsecureHttp = true,
 
             });
@@ -58,10 +58,6 @@ namespace BusinessBookWebApi {
                         identity.AddClaim(new Claim("username", employee.Users));
                         identity.AddClaim(new Claim("password", employee.Password));
                         context.Validated(identity);
-                    }
-                    else
-                    {
-                        context.SetError("Invalid grant", "verifique error");
                         return;
                     }
                 }

@@ -9,12 +9,13 @@
     <EntitySet Name="Local" EntityType="BusinessBookModel.Local" />
     <EntitySet Name="Location" EntityType="BusinessBookModel.Location" />
     <EntitySet Name="Product" EntityType="BusinessBookModel.Product" />
-    <EntitySet Name="Proveedor" EntityType="BusinessBookModel.Proveedor" />
+    <EntitySet Name="Provider" EntityType="BusinessBookModel.Provider" />
     <EntitySet Name="Province" EntityType="BusinessBookModel.Province" />
     <EntitySet Name="Purchase" EntityType="BusinessBookModel.Purchase" />
     <EntitySet Name="PurchaseDetail" EntityType="BusinessBookModel.PurchaseDetail" />
     <EntitySet Name="Sale" EntityType="BusinessBookModel.Sale" />
     <EntitySet Name="SaleDetail" EntityType="BusinessBookModel.SaleDetail" />
+    <EntitySet Name="sysdiagrams" EntityType="BusinessBookModel.sysdiagrams" />
     <EntitySet Name="TokenEmployee" EntityType="BusinessBookModel.TokenEmployee" />
     <AssociationSet Name="FK_Client_Location" Association="BusinessBookModel.FK_Client_Location">
       <End Role="Location" EntitySet="Location" />
@@ -81,7 +82,7 @@
       <End Role="SaleDetail" EntitySet="SaleDetail" />
     </AssociationSet>
     <AssociationSet Name="FK_Purchase_Proveedor" Association="BusinessBookModel.FK_Purchase_Proveedor">
-      <End Role="Proveedor" EntitySet="Proveedor" />
+      <End Role="Provider" EntitySet="Provider" />
       <End Role="Purchase" EntitySet="Purchase" />
     </AssociationSet>
     <AssociationSet Name="FK_PurchaseDetail_Purchase" Association="BusinessBookModel.FK_PurchaseDetail_Purchase">
@@ -212,16 +213,16 @@
     <NavigationProperty Name="PurchaseDetail" Relationship="BusinessBookModel.FK_PurchaseDetail_Product" FromRole="Product" ToRole="PurchaseDetail" />
     <NavigationProperty Name="SaleDetail" Relationship="BusinessBookModel.FK_SaleDetail_Product" FromRole="Product" ToRole="SaleDetail" />
   </EntityType>
-  <EntityType Name="Proveedor">
+  <EntityType Name="Provider">
     <Key>
-      <PropertyRef Name="ProveedorId" />
+      <PropertyRef Name="ProviderId" />
     </Key>
-    <Property Name="ProveedorId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ProviderId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="State" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="false" />
     <Property Name="Phone" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="email" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-    <NavigationProperty Name="Purchase" Relationship="BusinessBookModel.FK_Purchase_Proveedor" FromRole="Proveedor" ToRole="Purchase" />
+    <NavigationProperty Name="Purchase" Relationship="BusinessBookModel.FK_Purchase_Proveedor" FromRole="Provider" ToRole="Purchase" />
   </EntityType>
   <EntityType Name="Province">
     <Key>
@@ -238,13 +239,13 @@
     </Key>
     <Property Name="PurchaseId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="CodeGuide" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="ProveedorId" Type="Int32" Nullable="false" />
+    <Property Name="ProviderId" Type="Int32" Nullable="false" />
     <Property Name="PriceTotal" Type="Double" Nullable="false" />
     <Property Name="DateCreation" Type="DateTime" Nullable="false" Precision="3" />
     <Property Name="State" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="false" />
     <Property Name="LocalId" Type="Int32" Nullable="false" />
     <NavigationProperty Name="Local" Relationship="BusinessBookModel.FK_Purchase_Local" FromRole="Purchase" ToRole="Local" />
-    <NavigationProperty Name="Proveedor" Relationship="BusinessBookModel.FK_Purchase_Proveedor" FromRole="Purchase" ToRole="Proveedor" />
+    <NavigationProperty Name="Provider" Relationship="BusinessBookModel.FK_Purchase_Proveedor" FromRole="Purchase" ToRole="Provider" />
     <NavigationProperty Name="PurchaseDetail" Relationship="BusinessBookModel.FK_PurchaseDetail_Purchase" FromRole="Purchase" ToRole="PurchaseDetail" />
   </EntityType>
   <EntityType Name="PurchaseDetail">
@@ -292,6 +293,16 @@
     <Property Name="UnitPrice" Type="Double" Nullable="false" />
     <NavigationProperty Name="Product" Relationship="BusinessBookModel.FK_SaleDetail_Product" FromRole="SaleDetail" ToRole="Product" />
     <NavigationProperty Name="Sale" Relationship="BusinessBookModel.FK_SaleDetail_Sale" FromRole="SaleDetail" ToRole="Sale" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
   </EntityType>
   <EntityType Name="TokenEmployee">
     <Key>
@@ -500,14 +511,14 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_Purchase_Proveedor">
-    <End Type="BusinessBookModel.Proveedor" Role="Proveedor" Multiplicity="1" />
+    <End Type="BusinessBookModel.Provider" Role="Provider" Multiplicity="1" />
     <End Type="BusinessBookModel.Purchase" Role="Purchase" Multiplicity="*" />
     <ReferentialConstraint>
-      <Principal Role="Proveedor">
-        <PropertyRef Name="ProveedorId" />
+      <Principal Role="Provider">
+        <PropertyRef Name="ProviderId" />
       </Principal>
       <Dependent Role="Purchase">
-        <PropertyRef Name="ProveedorId" />
+        <PropertyRef Name="ProviderId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

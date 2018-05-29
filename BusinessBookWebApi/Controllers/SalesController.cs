@@ -119,7 +119,7 @@ namespace BusinessBookWebApi.Controllers
                 Httpresponse = new HttpResponseMessage(HttpStatusCode.OK);
                 return Httpresponse;
             }
-            catch
+            catch (Exception ex)
             {
                 Httpresponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
                 return Httpresponse;

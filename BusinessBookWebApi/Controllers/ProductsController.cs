@@ -19,7 +19,7 @@ namespace BusinessBookWebApi.Controllers
         [Route("products")]
         [Route("products/{productId}")]
         [HttpGet]
-        public HttpResponseMessage ListProducts(Int32? ProductId)
+        public HttpResponseMessage ListProducts(Int32? ProductId = null)
         {
             var Httpresponse = new HttpResponseMessage();
             try

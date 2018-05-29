@@ -95,11 +95,11 @@
     <Property Name="UnitPrice" Type="float" />
     <Property Name="State" Type="varchar" MaxLength="3" />
   </EntityType>
-  <EntityType Name="Proveedor">
+  <EntityType Name="Provider">
     <Key>
-      <PropertyRef Name="ProveedorId" />
+      <PropertyRef Name="ProviderId" />
     </Key>
-    <Property Name="ProveedorId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ProviderId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
     <Property Name="State" Type="varchar" MaxLength="3" Nullable="false" />
     <Property Name="Phone" Type="varchar" MaxLength="50" Nullable="false" />
@@ -119,7 +119,7 @@
     </Key>
     <Property Name="PurchaseId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="CodeGuide" Type="varchar" MaxLength="50" Nullable="false" />
-    <Property Name="ProveedorId" Type="int" Nullable="false" />
+    <Property Name="ProviderId" Type="int" Nullable="false" />
     <Property Name="PriceTotal" Type="float" Nullable="false" />
     <Property Name="DateCreation" Type="datetime" Nullable="false" />
     <Property Name="State" Type="varchar" MaxLength="3" Nullable="false" />
@@ -162,6 +162,16 @@
     <Property Name="Quantity" Type="int" Nullable="false" />
     <Property Name="State" Type="varchar" MaxLength="3" Nullable="false" />
     <Property Name="UnitPrice" Type="float" Nullable="false" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
   </EntityType>
   <EntityType Name="TokenEmployee">
     <Key>
@@ -309,14 +319,14 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_Purchase_Proveedor">
-    <End Role="Proveedor" Type="Self.Proveedor" Multiplicity="1" />
+    <End Role="Provider" Type="Self.Provider" Multiplicity="1" />
     <End Role="Purchase" Type="Self.Purchase" Multiplicity="*" />
     <ReferentialConstraint>
-      <Principal Role="Proveedor">
-        <PropertyRef Name="ProveedorId" />
+      <Principal Role="Provider">
+        <PropertyRef Name="ProviderId" />
       </Principal>
       <Dependent Role="Purchase">
-        <PropertyRef Name="ProveedorId" />
+        <PropertyRef Name="ProviderId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -413,12 +423,13 @@
     <EntitySet Name="Local" EntityType="Self.Local" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Location" EntityType="Self.Location" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="Proveedor" EntityType="Self.Proveedor" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Provider" EntityType="Self.Provider" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Province" EntityType="Self.Province" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Purchase" EntityType="Self.Purchase" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="PurchaseDetail" EntityType="Self.PurchaseDetail" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Sale" EntityType="Self.Sale" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="SaleDetail" EntityType="Self.SaleDetail" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TokenEmployee" EntityType="Self.TokenEmployee" Schema="dbo" store:Type="Tables" />
     <AssociationSet Name="FK_Client_Location" Association="Self.FK_Client_Location">
       <End Role="Location" EntitySet="Location" />
@@ -465,7 +476,7 @@
       <End Role="Purchase" EntitySet="Purchase" />
     </AssociationSet>
     <AssociationSet Name="FK_Purchase_Proveedor" Association="Self.FK_Purchase_Proveedor">
-      <End Role="Proveedor" EntitySet="Proveedor" />
+      <End Role="Provider" EntitySet="Provider" />
       <End Role="Purchase" EntitySet="Purchase" />
     </AssociationSet>
     <AssociationSet Name="FK_PurchaseDetail_Product" Association="Self.FK_PurchaseDetail_Product">

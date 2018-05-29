@@ -56,7 +56,7 @@ namespace BusinessBookWebApi.Controllers
                     if (password == model.password)
                     {
                         //DOMAIN 
-                        String baseAddress = "http://localhost:16669/";
+                        String baseAddress = "http://localhost:16669";
                         //CREATE A NEW TOKEN FOR EMPLOYEE
                         if (!employee.TokenEmployeeId.HasValue)
                         {
@@ -73,21 +73,29 @@ namespace BusinessBookWebApi.Controllers
                                 var tokenResponse = client.PostAsync(baseAddress + "/oauth/token", new FormUrlEncodedContent(form)).Result;
                                 //CONVERT 
                                 tokenEntities = tokenResponse.Content.ReadAsAsync<TokenEntities>(new[] { new JsonMediaTypeFormatter() }).Result;
-                                //IF TOKEN IS NULL ADD KEY AND SAVE IN DATA BASE
-                                var tokenEmployee = new TokenEmployee();
-                                context.TokenEmployee.Add(tokenEmployee);
-                                tokenEmployee.AccessToken = tokenEntities.accessToken;
-                                tokenEmployee.ExpireInToken = tokenEntities.expiresIn;
-                                tokenEmployee.ErrorToken = tokenEntities.error;
-                                tokenEmployee.TypeToken = tokenEntities.tokenType;
-                                tokenEmployee.RefreshToken = tokenEntities.refreshToken;
-                                tokenEmployee.Issued = fecha;
-                                tokenEmployee.Expires = fecha.AddHours(24);
+                                if (tokenEntities.accessToken == null)
+                                {
+                                    HttpResponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
+                                    return HttpResponse;
+                                }
+                                else
+                                {
+                                    //IF TOKEN IS NULL ADD KEY AND SAVE IN DATA BASE
+                                    var tokenEmployee = new TokenEmployee();
+                                    context.TokenEmployee.Add(tokenEmployee);
+                                    tokenEmployee.AccessToken = tokenEntities.accessToken;
+                                    tokenEmployee.ExpireInToken = tokenEntities.expiresIn;
+                                    tokenEmployee.ErrorToken = tokenEntities.error;
+                                    tokenEmployee.TypeToken = tokenEntities.tokenType;
+                                    tokenEmployee.RefreshToken = tokenEntities.refreshToken;
+                                    tokenEmployee.Issued = fecha;
+                                    tokenEmployee.Expires = fecha.AddHours(24);
 
-                                context.SaveChanges();
-                                //LINK EMPLOYEE WITH TOKEN
-                                employee.TokenEmployeeId = tokenEmployee.TokenEmployeeId;
-                                context.SaveChanges();
+                                    context.SaveChanges();
+                                    //LINK EMPLOYEE WITH TOKEN
+                                    employee.TokenEmployeeId = tokenEmployee.TokenEmployeeId;
+                                    context.SaveChanges();
+                                }
                             }
 
                             //SHOW HOW TO JSON 
@@ -195,14 +203,15 @@ namespace BusinessBookWebApi.Controllers
 
 
                     //INSERT TO LOGIN
-                    var loginResult = this.LoginEmployee(new LoginEntities()
+                    /*var loginResult = this.LoginEmployee(new LoginEntities()
                     {
                         users = model.users,
-                        password = password
-                    });
+                        password = model.password
+                    });*/
                     ts.Complete();
 
-                    return loginResult; 
+                    HttpResponse = new HttpResponseMessage(HttpStatusCode.OK);
+                    return HttpResponse;
                 }
 
 
