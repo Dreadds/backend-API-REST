@@ -125,7 +125,7 @@ namespace BusinessBookWebApi.Controllers
                     client.DateCreation = DateTime.Today;
                     client.DateUpdate = DateTime.Today;
                     client.State = ConstantHelper.Status.ACTIVE;
-                    client.Sex = model.state;
+                    client.Sex = model.sex;
                     context.SaveChanges();
                 }
                 Httpresponse = new HttpResponseMessage(HttpStatusCode.OK);

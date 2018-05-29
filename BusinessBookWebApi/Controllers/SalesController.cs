@@ -7,20 +7,21 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Web.Http;
+using BusinessBookWebApi.Models;
+using BusinessBookWebApi.Entities;
 
 namespace BusinessBookWebApi.Controllers
 {
-    
+
     [RoutePrefix("businessbookapi/v1")]
     public class SalesController : BaseApiController
     {
         [Authorize]
         [HttpGet]
         [Route("sales")]
-        //[Route("sales/{saleId}")]
-        public HttpResponseMessage ListSales()
+        [Route("sales/{saleId}")]
+        public HttpResponseMessage ListSales(Int32? SaleId)
         {
-            Int32? SaleId = null;
             var Httpresponse = new HttpResponseMessage();
             try
             {
@@ -83,6 +84,114 @@ namespace BusinessBookWebApi.Controllers
                 Httpresponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
             }
             return Httpresponse;
+        }
+
+        [Authorize]
+        [Route("sales")]
+        [HttpPost]
+        public HttpResponseMessage AddSale(SaleEntities model)
+        {
+            var Httpresponse = new HttpResponseMessage();
+            try
+            {
+                if (model == null)
+                {
+                    Httpresponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
+                    return Httpresponse;
+                }
+                else
+                {
+                    var sale = new Sale();
+                    context.Sale.Add(sale);
+
+                    sale.SaleId = model.saleId;
+                    sale.DateCreation = DateTime.Today;
+                    sale.CodeGuide = model.codeGuide;
+                    sale.LocalId = model.localId;
+                    sale.EmployeeId = model.EmployeeId;
+                    sale.ClientId = model.clientId;
+                    sale.State = ConstantHelper.Status.ACTIVE;
+                    sale.StateDelivery = ConstantHelper.Status.ACTIVE;
+                    context.SaveChanges();
+                }
+                Httpresponse = new HttpResponseMessage(HttpStatusCode.OK);
+                return Httpresponse;
+            }
+            catch
+            {
+                Httpresponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
+                return Httpresponse;
+            }
+        }
+
+        [Authorize]
+        [Route("sales/{saleId}")]
+        [HttpDelete]
+        public HttpResponseMessage DeleteSale(Int16 SaleId)
+        {
+            var Httpresponse = new HttpResponseMessage();
+            try
+            {
+                if (SaleId == null)
+                {
+                    Httpresponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
+                    return Httpresponse;
+                }
+                else
+                {
+                    var sale = new Sale();
+                    sale = context.Sale.FirstOrDefault(x => x.SaleId == SaleId);
+                    sale.State = ConstantHelper.Status.INACTIVE;
+                    context.SaveChanges();
+                }
+
+                Httpresponse = new HttpResponseMessage(HttpStatusCode.OK);
+                return Httpresponse;
+            }
+            catch
+            {
+                Httpresponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
+                return Httpresponse;
+            }
+        }
+
+        [Authorize]
+        [Route("sales")]
+        [HttpPut]
+        public HttpResponseMessage UpdateSale(SaleEntities model)
+        {
+            var Httpresponse = new HttpResponseMessage();
+            try
+            {
+
+                if (model == null)
+                {
+                    Httpresponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
+                    return Httpresponse;
+                }
+                else
+                {
+
+                    var sale = context.Sale.FirstOrDefault(x => x.State == ConstantHelper.Status.ACTIVE && x.SaleId == model.saleId);
+
+                    sale.SaleId = model.saleId;
+                    sale.CodeGuide = model.codeGuide;
+                    sale.LocalId = model.localId;
+                    sale.EmployeeId = model.EmployeeId;
+                    sale.ClientId = model.clientId;
+                    sale.StateDelivery = ConstantHelper.Status.ACTIVE;
+
+                    context.SaveChanges();
+                }
+
+                Httpresponse = new HttpResponseMessage(HttpStatusCode.OK);
+                return Httpresponse;
+            }
+            catch
+            {
+                Httpresponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
+                return Httpresponse;
+            }
         }
     }
 }
