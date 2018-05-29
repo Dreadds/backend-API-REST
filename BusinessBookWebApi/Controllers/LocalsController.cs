@@ -10,16 +10,17 @@ using System.Web.Http;
 using BusinessBookWebApi.Models;
 using BusinessBookWebApi.Entities;
 
+
 namespace BusinessBookWebApi.Controllers
 {
     [RoutePrefix("businessbookapi/v1")]
-    public class ProductsController : BaseApiController
+    public class LocalsController : BaseApiController
     {
         [Authorize]
-        [Route("products")]
-        [Route("products/{productId}")]
+        [Route("locals")]
+        [Route("locals/{localId}")]
         [HttpGet]
-        public HttpResponseMessage ListProducts(Int32? ProductId)
+        public HttpResponseMessage ListLocals(Int32? LocalId)
         {
             var Httpresponse = new HttpResponseMessage();
             try
@@ -42,15 +43,16 @@ namespace BusinessBookWebApi.Controllers
                     response.Code = HttpStatusCode.OK;
                     response.Message = "success";
 
-                    if (ProductId.HasValue)
+                    if (LocalId.HasValue)
                     {
 
-                        response.Result = context.Product.Where(x => x.State == ConstantHelper.Status.ACTIVE && x.ProductId == ProductId)
+                        response.Result = context.Local.Where(x => x.State == ConstantHelper.Status.ACTIVE && x.LocalId == LocalId)
                             .Select(x => new
                             {
-                                productId = x.ProductId,
+                                localId = x.LocalId,
                                 name = x.Name,
-                                unitPrice = x.UnitPrice,
+                                direction = x.Direction,
+                                company = x.Company.Name,
                                 state = x.State
                             }).ToList();
 
@@ -58,12 +60,13 @@ namespace BusinessBookWebApi.Controllers
                     else
                     {
 
-                        response.Result = context.Product.Where(x => x.State == ConstantHelper.Status.ACTIVE)
+                        response.Result = context.Local.Where(x => x.State == ConstantHelper.Status.ACTIVE)
                             .Select(x => new
                             {
-                                productId = x.ProductId,
+                                localId = x.LocalId,
                                 name = x.Name,
-                                unitPrice = x.UnitPrice,
+                                direction = x.Direction,
+                                company = x.Company.Name,
                                 state = x.State
                             }).ToList();
 
@@ -81,9 +84,9 @@ namespace BusinessBookWebApi.Controllers
             }
         }
         [Authorize]
-        [Route("products")]
+        [Route("locals")]
         [HttpPost]
-        public HttpResponseMessage AddProduct(ProductEntities model)
+        public HttpResponseMessage AddLocal(LocalEntities model)
         {
             var Httpresponse = new HttpResponseMessage();
             try
@@ -95,13 +98,14 @@ namespace BusinessBookWebApi.Controllers
                 }
                 else
                 {
-                    var product = new Product();
-                    context.Product.Add(product);
+                    var local = new Local();
+                    context.Local.Add(local);
 
-                    product.ProductId = model.productId;
-                    product.Name = model.name;
-                    product.UnitPrice = model.unitPrice;
-                    product.State = ConstantHelper.Status.ACTIVE;
+                    local.LocalId = model.localId;
+                    local.Name = model.name;
+                    local.Direction = model.direction;
+                    local.CompanyId = model.companyId;
+                    local.State = ConstantHelper.Status.ACTIVE;
                     context.SaveChanges();
                 }
                 Httpresponse = new HttpResponseMessage(HttpStatusCode.OK);
@@ -115,23 +119,23 @@ namespace BusinessBookWebApi.Controllers
         }
 
         [Authorize]
-        [Route("products/{productId}")]
+        [Route("locals/{localId}")]
         [HttpDelete]
-        public HttpResponseMessage DeleteProduct(Int16 ProductId)
+        public HttpResponseMessage DeleteLocal(Int16 LocalId)
         {
             var Httpresponse = new HttpResponseMessage();
             try
             {
-                if (ProductId == null)
+                if (LocalId == null)
                 {
                     Httpresponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
                     return Httpresponse;
                 }
                 else
                 {
-                    var product = new Product();
-                    product = context.Product.FirstOrDefault(x => x.ProductId == ProductId);
-                    product.State = ConstantHelper.Status.INACTIVE;
+                    var local = new Local();
+                    local = context.Local.FirstOrDefault(x => x.LocalId == LocalId);
+                    local.State = ConstantHelper.Status.INACTIVE;
                     context.SaveChanges();
                 }
 
@@ -146,9 +150,9 @@ namespace BusinessBookWebApi.Controllers
         }
 
         [Authorize]
-        [Route("products")]
+        [Route("locals")]
         [HttpPut]
-        public HttpResponseMessage UpdateProduct(ProductEntities model)
+        public HttpResponseMessage UpdateLocal(LocalEntities model)
         {
             var Httpresponse = new HttpResponseMessage();
             try
@@ -162,11 +166,12 @@ namespace BusinessBookWebApi.Controllers
                 else
                 {
 
-                    var product = context.Product.FirstOrDefault(x => x.State == ConstantHelper.Status.ACTIVE && x.ProductId == model.productId);
+                    var local = context.Local.FirstOrDefault(x => x.State == ConstantHelper.Status.ACTIVE && x.LocalId == model.localId);
 
-                    product.ProductId = model.productId;
-                    product.Name = model.name;
-                    product.UnitPrice = model.unitPrice;
+                    local.LocalId = model.localId;
+                    local.Name = model.name;
+                    local.Direction = model.direction;
+                    local.CompanyId = model.companyId;
 
                     context.SaveChanges();
                 }
