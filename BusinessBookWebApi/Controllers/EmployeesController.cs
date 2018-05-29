@@ -273,5 +273,57 @@ namespace BusinessBookWebApi.Controllers
                 return HttpResponse;
             }
         }
+
+        [Authorize]
+        [Route("viewcompany/{companyId}")]
+        [HttpPost]
+        public HttpResponseMessage ViewCompany(Int32 CompanyId)
+        {
+            var HttpResponse = new HttpResponseMessage();
+            try
+            {
+                using (var ts = new TransactionScope())
+                {
+                    //FI MODEL IS NULL
+                    if (CompanyId == null)
+                    {
+                        HttpResponse = new HttpResponseMessage(HttpStatusCode.NoContent);
+                        return HttpResponse;
+                    }
+                    
+                    var company = new Company();
+
+                    company = context.Company.FirstOrDefault(x => x.CompanyId == CompanyId);
+
+                    if (company == null)
+                    {
+                        HttpResponse = new HttpResponseMessage(HttpStatusCode.NotFound);
+                        return HttpResponse;
+                    }
+
+                     if (company.state == ConstantHelper.Status.INACTIVE)
+                    {
+                        HttpResponse = new HttpResponseMessage(HttpStatusCode.NotAcceptable);
+                        return HttpResponse;
+                    }
+
+                    response.Code = HttpStatusCode.OK;
+                    response.Message = "success";
+                    response.Result = company;
+
+                    ts.Complete();
+
+                    HttpResponse = new HttpResponseMessage(HttpStatusCode.OK);
+                    HttpResponse.Content = new StringContent(JsonConvert.SerializeObject(response));
+                    HttpResponse.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                    return HttpResponse;
+                }
+            }
+            catch
+            {
+                HttpResponse = new HttpResponseMessage(HttpStatusCode.BadRequest);
+                return HttpResponse;
+            }
+        }
     }
 }
