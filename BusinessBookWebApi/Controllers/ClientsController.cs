@@ -104,7 +104,7 @@ namespace BusinessBookWebApi.Controllers
             var Httpresponse = new HttpResponseMessage();
             try
             {
-                if(model == null)
+                if (model == null)
                 {
                     Httpresponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
                     return Httpresponse;
@@ -122,10 +122,10 @@ namespace BusinessBookWebApi.Controllers
                     client.Email = model.email;
                     client.Phone = model.phone;
                     client.LocationId = model.locationId;
-                    client.DateCreation = model.dateCreation;
-                    client.DateUpdate = model.dateUpdate;
-                    client.State = model.state;
-                    client.Sex = model.sex;
+                    client.DateCreation = DateTime.Today;
+                    client.DateUpdate = DateTime.Today;
+                    client.State = ConstantHelper.Status.ACTIVE;
+                    client.Sex = model.state;
                     context.SaveChanges();
                 }
                 Httpresponse = new HttpResponseMessage(HttpStatusCode.OK);
@@ -196,9 +196,8 @@ namespace BusinessBookWebApi.Controllers
                     client.Email = model.email;
                     client.Phone = model.phone;
                     client.LocationId = model.locationId;
-                    client.DateCreation = model.dateCreation;
-                    client.DateUpdate = model.dateUpdate;
-                    client.State = model.state;
+                    client.DateUpdate = DateTime.Today;
+                    client.State = ConstantHelper.Status.ACTIVE;
                     client.Sex = model.sex;
 
                     context.SaveChanges();

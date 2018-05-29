@@ -7,6 +7,8 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Web.Http;
+using BusinessBookWebApi.Models;
+using BusinessBookWebApi.Entities;
 
 namespace BusinessBookWebApi.Controllers
 {
@@ -14,8 +16,8 @@ namespace BusinessBookWebApi.Controllers
     public class ProvidersController : BaseApiController
     {
         [Authorize]
-        [Route("provider")]
-        [Route("provider/{providerId}")]
+        [Route("providers")]
+        [Route("providers/{providerId}")]
         [HttpGet]
         public HttpResponseMessage ListProviders(Int32? ProviderId)
         {
@@ -72,6 +74,109 @@ namespace BusinessBookWebApi.Controllers
 
                 Httpresponse.Content = new StringContent(JsonConvert.SerializeObject(response));
                 Httpresponse.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                return Httpresponse;
+            }
+            catch
+            {
+                Httpresponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
+                return Httpresponse;
+            }
+        }
+        [Authorize]
+        [Route("providers")]
+        [HttpPost]
+        public HttpResponseMessage AddProvider(ProviderEntities model)
+        {
+            var Httpresponse = new HttpResponseMessage();
+            try
+            {
+                if (model == null)
+                {
+                    Httpresponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
+                    return Httpresponse;
+                }
+                else
+                {
+                    var provider = new Provider();
+                    context.Provider.Add(provider);
+
+                    provider.ProviderId = model.providerId;
+                    provider.Name = model.name;
+                    provider.email = model.email;
+                    provider.Phone = model.phone;
+                    provider.State = model.state;
+                    context.SaveChanges();
+                }
+                Httpresponse = new HttpResponseMessage(HttpStatusCode.OK);
+                return Httpresponse;
+            }
+            catch
+            {
+                Httpresponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
+                return Httpresponse;
+            }
+        }
+
+        [Authorize]
+        [Route("providers/{providerId}")]
+        [HttpDelete]
+        public HttpResponseMessage DeleteProvider(Int16 ProviderId)
+        {
+            var Httpresponse = new HttpResponseMessage();
+            try
+            {
+                if (ProviderId == null)
+                {
+                    Httpresponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
+                    return Httpresponse;
+                }
+                else
+                {
+                    var provider = new Provider();
+                    provider = context.Provider.FirstOrDefault(x => x.ProviderId == ProviderId);
+                    provider.State = ConstantHelper.Status.INACTIVE;
+                    context.SaveChanges();
+                }
+
+                Httpresponse = new HttpResponseMessage(HttpStatusCode.OK);
+                return Httpresponse;
+            }
+            catch
+            {
+                Httpresponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
+                return Httpresponse;
+            }
+        }
+
+        [Authorize]
+        [Route("providers")]
+        [HttpPut]
+        public HttpResponseMessage UpdateProvider(ProviderEntities model)
+        {
+            var Httpresponse = new HttpResponseMessage();
+            try
+            {
+
+                if (model == null)
+                {
+                    Httpresponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
+                    return Httpresponse;
+                }
+                else
+                {
+
+                    var provider = context.Provider.FirstOrDefault(x => x.State == ConstantHelper.Status.ACTIVE && x.ProviderId == model.providerId);
+
+                    provider.ProviderId = model.providerId;
+                    provider.Name = model.name;
+                    provider.email = model.email;
+                    provider.Phone = model.phone;
+                    provider.State = model.state;
+
+                    context.SaveChanges();
+                }
+
+                Httpresponse = new HttpResponseMessage(HttpStatusCode.OK);
                 return Httpresponse;
             }
             catch
