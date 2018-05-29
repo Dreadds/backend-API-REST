@@ -145,6 +145,16 @@ namespace BusinessBookWebApi.Controllers
                         purchaseDetail.PriceSubTotal = pD.Item4;
                         purchaseDetail.State = ConstantHelper.Status.ACTIVE;
                         context.SaveChanges();
+
+                        var inventory = new Inventory();
+
+                        inventory = context.Inventory.FirstOrDefault(x => x.LocalId == purchase.LocalId
+                        && x.ProductId == purchaseDetail.ProductId
+                        && x.State == ConstantHelper.Status.ACTIVE);
+
+                        inventory.Quantity = inventory.Quantity + purchaseDetail.Quantity;
+                        inventory.DateUpdate = DateTime.Today;
+                        context.SaveChanges();
                     }
                 }
                 Httpresponse = new HttpResponseMessage(HttpStatusCode.OK);

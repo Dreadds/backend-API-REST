@@ -114,6 +114,7 @@ namespace BusinessBookWebApi.Controllers
                     sale.State = ConstantHelper.Status.ACTIVE;
                     sale.StateDelivery = ConstantHelper.Status.ACTIVE;
                     context.SaveChanges();
+                    
                 }
                 Httpresponse = new HttpResponseMessage(HttpStatusCode.OK);
                 return Httpresponse;
@@ -152,6 +153,16 @@ namespace BusinessBookWebApi.Controllers
                         saleDetail.UnitPrice = sD.Item3;
                         saleDetail.PriceSubTotal = sD.Item4;
                         saleDetail.State = ConstantHelper.Status.ACTIVE;
+                        context.SaveChanges();
+
+                        var inventory = new Inventory();
+
+                        inventory = context.Inventory.FirstOrDefault(x => x.LocalId == sale.LocalId 
+                        && x.ProductId == saleDetail.ProductId 
+                        && x.State == ConstantHelper.Status.ACTIVE);
+
+                        inventory.Quantity = inventory.Quantity - saleDetail.Quantity;
+                        inventory.DateUpdate = DateTime.Today;
                         context.SaveChanges();
                     }
                 }
