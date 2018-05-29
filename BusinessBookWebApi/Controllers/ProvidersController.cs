@@ -104,7 +104,7 @@ namespace BusinessBookWebApi.Controllers
                     provider.Name = model.name;
                     provider.email = model.email;
                     provider.Phone = model.phone;
-                    provider.State = model.state;
+                    provider.State = ConstantHelper.Status.ACTIVE;
                     context.SaveChanges();
                 }
                 Httpresponse = new HttpResponseMessage(HttpStatusCode.OK);
@@ -171,7 +171,7 @@ namespace BusinessBookWebApi.Controllers
                     provider.Name = model.name;
                     provider.email = model.email;
                     provider.Phone = model.phone;
-                    provider.State = model.state;
+                    provider.State = ConstantHelper.Status.ACTIVE;
 
                     context.SaveChanges();
                 }

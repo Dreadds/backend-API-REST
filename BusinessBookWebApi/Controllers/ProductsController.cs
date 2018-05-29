@@ -7,6 +7,8 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Web.Http;
+using BusinessBookWebApi.Models;
+using BusinessBookWebApi.Entities;
 
 namespace BusinessBookWebApi.Controllers
 {
@@ -14,10 +16,10 @@ namespace BusinessBookWebApi.Controllers
     public class ProductsController : BaseApiController
     {
         [Authorize]
-        [Route("product")]
-        [Route("product/{productId}")]
+        [Route("products")]
+        [Route("products/{productId}")]
         [HttpGet]
-        public HttpResponseMessage ListProduct(Int32? ProductId)
+        public HttpResponseMessage ListProducts(Int32? ProductId)
         {
             var Httpresponse = new HttpResponseMessage();
             try
@@ -70,6 +72,107 @@ namespace BusinessBookWebApi.Controllers
 
                 Httpresponse.Content = new StringContent(JsonConvert.SerializeObject(response));
                 Httpresponse.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                return Httpresponse;
+            }
+            catch
+            {
+                Httpresponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
+                return Httpresponse;
+            }
+        }
+        [Authorize]
+        [Route("products")]
+        [HttpPost]
+        public HttpResponseMessage AddProduct(ProductEntities model)
+        {
+            var Httpresponse = new HttpResponseMessage();
+            try
+            {
+                if (model == null)
+                {
+                    Httpresponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
+                    return Httpresponse;
+                }
+                else
+                {
+                    var product = new Product();
+                    context.Product.Add(product);
+
+                    product.ProductId = model.productId;
+                    product.Name = model.name;
+                    product.UnitPrice = model.unitPrice;
+                    product.State = ConstantHelper.Status.ACTIVE;
+                    context.SaveChanges();
+                }
+                Httpresponse = new HttpResponseMessage(HttpStatusCode.OK);
+                return Httpresponse;
+            }
+            catch
+            {
+                Httpresponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
+                return Httpresponse;
+            }
+        }
+
+        [Authorize]
+        [Route("products/{productId}")]
+        [HttpDelete]
+        public HttpResponseMessage DeleteProduct(Int16 ProductId)
+        {
+            var Httpresponse = new HttpResponseMessage();
+            try
+            {
+                if (ProductId == null)
+                {
+                    Httpresponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
+                    return Httpresponse;
+                }
+                else
+                {
+                    var product = new Product();
+                    product = context.Product.FirstOrDefault(x => x.ProductId == ProductId);
+                    product.State = ConstantHelper.Status.INACTIVE;
+                    context.SaveChanges();
+                }
+
+                Httpresponse = new HttpResponseMessage(HttpStatusCode.OK);
+                return Httpresponse;
+            }
+            catch
+            {
+                Httpresponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
+                return Httpresponse;
+            }
+        }
+
+        [Authorize]
+        [Route("products")]
+        [HttpPut]
+        public HttpResponseMessage UpdateProduct(ProductEntities model)
+        {
+            var Httpresponse = new HttpResponseMessage();
+            try
+            {
+
+                if (model == null)
+                {
+                    Httpresponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
+                    return Httpresponse;
+                }
+                else
+                {
+
+                    var product = context.Product.FirstOrDefault(x => x.State == ConstantHelper.Status.ACTIVE && x.ProductId == model.productId);
+
+                    product.ProductId = model.productId;
+                    product.Name = model.name;
+                    product.UnitPrice = model.unitPrice;
+                    product.State = ConstantHelper.Status.ACTIVE;
+
+                    context.SaveChanges();
+                }
+
+                Httpresponse = new HttpResponseMessage(HttpStatusCode.OK);
                 return Httpresponse;
             }
             catch
