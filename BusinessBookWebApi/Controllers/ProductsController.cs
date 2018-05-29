@@ -102,6 +102,20 @@ namespace BusinessBookWebApi.Controllers
                     product.Name = model.name;
                     product.UnitPrice = model.unitPrice;
                     product.State = ConstantHelper.Status.ACTIVE;
+                    List<Local> LstLocal = new List<Local>();
+                    LstLocal = context.Local.Where(x => x.State == ConstantHelper.Status.ACTIVE).ToList();
+
+                    foreach (var local in LstLocal)
+                    {
+                        var inventary = new Inventory();
+                        context.Inventory.Add(inventary);
+                        inventary.ProductId = product.ProductId;
+                        inventary.Quantity = 0;
+                        inventary.DateUpdate = DateTime.Now;
+                        inventary.State = ConstantHelper.Status.ACTIVE;
+                        inventary.LocalId = local.LocalId;
+                        context.SaveChanges();
+                    }
                     context.SaveChanges();
                 }
                 Httpresponse = new HttpResponseMessage(HttpStatusCode.OK);
