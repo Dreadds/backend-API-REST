@@ -156,6 +156,7 @@ namespace BusinessBookWebApi.Controllers
                     else
                     {
                         var purchase = context.Purchase.FirstOrDefault(x => x.PurchaseId == PurchaseId);
+                        var total = 0.0;
                         foreach (var pD in model.listPurchaseDetail)
                         {
 
@@ -178,8 +179,11 @@ namespace BusinessBookWebApi.Controllers
 
                             inventory.Quantity = inventory.Quantity + purchaseDetail.Quantity;
                             inventory.DateUpdate = DateTime.Today;
+                            total = total + pD.priceSubTotal;
                             context.SaveChanges();
                         }
+                        purchase.PriceTotal = total;
+                        context.SaveChanges();
                     }
                     Httpresponse = new HttpResponseMessage(HttpStatusCode.OK);
                 }
