@@ -104,31 +104,45 @@ namespace BusinessBookWebApi.Controllers
             var Httpresponse = new HttpResponseMessage();
             try
             {
-                if (model == null)
+                var id = GetEmployeeId();
+
+                if (!id.HasValue)
                 {
-                    Httpresponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
+                    Httpresponse = new HttpResponseMessage(HttpStatusCode.Unauthorized);
+                    response.Code = HttpStatusCode.Unauthorized;
+                    response.Message = "Unauthorized";
+                    response.Result = null;
                     return Httpresponse;
                 }
                 else
                 {
-                    var client = new Client();
-                    context.Client.Add(client);
+                    if (model == null)
+                    {
+                        Httpresponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
+                        return Httpresponse;
+                    }
+                    else
+                    {
 
-                    client.ClientId = model.clientId;
-                    client.Name = model.name;
-                    client.LastName = model.lastName;
-                    client.FullName = model.fullName;
-                    client.DNI = model.dni;
-                    client.Email = model.email;
-                    client.Phone = model.phone;
-                    client.LocationId = model.locationId;
-                    client.DateCreation = DateTime.Today;
-                    client.DateUpdate = DateTime.Today;
-                    client.State = ConstantHelper.Status.ACTIVE;
-                    client.Sex = model.sex;
-                    context.SaveChanges();
+                        var client = new Client();
+                        context.Client.Add(client);
+
+                        client.ClientId = model.clientId;
+                        client.Name = model.name;
+                        client.LastName = model.lastName;
+                        client.FullName = model.fullName;
+                        client.DNI = model.dni;
+                        client.Email = model.email;
+                        client.Phone = model.phone;
+                        client.LocationId = model.locationId;
+                        client.DateCreation = DateTime.Today;
+                        client.DateUpdate = DateTime.Today;
+                        client.State = ConstantHelper.Status.ACTIVE;
+                        client.Sex = model.sex;
+                        context.SaveChanges();
+                    }
+                    Httpresponse = new HttpResponseMessage(HttpStatusCode.OK);
                 }
-                Httpresponse = new HttpResponseMessage(HttpStatusCode.OK);
                 return Httpresponse;
             }
             catch
@@ -146,20 +160,33 @@ namespace BusinessBookWebApi.Controllers
             var Httpresponse = new HttpResponseMessage();
             try
             {
-                if (Clientid == null)
+                var id = GetEmployeeId();
+
+                if (!id.HasValue)
                 {
-                    Httpresponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
+                    Httpresponse = new HttpResponseMessage(HttpStatusCode.Unauthorized);
+                    response.Code = HttpStatusCode.Unauthorized;
+                    response.Message = "Unauthorized";
+                    response.Result = null;
                     return Httpresponse;
                 }
                 else
                 {
-                    var client = new Client();
-                    client = context.Client.FirstOrDefault(x => x.ClientId == Clientid);
-                    client.State = ConstantHelper.Status.INACTIVE;
-                    context.SaveChanges();
-                }
+                    if (Clientid == null)
+                    {
+                        Httpresponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
+                        return Httpresponse;
+                    }
+                    else
+                    {
+                        var client = new Client();
+                        client = context.Client.FirstOrDefault(x => x.ClientId == Clientid);
+                        client.State = ConstantHelper.Status.INACTIVE;
+                        context.SaveChanges();
+                    }
 
-                Httpresponse = new HttpResponseMessage(HttpStatusCode.OK);
+                    Httpresponse = new HttpResponseMessage(HttpStatusCode.OK);
+                }
                 return Httpresponse;
             }
             catch
@@ -177,33 +204,45 @@ namespace BusinessBookWebApi.Controllers
             var Httpresponse = new HttpResponseMessage();
             try
             {
+                var id = GetEmployeeId();
 
-                if (model == null)
+                if (!id.HasValue)
                 {
-                    Httpresponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
+                    Httpresponse = new HttpResponseMessage(HttpStatusCode.Unauthorized);
+                    response.Code = HttpStatusCode.Unauthorized;
+                    response.Message = "Unauthorized";
+                    response.Result = null;
                     return Httpresponse;
                 }
                 else
                 {
+                    if (model == null)
+                    {
+                        Httpresponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
+                        return Httpresponse;
+                    }
+                    else
+                    {
 
-                    var client = context.Client.FirstOrDefault(x => x.State == ConstantHelper.Status.ACTIVE && x.ClientId == model.clientId);
+                        var client = context.Client.FirstOrDefault(x => x.State == ConstantHelper.Status.ACTIVE && x.ClientId == model.clientId);
 
-                    client.ClientId = model.clientId;
-                    client.Name = model.name;
-                    client.LastName = model.lastName;
-                    client.FullName = model.fullName;
-                    client.DNI = model.dni;
-                    client.Email = model.email;
-                    client.Phone = model.phone;
-                    client.LocationId = model.locationId;
-                    client.DateUpdate = DateTime.Today;
-                    client.State = ConstantHelper.Status.ACTIVE;
-                    client.Sex = model.sex;
+                        client.ClientId = model.clientId;
+                        client.Name = model.name;
+                        client.LastName = model.lastName;
+                        client.FullName = model.fullName;
+                        client.DNI = model.dni;
+                        client.Email = model.email;
+                        client.Phone = model.phone;
+                        client.LocationId = model.locationId;
+                        client.DateUpdate = DateTime.Today;
+                        client.State = ConstantHelper.Status.ACTIVE;
+                        client.Sex = model.sex;
 
-                    context.SaveChanges();
+                        context.SaveChanges();
+                    }
+
+                    Httpresponse = new HttpResponseMessage(HttpStatusCode.OK);
                 }
-
-                Httpresponse = new HttpResponseMessage(HttpStatusCode.OK);
                 return Httpresponse;
             }
             catch

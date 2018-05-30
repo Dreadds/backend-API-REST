@@ -94,29 +94,42 @@ namespace BusinessBookWebApi.Controllers
             var Httpresponse = new HttpResponseMessage();
             try
             {
-                if (model == null)
+                var id = GetEmployeeId();
+
+                if (!id.HasValue)
                 {
-                    Httpresponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
+                    Httpresponse = new HttpResponseMessage(HttpStatusCode.Unauthorized);
+                    response.Code = HttpStatusCode.Unauthorized;
+                    response.Message = "Unauthorized";
+                    response.Result = null;
                     return Httpresponse;
                 }
                 else
                 {
-                    var sale = new Sale();
-                    context.Sale.Add(sale);
+                    if (model == null)
+                    {
+                        Httpresponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
+                        return Httpresponse;
+                    }
+                    else
+                    {
+                        var sale = new Sale();
+                        context.Sale.Add(sale);
 
-                    sale.SaleId = model.saleId;
-                    sale.DateCreation = DateTime.Today;
-                    sale.CodeGuide = model.codeGuide;
-                    sale.LocalId = model.localId;
-                    sale.EmployeeId = model.EmployeeId;
-                    sale.PriceTotal = model.priceTotal;
-                    sale.ClientId = model.clientId;
-                    sale.State = ConstantHelper.Status.ACTIVE;
-                    sale.StateDelivery = ConstantHelper.Status.ACTIVE;
-                    context.SaveChanges();
-                    
+                        sale.SaleId = model.saleId;
+                        sale.DateCreation = DateTime.Today;
+                        sale.CodeGuide = model.codeGuide;
+                        sale.LocalId = model.localId;
+                        sale.EmployeeId = model.EmployeeId;
+                        sale.PriceTotal = model.priceTotal;
+                        sale.ClientId = model.clientId;
+                        sale.State = ConstantHelper.Status.ACTIVE;
+                        sale.StateDelivery = ConstantHelper.Status.ACTIVE;
+                        context.SaveChanges();
+
+                    }
+                    Httpresponse = new HttpResponseMessage(HttpStatusCode.OK);
                 }
-                Httpresponse = new HttpResponseMessage(HttpStatusCode.OK);
                 return Httpresponse;
             }
             catch (Exception ex)
@@ -134,39 +147,53 @@ namespace BusinessBookWebApi.Controllers
             var Httpresponse = new HttpResponseMessage();
             try
             {
-                if (model == null || SaleId == null)
+                var id = GetEmployeeId();
+
+                if (!id.HasValue)
                 {
-                    Httpresponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
+                    Httpresponse = new HttpResponseMessage(HttpStatusCode.Unauthorized);
+                    response.Code = HttpStatusCode.Unauthorized;
+                    response.Message = "Unauthorized";
+                    response.Result = null;
                     return Httpresponse;
                 }
                 else
                 {
-                    var sale = context.Sale.FirstOrDefault(x => x.SaleId == SaleId);
-                    foreach (var sD in model.listSaleDetail) {
-
-                        var saleDetail = new SaleDetail();
-                        context.SaleDetail.Add(saleDetail);
-
-                        saleDetail.SaleId = SaleId;
-                        saleDetail.ProductId = sD.Item1;
-                        saleDetail.Quantity = sD.Item2;
-                        saleDetail.UnitPrice = sD.Item3;
-                        saleDetail.PriceSubTotal = sD.Item4;
-                        saleDetail.State = ConstantHelper.Status.ACTIVE;
-                        context.SaveChanges();
-
-                        var inventory = new Inventory();
-
-                        inventory = context.Inventory.FirstOrDefault(x => x.LocalId == sale.LocalId 
-                        && x.ProductId == saleDetail.ProductId 
-                        && x.State == ConstantHelper.Status.ACTIVE);
-
-                        inventory.Quantity = inventory.Quantity - saleDetail.Quantity;
-                        inventory.DateUpdate = DateTime.Today;
-                        context.SaveChanges();
+                    if (model == null || SaleId == null)
+                    {
+                        Httpresponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
+                        return Httpresponse;
                     }
+                    else
+                    {
+                        var sale = context.Sale.FirstOrDefault(x => x.SaleId == SaleId);
+                        foreach (var sD in model.listSaleDetail)
+                        {
+
+                            var saleDetail = new SaleDetail();
+                            context.SaleDetail.Add(saleDetail);
+
+                            saleDetail.SaleId = SaleId;
+                            saleDetail.ProductId = sD.Item1;
+                            saleDetail.Quantity = sD.Item2;
+                            saleDetail.UnitPrice = sD.Item3;
+                            saleDetail.PriceSubTotal = sD.Item4;
+                            saleDetail.State = ConstantHelper.Status.ACTIVE;
+                            context.SaveChanges();
+
+                            var inventory = new Inventory();
+
+                            inventory = context.Inventory.FirstOrDefault(x => x.LocalId == sale.LocalId
+                            && x.ProductId == saleDetail.ProductId
+                            && x.State == ConstantHelper.Status.ACTIVE);
+
+                            inventory.Quantity = inventory.Quantity - saleDetail.Quantity;
+                            inventory.DateUpdate = DateTime.Today;
+                            context.SaveChanges();
+                        }
+                    }
+                    Httpresponse = new HttpResponseMessage(HttpStatusCode.OK);
                 }
-                Httpresponse = new HttpResponseMessage(HttpStatusCode.OK);
                 return Httpresponse;
             }
             catch
@@ -184,20 +211,33 @@ namespace BusinessBookWebApi.Controllers
             var Httpresponse = new HttpResponseMessage();
             try
             {
-                if (SaleId == null)
+                var id = GetEmployeeId();
+
+                if (!id.HasValue)
                 {
-                    Httpresponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
+                    Httpresponse = new HttpResponseMessage(HttpStatusCode.Unauthorized);
+                    response.Code = HttpStatusCode.Unauthorized;
+                    response.Message = "Unauthorized";
+                    response.Result = null;
                     return Httpresponse;
                 }
                 else
                 {
-                    var sale = new Sale();
-                    sale = context.Sale.FirstOrDefault(x => x.SaleId == SaleId);
-                    sale.State = ConstantHelper.Status.INACTIVE;
-                    context.SaveChanges();
-                }
+                    if (SaleId == null)
+                    {
+                        Httpresponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
+                        return Httpresponse;
+                    }
+                    else
+                    {
+                        var sale = new Sale();
+                        sale = context.Sale.FirstOrDefault(x => x.SaleId == SaleId);
+                        sale.State = ConstantHelper.Status.INACTIVE;
+                        context.SaveChanges();
+                    }
 
-                Httpresponse = new HttpResponseMessage(HttpStatusCode.OK);
+                    Httpresponse = new HttpResponseMessage(HttpStatusCode.OK);
+                }
                 return Httpresponse;
             }
             catch
@@ -215,28 +255,40 @@ namespace BusinessBookWebApi.Controllers
             var Httpresponse = new HttpResponseMessage();
             try
             {
+                var id = GetEmployeeId();
 
-                if (model == null)
+                if (!id.HasValue)
                 {
-                    Httpresponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
+                    Httpresponse = new HttpResponseMessage(HttpStatusCode.Unauthorized);
+                    response.Code = HttpStatusCode.Unauthorized;
+                    response.Message = "Unauthorized";
+                    response.Result = null;
                     return Httpresponse;
                 }
                 else
                 {
+                    if (model == null)
+                    {
+                        Httpresponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
+                        return Httpresponse;
+                    }
+                    else
+                    {
 
-                    var sale = context.Sale.FirstOrDefault(x => x.State == ConstantHelper.Status.ACTIVE && x.SaleId == model.saleId);
+                        var sale = context.Sale.FirstOrDefault(x => x.State == ConstantHelper.Status.ACTIVE && x.SaleId == model.saleId);
 
-                    sale.SaleId = model.saleId;
-                    sale.CodeGuide = model.codeGuide;
-                    sale.LocalId = model.localId;
-                    sale.EmployeeId = model.EmployeeId;
-                    sale.ClientId = model.clientId;
-                    sale.PriceTotal = model.priceTotal;
+                        sale.SaleId = model.saleId;
+                        sale.CodeGuide = model.codeGuide;
+                        sale.LocalId = model.localId;
+                        sale.EmployeeId = model.EmployeeId;
+                        sale.ClientId = model.clientId;
+                        sale.PriceTotal = model.priceTotal;
 
-                    context.SaveChanges();
+                        context.SaveChanges();
+                    }
+
+                    Httpresponse = new HttpResponseMessage(HttpStatusCode.OK);
                 }
-
-                Httpresponse = new HttpResponseMessage(HttpStatusCode.OK);
                 return Httpresponse;
             }
             catch

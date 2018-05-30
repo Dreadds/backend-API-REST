@@ -254,19 +254,6 @@ namespace BusinessBookWebApi.Controllers
             {
                 using (var ts = new TransactionScope())
                 {
-                    //FI MODEL IS NULL
-                    if (model == null)
-                    {
-                        HttpResponse = new HttpResponseMessage(HttpStatusCode.NoContent);
-                        return HttpResponse;
-                    }
-
-                    if (model.companyId == 0)
-                    {
-                        HttpResponse = new HttpResponseMessage(HttpStatusCode.BadRequest);
-                        return HttpResponse;
-                    }
-
                     var id = GetEmployeeId();
 
                     if (!id.HasValue)
@@ -279,6 +266,19 @@ namespace BusinessBookWebApi.Controllers
                     }
                     else
                     {
+                        //FI MODEL IS NULL
+                        if (model == null)
+                        {
+                            HttpResponse = new HttpResponseMessage(HttpStatusCode.NoContent);
+                            return HttpResponse;
+                        }
+
+                        if (model.companyId == 0)
+                        {
+                            HttpResponse = new HttpResponseMessage(HttpStatusCode.BadRequest);
+                            return HttpResponse;
+                        }
+
                         //IF NAME IS SIMILAR TO ANOTHER USER
                         var listCompany = context.Company.ToList();
                         foreach (var companyy in listCompany)
@@ -328,13 +328,6 @@ namespace BusinessBookWebApi.Controllers
             {
                 using (var ts = new TransactionScope())
                 {
-                    //FI MODEL IS NULL
-                    if (CompanyId == null)
-                    {
-                        HttpResponse = new HttpResponseMessage(HttpStatusCode.NoContent);
-                        return HttpResponse;
-                    }
-
                     var id = GetEmployeeId();
 
                     if (!id.HasValue)
@@ -346,6 +339,13 @@ namespace BusinessBookWebApi.Controllers
                     }
                     else
                     {
+                        //FI MODEL IS NULL
+                        if (CompanyId == null)
+                        {
+                            HttpResponse = new HttpResponseMessage(HttpStatusCode.NoContent);
+                            return HttpResponse;
+                        }
+
                         var company = new Company();
 
                         company = context.Company.FirstOrDefault(x => x.CompanyId == CompanyId);

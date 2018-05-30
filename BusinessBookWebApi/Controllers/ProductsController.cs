@@ -88,37 +88,50 @@ namespace BusinessBookWebApi.Controllers
             var Httpresponse = new HttpResponseMessage();
             try
             {
-                if (model == null)
+                var id = GetEmployeeId();
+
+                if (!id.HasValue)
                 {
-                    Httpresponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
+                    Httpresponse = new HttpResponseMessage(HttpStatusCode.Unauthorized);
+                    response.Code = HttpStatusCode.Unauthorized;
+                    response.Message = "Unauthorized";
+                    response.Result = null;
                     return Httpresponse;
                 }
                 else
                 {
-                    var product = new Product();
-                    context.Product.Add(product);
-
-                    product.ProductId = model.productId;
-                    product.Name = model.name;
-                    product.UnitPrice = model.unitPrice;
-                    product.State = ConstantHelper.Status.ACTIVE;
-                    List<Local> LstLocal = new List<Local>();
-                    LstLocal = context.Local.Where(x => x.State == ConstantHelper.Status.ACTIVE).ToList();
-
-                    foreach (var local in LstLocal)
+                    if (model == null)
                     {
-                        var inventary = new Inventory();
-                        context.Inventory.Add(inventary);
-                        inventary.ProductId = product.ProductId;
-                        inventary.Quantity = 0;
-                        inventary.DateUpdate = DateTime.Now;
-                        inventary.State = ConstantHelper.Status.ACTIVE;
-                        inventary.LocalId = local.LocalId;
+                        Httpresponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
+                        return Httpresponse;
+                    }
+                    else
+                    {
+                        var product = new Product();
+                        context.Product.Add(product);
+
+                        product.ProductId = model.productId;
+                        product.Name = model.name;
+                        product.UnitPrice = model.unitPrice;
+                        product.State = ConstantHelper.Status.ACTIVE;
+                        List<Local> LstLocal = new List<Local>();
+                        LstLocal = context.Local.Where(x => x.State == ConstantHelper.Status.ACTIVE).ToList();
+
+                        foreach (var local in LstLocal)
+                        {
+                            var inventary = new Inventory();
+                            context.Inventory.Add(inventary);
+                            inventary.ProductId = product.ProductId;
+                            inventary.Quantity = 0;
+                            inventary.DateUpdate = DateTime.Now;
+                            inventary.State = ConstantHelper.Status.ACTIVE;
+                            inventary.LocalId = local.LocalId;
+                            context.SaveChanges();
+                        }
                         context.SaveChanges();
                     }
-                    context.SaveChanges();
+                    Httpresponse = new HttpResponseMessage(HttpStatusCode.OK);
                 }
-                Httpresponse = new HttpResponseMessage(HttpStatusCode.OK);
                 return Httpresponse;
             }
             catch
@@ -136,20 +149,33 @@ namespace BusinessBookWebApi.Controllers
             var Httpresponse = new HttpResponseMessage();
             try
             {
-                if (ProductId == null)
+                var id = GetEmployeeId();
+
+                if (!id.HasValue)
                 {
-                    Httpresponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
+                    Httpresponse = new HttpResponseMessage(HttpStatusCode.Unauthorized);
+                    response.Code = HttpStatusCode.Unauthorized;
+                    response.Message = "Unauthorized";
+                    response.Result = null;
                     return Httpresponse;
                 }
                 else
                 {
-                    var product = new Product();
-                    product = context.Product.FirstOrDefault(x => x.ProductId == ProductId);
-                    product.State = ConstantHelper.Status.INACTIVE;
-                    context.SaveChanges();
-                }
+                    if (ProductId == null)
+                    {
+                        Httpresponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
+                        return Httpresponse;
+                    }
+                    else
+                    {
+                        var product = new Product();
+                        product = context.Product.FirstOrDefault(x => x.ProductId == ProductId);
+                        product.State = ConstantHelper.Status.INACTIVE;
+                        context.SaveChanges();
+                    }
 
-                Httpresponse = new HttpResponseMessage(HttpStatusCode.OK);
+                    Httpresponse = new HttpResponseMessage(HttpStatusCode.OK);
+                }
                 return Httpresponse;
             }
             catch
@@ -167,25 +193,37 @@ namespace BusinessBookWebApi.Controllers
             var Httpresponse = new HttpResponseMessage();
             try
             {
+                var id = GetEmployeeId();
 
-                if (model == null)
+                if (!id.HasValue)
                 {
-                    Httpresponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
+                    Httpresponse = new HttpResponseMessage(HttpStatusCode.Unauthorized);
+                    response.Code = HttpStatusCode.Unauthorized;
+                    response.Message = "Unauthorized";
+                    response.Result = null;
                     return Httpresponse;
                 }
                 else
                 {
+                    if (model == null)
+                    {
+                        Httpresponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
+                        return Httpresponse;
+                    }
+                    else
+                    {
 
-                    var product = context.Product.FirstOrDefault(x => x.State == ConstantHelper.Status.ACTIVE && x.ProductId == model.productId);
+                        var product = context.Product.FirstOrDefault(x => x.State == ConstantHelper.Status.ACTIVE && x.ProductId == model.productId);
 
-                    product.ProductId = model.productId;
-                    product.Name = model.name;
-                    product.UnitPrice = model.unitPrice;
+                        product.ProductId = model.productId;
+                        product.Name = model.name;
+                        product.UnitPrice = model.unitPrice;
 
-                    context.SaveChanges();
+                        context.SaveChanges();
+                    }
+
+                    Httpresponse = new HttpResponseMessage(HttpStatusCode.OK);
                 }
-
-                Httpresponse = new HttpResponseMessage(HttpStatusCode.OK);
                 return Httpresponse;
             }
             catch

@@ -91,24 +91,37 @@ namespace BusinessBookWebApi.Controllers
             var Httpresponse = new HttpResponseMessage();
             try
             {
-                if (model == null)
+                var id = GetEmployeeId();
+
+                if (!id.HasValue)
                 {
-                    Httpresponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
+                    Httpresponse = new HttpResponseMessage(HttpStatusCode.Unauthorized);
+                    response.Code = HttpStatusCode.Unauthorized;
+                    response.Message = "Unauthorized";
+                    response.Result = null;
                     return Httpresponse;
                 }
                 else
                 {
-                    var local = new Local();
-                    context.Local.Add(local);
+                    if (model == null)
+                    {
+                        Httpresponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
+                        return Httpresponse;
+                    }
+                    else
+                    {
+                        var local = new Local();
+                        context.Local.Add(local);
 
-                    local.LocalId = model.localId;
-                    local.Name = model.name;
-                    local.Direction = model.direction;
-                    local.CompanyId = model.companyId;
-                    local.State = ConstantHelper.Status.ACTIVE;
-                    context.SaveChanges();
+                        local.LocalId = model.localId;
+                        local.Name = model.name;
+                        local.Direction = model.direction;
+                        local.CompanyId = model.companyId;
+                        local.State = ConstantHelper.Status.ACTIVE;
+                        context.SaveChanges();
+                    }
+                    Httpresponse = new HttpResponseMessage(HttpStatusCode.OK);
                 }
-                Httpresponse = new HttpResponseMessage(HttpStatusCode.OK);
                 return Httpresponse;
             }
             catch
@@ -126,20 +139,33 @@ namespace BusinessBookWebApi.Controllers
             var Httpresponse = new HttpResponseMessage();
             try
             {
-                if (LocalId == null)
+                var id = GetEmployeeId();
+
+                if (!id.HasValue)
                 {
-                    Httpresponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
+                    Httpresponse = new HttpResponseMessage(HttpStatusCode.Unauthorized);
+                    response.Code = HttpStatusCode.Unauthorized;
+                    response.Message = "Unauthorized";
+                    response.Result = null;
                     return Httpresponse;
                 }
                 else
                 {
-                    var local = new Local();
-                    local = context.Local.FirstOrDefault(x => x.LocalId == LocalId);
-                    local.State = ConstantHelper.Status.INACTIVE;
-                    context.SaveChanges();
-                }
+                    if (LocalId == null)
+                    {
+                        Httpresponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
+                        return Httpresponse;
+                    }
+                    else
+                    {
+                        var local = new Local();
+                        local = context.Local.FirstOrDefault(x => x.LocalId == LocalId);
+                        local.State = ConstantHelper.Status.INACTIVE;
+                        context.SaveChanges();
+                    }
 
-                Httpresponse = new HttpResponseMessage(HttpStatusCode.OK);
+                    Httpresponse = new HttpResponseMessage(HttpStatusCode.OK);
+                }
                 return Httpresponse;
             }
             catch
@@ -157,26 +183,38 @@ namespace BusinessBookWebApi.Controllers
             var Httpresponse = new HttpResponseMessage();
             try
             {
+                var id = GetEmployeeId();
 
-                if (model == null)
+                if (!id.HasValue)
                 {
-                    Httpresponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
+                    Httpresponse = new HttpResponseMessage(HttpStatusCode.Unauthorized);
+                    response.Code = HttpStatusCode.Unauthorized;
+                    response.Message = "Unauthorized";
+                    response.Result = null;
                     return Httpresponse;
                 }
                 else
                 {
+                    if (model == null)
+                    {
+                        Httpresponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
+                        return Httpresponse;
+                    }
+                    else
+                    {
 
-                    var local = context.Local.FirstOrDefault(x => x.State == ConstantHelper.Status.ACTIVE && x.LocalId == model.localId);
+                        var local = context.Local.FirstOrDefault(x => x.State == ConstantHelper.Status.ACTIVE && x.LocalId == model.localId);
 
-                    local.LocalId = model.localId;
-                    local.Name = model.name;
-                    local.Direction = model.direction;
-                    local.CompanyId = model.companyId;
+                        local.LocalId = model.localId;
+                        local.Name = model.name;
+                        local.Direction = model.direction;
+                        local.CompanyId = model.companyId;
 
-                    context.SaveChanges();
+                        context.SaveChanges();
+                    }
+
+                    Httpresponse = new HttpResponseMessage(HttpStatusCode.OK);
                 }
-
-                Httpresponse = new HttpResponseMessage(HttpStatusCode.OK);
                 return Httpresponse;
             }
             catch

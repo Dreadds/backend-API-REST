@@ -90,24 +90,37 @@ namespace BusinessBookWebApi.Controllers
             var Httpresponse = new HttpResponseMessage();
             try
             {
-                if (model == null)
+                var id = GetEmployeeId();
+
+                if (!id.HasValue)
                 {
-                    Httpresponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
+                    Httpresponse = new HttpResponseMessage(HttpStatusCode.Unauthorized);
+                    response.Code = HttpStatusCode.Unauthorized;
+                    response.Message = "Unauthorized";
+                    response.Result = null;
                     return Httpresponse;
                 }
                 else
                 {
-                    var provider = new Provider();
-                    context.Provider.Add(provider);
+                    if (model == null)
+                    {
+                        Httpresponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
+                        return Httpresponse;
+                    }
+                    else
+                    {
+                        var provider = new Provider();
+                        context.Provider.Add(provider);
 
-                    provider.ProviderId = model.providerId;
-                    provider.Name = model.name;
-                    provider.email = model.email;
-                    provider.Phone = model.phone;
-                    provider.State = ConstantHelper.Status.ACTIVE;
-                    context.SaveChanges();
+                        provider.ProviderId = model.providerId;
+                        provider.Name = model.name;
+                        provider.email = model.email;
+                        provider.Phone = model.phone;
+                        provider.State = ConstantHelper.Status.ACTIVE;
+                        context.SaveChanges();
+                    }
+                    Httpresponse = new HttpResponseMessage(HttpStatusCode.OK);
                 }
-                Httpresponse = new HttpResponseMessage(HttpStatusCode.OK);
                 return Httpresponse;
             }
             catch
@@ -125,20 +138,33 @@ namespace BusinessBookWebApi.Controllers
             var Httpresponse = new HttpResponseMessage();
             try
             {
-                if (ProviderId == null)
+                var id = GetEmployeeId();
+
+                if (!id.HasValue)
                 {
-                    Httpresponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
+                    Httpresponse = new HttpResponseMessage(HttpStatusCode.Unauthorized);
+                    response.Code = HttpStatusCode.Unauthorized;
+                    response.Message = "Unauthorized";
+                    response.Result = null;
                     return Httpresponse;
                 }
                 else
                 {
-                    var provider = new Provider();
-                    provider = context.Provider.FirstOrDefault(x => x.ProviderId == ProviderId);
-                    provider.State = ConstantHelper.Status.INACTIVE;
-                    context.SaveChanges();
-                }
+                    if (ProviderId == null)
+                    {
+                        Httpresponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
+                        return Httpresponse;
+                    }
+                    else
+                    {
+                        var provider = new Provider();
+                        provider = context.Provider.FirstOrDefault(x => x.ProviderId == ProviderId);
+                        provider.State = ConstantHelper.Status.INACTIVE;
+                        context.SaveChanges();
+                    }
 
-                Httpresponse = new HttpResponseMessage(HttpStatusCode.OK);
+                    Httpresponse = new HttpResponseMessage(HttpStatusCode.OK);
+                }
                 return Httpresponse;
             }
             catch
@@ -156,27 +182,39 @@ namespace BusinessBookWebApi.Controllers
             var Httpresponse = new HttpResponseMessage();
             try
             {
+                var id = GetEmployeeId();
 
-                if (model == null)
+                if (!id.HasValue)
                 {
-                    Httpresponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
+                    Httpresponse = new HttpResponseMessage(HttpStatusCode.Unauthorized);
+                    response.Code = HttpStatusCode.Unauthorized;
+                    response.Message = "Unauthorized";
+                    response.Result = null;
                     return Httpresponse;
                 }
                 else
                 {
+                    if (model == null)
+                    {
+                        Httpresponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
+                        return Httpresponse;
+                    }
+                    else
+                    {
 
-                    var provider = context.Provider.FirstOrDefault(x => x.State == ConstantHelper.Status.ACTIVE && x.ProviderId == model.providerId);
+                        var provider = context.Provider.FirstOrDefault(x => x.State == ConstantHelper.Status.ACTIVE && x.ProviderId == model.providerId);
 
-                    provider.ProviderId = model.providerId;
-                    provider.Name = model.name;
-                    provider.email = model.email;
-                    provider.Phone = model.phone;
-                    provider.State = ConstantHelper.Status.ACTIVE;
+                        provider.ProviderId = model.providerId;
+                        provider.Name = model.name;
+                        provider.email = model.email;
+                        provider.Phone = model.phone;
+                        provider.State = ConstantHelper.Status.ACTIVE;
 
-                    context.SaveChanges();
+                        context.SaveChanges();
+                    }
+
+                    Httpresponse = new HttpResponseMessage(HttpStatusCode.OK);
                 }
-
-                Httpresponse = new HttpResponseMessage(HttpStatusCode.OK);
                 return Httpresponse;
             }
             catch
