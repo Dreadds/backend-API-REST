@@ -9,7 +9,7 @@ namespace BusinessBookWebApi.Entities
     {
         public Int32 providerId { set; get; }
         public String name { set; get; }
-        public String state { set; get; }
+        //public String state { set; get; }
         public String phone { set; get; }
         public String email { set; get; }
     }

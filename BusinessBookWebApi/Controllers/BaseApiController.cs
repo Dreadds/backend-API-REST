@@ -51,7 +51,7 @@ namespace BusinessBookWebApi.Controllers
             {
                 var tokenEmployee = context.TokenEmployee.FirstOrDefault(x => x.AccessToken == token);
                 //logica expirado o no 
-                var currentHour = DateTime.Now.TimeOfDay;
+                var currentHour = DateTime.Now.AddHours(-7).TimeOfDay;
                 var expireIn = tokenEmployee.Expires.Value.TimeOfDay;
                 bool bandera = currentHour >= expireIn ? false : true;
                 return bandera;
@@ -64,8 +64,8 @@ namespace BusinessBookWebApi.Controllers
 
         protected String GeneretaToken(String users,String password)
         {
-            var fecha = DateTime.Now;
-            String baseAddress = "http://localhost:16669";
+            var fecha = DateTime.Now.AddHours(-7);
+            String baseAddress = "http://chemita96-001-site1.dtempurl.com";
             TokenEntities tokenEntities = new TokenEntities();
             using (var client = new HttpClient())
             {

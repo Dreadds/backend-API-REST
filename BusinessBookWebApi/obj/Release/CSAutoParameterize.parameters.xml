@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="BusinessBookEntities-Web.config Connection String" description="BusinessBookEntities Connection String used in web.config by the application to access the database." defaultValue="metadata=res://*/Models.Model.csdl|res://*/Models.Model.ssdl|res://*/Models.Model.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=sql6003.site4now.net;initial catalog=DB_A3AA69_BusinessBookBD;user id=DB_A3AA69_BusinessBookBD_admin;password=Xycybib7;MultipleActiveResultSets=True;App=EntityFramework&quot;" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\BP-PC-15\\Desktop\\Moviles\ upc\\backend-API-REST\\BusinessBookWebApi\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='BusinessBookEntities']/@connectionString" />
+  </parameter>
+  <parameter name="OwinAuthDbContext-Web.config Connection String" description="OwinAuthDbContext Connection String used in web.config by the application to access the database." defaultValue="OwinAuthDbContext_ConnectionString" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\BP-PC-15\\Desktop\\Moviles\ upc\\backend-API-REST\\BusinessBookWebApi\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='OwinAuthDbContext']/@connectionString" />
+  </parameter>
+</parameters>

@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="IIS Web Application Name" description="" value="chemita96-001-site1" tags="IisApp">
+    <parameterEntry kind="ProviderPath" scope="IisApp" match="^C:\\Users\\BP-PC-15\\Desktop\\Moviles\ upc\\backend-API-REST\\BusinessBookWebApi\\obj\\Release\\Package\\PackageTmp$" />
+    <parameterEntry kind="ProviderPath" scope="setAcl" match="^C:\\Users\\BP-PC-15\\Desktop\\Moviles\ upc\\backend-API-REST\\BusinessBookWebApi\\obj\\Release\\Package\\PackageTmp$" />
+  </parameter>
+  <parameter name="BusinessBookEntities-Web.config Connection String" description="" value="metadata=res://*/Models.Model.csdl|res://*/Models.Model.ssdl|res://*/Models.Model.msl;provider=System.Data.SqlClient;provider connection string=&quot;Data Source=SQL6003.site4now.net;Initial Catalog=DB_A3AA69_BusinessBookBD;Integrated Security=True;User ID=DB_A3AA69_BusinessBookBD_admin;Password=Xycybib7;MultipleActiveResultSets=True;Application Name=EntityFramework&quot;" tags="">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\BP-PC-15\\Desktop\\Moviles\ upc\\backend-API-REST\\BusinessBookWebApi\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='BusinessBookEntities']/@connectionString" />
+  </parameter>
+  <parameter name="OwinAuthDbContext-Web.config Connection String" description="" value="OwinAuthDbContext_ConnectionString" tags="">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\BP-PC-15\\Desktop\\Moviles\ upc\\backend-API-REST\\BusinessBookWebApi\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='OwinAuthDbContext']/@connectionString" />
+  </parameter>
+</parameters>

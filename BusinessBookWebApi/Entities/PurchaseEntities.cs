@@ -11,8 +11,8 @@ namespace BusinessBookWebApi.Entities
         public String codeGuide { set; get; }
         public Int32 providerId{ set; get; }
         public float priceTotal { set; get; }
-        public DateTime dateCreation { set; get; }
-        public String state { set; get; }
+        //public DateTime dateCreation { set; get; }
+        //public String state { set; get; }
         public Int32 localId { set; get; }
     }
 }

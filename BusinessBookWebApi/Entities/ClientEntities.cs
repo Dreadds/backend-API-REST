@@ -15,9 +15,9 @@ namespace BusinessBookWebApi.Entities
         public String email { set; get; }
         public String phone { set; get; }
         public Int32 locationId { set; get; }
-        public DateTime dateCreation { set; get; }
+        /*public DateTime dateCreation { set; get; }
         public DateTime dateUpdate { set; get; }
-        public String state { set; get; }
+        public String state { set; get; }*/
         public String sex { set; get; }
     }
 }

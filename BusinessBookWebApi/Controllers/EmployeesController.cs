@@ -23,6 +23,30 @@ namespace BusinessBookWebApi.Controllers
     public class EmployeesController : BaseApiController
     {
         [AllowAnonymous]
+        [Route("lista")]
+        [HttpGet]
+        public HttpResponseMessage lista(LoginEntities model)
+        {
+            var HttpResponse = new HttpResponseMessage();
+            try
+            {
+
+                response.Code = HttpStatusCode.OK;
+                response.Message = "Success";
+                response.Result = context.Location.Where(x => x.State == ConstantHelper.Status.ACTIVE).Select(x => x.Name).ToList();
+
+                HttpResponse = new HttpResponseMessage(HttpStatusCode.OK);
+                HttpResponse.Content = new StringContent(JsonConvert.SerializeObject(response));
+                HttpResponse.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                return HttpResponse;
+            }
+            catch
+            {
+                HttpResponse = new HttpResponseMessage(HttpStatusCode.Conflict);
+                return HttpResponse;
+            }
+        }
+        [AllowAnonymous]
         [Route("login")]
         [HttpPost]
         public HttpResponseMessage LoginEmployee(LoginEntities model)
@@ -56,11 +80,11 @@ namespace BusinessBookWebApi.Controllers
                     if (password == model.password)
                     {
                         //DOMAIN 
-                        String baseAddress = "http://localhost:16669";
+                        String baseAddress = "http://chemita96-001-site1.dtempurl.com";
                         //CREATE A NEW TOKEN FOR EMPLOYEE
                         if (!employee.TokenEmployeeId.HasValue)
                         {
-                            var fecha = DateTime.Now;
+                            var fecha = DateTime.Now.AddHours(-7);
                             TokenEntities tokenEntities = new TokenEntities();
                             using (var client = new HttpClient())
                             {

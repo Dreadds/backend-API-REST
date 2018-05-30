@@ -10,6 +10,6 @@ namespace BusinessBookWebApi.Entities
         public Int32 productId { set; get; }
         public String name { set; get; }
         public float unitPrice { set; get; }
-        public String state { set; get; }
+        //public String state { set; get; }
     }
 }

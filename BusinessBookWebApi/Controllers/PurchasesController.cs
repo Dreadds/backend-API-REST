@@ -114,6 +114,7 @@ namespace BusinessBookWebApi.Controllers
                         purchase.LocalId = model.localId;
                         purchase.State = ConstantHelper.Status.ACTIVE;
                         purchase.PriceTotal = model.priceTotal;
+                        purchase.ProviderId = model.providerId;
 
                         context.SaveChanges();
                     }
