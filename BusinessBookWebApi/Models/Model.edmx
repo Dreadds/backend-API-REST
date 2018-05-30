@@ -168,16 +168,6 @@
           <Property Name="State" Type="varchar" MaxLength="3" Nullable="false" />
           <Property Name="UnitPrice" Type="float" Nullable="false" />
         </EntityType>
-        <EntityType Name="sysdiagrams">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="principal_id" Type="int" Nullable="false" />
-          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="version" Type="int" />
-          <Property Name="definition" Type="varbinary(max)" />
-        </EntityType>
         <EntityType Name="TokenEmployee">
           <Key>
             <PropertyRef Name="TokenEmployeeId" />
@@ -190,6 +180,7 @@
           <Property Name="ErrorToken" Type="varchar" MaxLength="500" />
           <Property Name="Issued" Type="datetime" />
           <Property Name="Expires" Type="datetime" />
+          <Property Name="State" Type="varchar" MaxLength="50" />
         </EntityType>
         <Association Name="FK_Client_Location">
           <End Role="Location" Type="Self.Location" Multiplicity="1" />
@@ -434,7 +425,6 @@
           <EntitySet Name="PurchaseDetail" EntityType="Self.PurchaseDetail" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Sale" EntityType="Self.Sale" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SaleDetail" EntityType="Self.SaleDetail" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TokenEmployee" EntityType="Self.TokenEmployee" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Client_Location" Association="Self.FK_Client_Location">
             <End Role="Location" EntitySet="Location" />
@@ -532,7 +522,6 @@
           <EntitySet Name="PurchaseDetail" EntityType="BusinessBookModel.PurchaseDetail" />
           <EntitySet Name="Sale" EntityType="BusinessBookModel.Sale" />
           <EntitySet Name="SaleDetail" EntityType="BusinessBookModel.SaleDetail" />
-          <EntitySet Name="sysdiagrams" EntityType="BusinessBookModel.sysdiagrams" />
           <EntitySet Name="TokenEmployee" EntityType="BusinessBookModel.TokenEmployee" />
           <AssociationSet Name="FK_Client_Location" Association="BusinessBookModel.FK_Client_Location">
             <End Role="Location" EntitySet="Location" />
@@ -811,16 +800,6 @@
           <NavigationProperty Name="Product" Relationship="BusinessBookModel.FK_SaleDetail_Product" FromRole="SaleDetail" ToRole="Product" />
           <NavigationProperty Name="Sale" Relationship="BusinessBookModel.FK_SaleDetail_Sale" FromRole="SaleDetail" ToRole="Sale" />
         </EntityType>
-        <EntityType Name="sysdiagrams">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="principal_id" Type="Int32" Nullable="false" />
-          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="version" Type="Int32" />
-          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
-        </EntityType>
         <EntityType Name="TokenEmployee">
           <Key>
             <PropertyRef Name="TokenEmployeeId" />
@@ -833,6 +812,7 @@
           <Property Name="ErrorToken" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="Issued" Type="DateTime" Precision="3" />
           <Property Name="Expires" Type="DateTime" Precision="3" />
+          <Property Name="State" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Employee" Relationship="BusinessBookModel.FK_Employee_TokenEmployee" FromRole="TokenEmployee" ToRole="Employee" />
         </EntityType>
         <Association Name="FK_Client_Location">
@@ -1246,20 +1226,10 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="sysdiagrams">
-            <EntityTypeMapping TypeName="BusinessBookModel.sysdiagrams">
-              <MappingFragment StoreEntitySet="sysdiagrams">
-                <ScalarProperty Name="definition" ColumnName="definition" />
-                <ScalarProperty Name="version" ColumnName="version" />
-                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
-                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
-                <ScalarProperty Name="name" ColumnName="name" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="TokenEmployee">
             <EntityTypeMapping TypeName="BusinessBookModel.TokenEmployee">
               <MappingFragment StoreEntitySet="TokenEmployee">
+                <ScalarProperty Name="State" ColumnName="State" />
                 <ScalarProperty Name="Expires" ColumnName="Expires" />
                 <ScalarProperty Name="Issued" ColumnName="Issued" />
                 <ScalarProperty Name="ErrorToken" ColumnName="ErrorToken" />

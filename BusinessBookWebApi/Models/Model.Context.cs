@@ -39,7 +39,6 @@ namespace BusinessBookWebApi.Models
         public virtual DbSet<PurchaseDetail> PurchaseDetail { get; set; }
         public virtual DbSet<Sale> Sale { get; set; }
         public virtual DbSet<SaleDetail> SaleDetail { get; set; }
-        public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
         public virtual DbSet<TokenEmployee> TokenEmployee { get; set; }
     }
 }

@@ -31,7 +31,7 @@ namespace BusinessBookWebApi {
             {
                 TokenEndpointPath = new PathString("/oauth/token"),
                 Provider = new AuthorizationServerProvider(),
-                AccessTokenExpireTimeSpan = TimeSpan.FromMinutes(30),
+                AccessTokenExpireTimeSpan = TimeSpan.FromHours(2),
                 AllowInsecureHttp = true,
 
             });

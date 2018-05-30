@@ -366,9 +366,6 @@
     <Compile Include="Models\SaleDetail.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\sysdiagrams.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\TokenEmployee.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>

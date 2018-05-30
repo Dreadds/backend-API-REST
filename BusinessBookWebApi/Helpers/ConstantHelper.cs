@@ -29,7 +29,7 @@ namespace BusinessBookWebApi.Helpers
 
         public const String UserSession = "USERSESSION";
 
-        public const string TOKEN_HEADER_NAME = "X-BBWA-TOKEN";
+        public const string TOKEN_HEADER_NAME = "Authorization";
 
         public const int TOKEN_TIMEOUT = 24;
 

@@ -7,18 +7,7 @@ namespace BusinessBookWebApi.Logics
 {
     public class TokenLogic
     {
-        public static string GenerateToken()
-        {
-            var time = BitConverter.GetBytes(DateTime.UtcNow.ToBinary());
-            var key = Guid.NewGuid().ToByteArray();
-            var token = Convert.ToBase64String(time.Concat(key).ToArray());
-
-            token = CipherLogic.Cipher(CipherAction.Encrypt, CipherType.Token, token);
-
-            return token;
-        }
-
-        //expiration time = 6 months
+        //expiration time = 2 horas
         public static bool ValidateToken(string token, int maxValidHours = 365 * 4320)
         {
             try
@@ -34,15 +23,6 @@ namespace BusinessBookWebApi.Logics
             {
                 return false;
             }
-        }
-
-        public static string GenerateMembershipToken()
-        {
-            var random = new Random();
-            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-
-            return new string(Enumerable.Repeat(chars, 6)
-                .Select(x => x[random.Next(x.Length)]).ToArray());
         }
     }
 }

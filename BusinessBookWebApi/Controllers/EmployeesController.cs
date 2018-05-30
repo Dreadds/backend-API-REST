@@ -89,8 +89,8 @@ namespace BusinessBookWebApi.Controllers
                                     tokenEmployee.TypeToken = tokenEntities.tokenType;
                                     tokenEmployee.RefreshToken = tokenEntities.refreshToken;
                                     tokenEmployee.Issued = fecha;
-                                    tokenEmployee.Expires = fecha.AddHours(24);
-
+                                    tokenEmployee.Expires = fecha.AddHours(2);
+                                    tokenEmployee.State = ConstantHelper.Status.ACTIVE;
                                     context.SaveChanges();
                                     //LINK EMPLOYEE WITH TOKEN
                                     employee.TokenEmployeeId = tokenEmployee.TokenEmployeeId;
@@ -105,7 +105,7 @@ namespace BusinessBookWebApi.Controllers
                             token.refreshToken = tokenEntities.refreshToken;
                             token.username = employee.Users;
                             token.issued = fecha;
-                            token.expires = fecha.AddHours(24);
+                            token.expires = fecha.AddHours(2);
 
                             //RESULT
                             HttpResponse = new HttpResponseMessage(HttpStatusCode.OK);
@@ -114,6 +114,8 @@ namespace BusinessBookWebApi.Controllers
                         }
                         else if (employee.TokenEmployeeId.HasValue)
                         {
+                            //verificar si el token esta activo 
+
                             token.accessToken = employee.TokenEmployee.AccessToken;
                             token.tokenType = employee.TokenEmployee.TypeToken;
                             token.expiresIn = employee.TokenEmployee.ExpireInToken;

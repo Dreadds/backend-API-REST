@@ -28,6 +28,7 @@ namespace BusinessBookWebApi.Models
         public string ErrorToken { get; set; }
         public Nullable<System.DateTime> Issued { get; set; }
         public Nullable<System.DateTime> Expires { get; set; }
+        public string State { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Employee> Employee { get; set; }
