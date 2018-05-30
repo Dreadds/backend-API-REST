@@ -112,8 +112,7 @@ namespace BusinessBookWebApi.Controllers
                     {
                         var local = new Local();
                         context.Local.Add(local);
-
-                        local.LocalId = model.localId;
+                        
                         local.Name = model.name;
                         local.Direction = model.direction;
                         local.CompanyId = model.companyId;
@@ -204,8 +203,7 @@ namespace BusinessBookWebApi.Controllers
                     {
 
                         var local = context.Local.FirstOrDefault(x => x.State == ConstantHelper.Status.ACTIVE && x.LocalId == model.localId);
-
-                        local.LocalId = model.localId;
+                        
                         local.Name = model.name;
                         local.Direction = model.direction;
                         local.CompanyId = model.companyId;

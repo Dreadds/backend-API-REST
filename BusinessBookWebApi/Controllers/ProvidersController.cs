@@ -111,8 +111,7 @@ namespace BusinessBookWebApi.Controllers
                     {
                         var provider = new Provider();
                         context.Provider.Add(provider);
-
-                        provider.ProviderId = model.providerId;
+                        
                         provider.Name = model.name;
                         provider.email = model.email;
                         provider.Phone = model.phone;
@@ -203,8 +202,7 @@ namespace BusinessBookWebApi.Controllers
                     {
 
                         var provider = context.Provider.FirstOrDefault(x => x.State == ConstantHelper.Status.ACTIVE && x.ProviderId == model.providerId);
-
-                        provider.ProviderId = model.providerId;
+                        
                         provider.Name = model.name;
                         provider.email = model.email;
                         provider.Phone = model.phone;

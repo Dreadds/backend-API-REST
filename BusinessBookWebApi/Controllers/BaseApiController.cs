@@ -84,21 +84,18 @@ namespace BusinessBookWebApi.Controllers
                 }
                 else
                 {
-                    //IF TOKEN IS NULL ADD KEY AND SAVE IN DATA BASE
-                    var employee = context.Employee.FirstOrDefault(x => x.Users == users);
-                    var tokenEmployee = new TokenEmployee();
-                    context.TokenEmployee.Add(tokenEmployee);
-                    tokenEmployee.AccessToken = tokenEntities.accessToken;
-                    tokenEmployee.ExpireInToken = tokenEntities.expiresIn;
-                    tokenEmployee.ErrorToken = tokenEntities.error;
-                    tokenEmployee.TypeToken = tokenEntities.tokenType;
-                    tokenEmployee.RefreshToken = tokenEntities.refreshToken;
-                    tokenEmployee.Issued = fecha;
-                    tokenEmployee.Expires = fecha.AddHours(2);
-                    tokenEmployee.State = ConstantHelper.Status.ACTIVE;
-                    context.SaveChanges();
-                    //LINK EMPLOYEE WITH TOKEN
-                    employee.TokenEmployeeId = tokenEmployee.TokenEmployeeId;
+                    var EmployeeBD = new Employee();
+                    EmployeeBD = context.Employee.First(x => x.Users == users);
+
+                    EmployeeBD.TokenEmployee.AccessToken = tokenEntities.accessToken;
+                    EmployeeBD.TokenEmployee.ExpireInToken = tokenEntities.expiresIn;
+                    EmployeeBD.TokenEmployee.ErrorToken = tokenEntities.error;
+                    EmployeeBD.TokenEmployee.TypeToken = tokenEntities.tokenType;
+                    EmployeeBD.TokenEmployee.RefreshToken = tokenEntities.refreshToken;
+                    EmployeeBD.TokenEmployee.Issued = fecha;
+                    EmployeeBD.TokenEmployee.Expires = fecha.AddHours(2);
+                    EmployeeBD.TokenEmployee.State = ConstantHelper.Status.ACTIVE;
+
                     context.SaveChanges();
                 }
                 return tokenEntities.accessToken;

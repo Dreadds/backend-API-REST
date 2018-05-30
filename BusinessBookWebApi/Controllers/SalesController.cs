@@ -115,8 +115,7 @@ namespace BusinessBookWebApi.Controllers
                     {
                         var sale = new Sale();
                         context.Sale.Add(sale);
-
-                        sale.SaleId = model.saleId;
+                        
                         sale.DateCreation = DateTime.Today;
                         sale.CodeGuide = model.codeGuide;
                         sale.LocalId = model.localId;
@@ -174,10 +173,10 @@ namespace BusinessBookWebApi.Controllers
                             context.SaleDetail.Add(saleDetail);
 
                             saleDetail.SaleId = SaleId;
-                            saleDetail.ProductId = sD.Item1;
-                            saleDetail.Quantity = sD.Item2;
-                            saleDetail.UnitPrice = sD.Item3;
-                            saleDetail.PriceSubTotal = sD.Item4;
+                            saleDetail.ProductId = sD.productId;
+                            saleDetail.Quantity = sD.quantity;
+                            saleDetail.UnitPrice = sD.unitPrice;
+                            saleDetail.PriceSubTotal = sD.priceSubTotal;
                             saleDetail.State = ConstantHelper.Status.ACTIVE;
                             context.SaveChanges();
 
@@ -276,8 +275,7 @@ namespace BusinessBookWebApi.Controllers
                     {
 
                         var sale = context.Sale.FirstOrDefault(x => x.State == ConstantHelper.Status.ACTIVE && x.SaleId == model.saleId);
-
-                        sale.SaleId = model.saleId;
+                        
                         sale.CodeGuide = model.codeGuide;
                         sale.LocalId = model.localId;
                         sale.EmployeeId = model.EmployeeId;

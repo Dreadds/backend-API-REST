@@ -107,15 +107,22 @@ namespace BusinessBookWebApi.Controllers
                     }
                     else
                     {
+
+                        List<Local> LstLocal = new List<Local>();
+                        var company = context.Company.FirstOrDefault(x => x.EmployeeId == id);
+                        LstLocal = context.Local.Where(x => x.State == ConstantHelper.Status.ACTIVE && x.CompanyId == company.CompanyId).ToList();
+                        if(LstLocal == null)
+                        {
+                            Httpresponse = new HttpResponseMessage(HttpStatusCode.NotAcceptable);
+                            return Httpresponse;
+                        }
+
                         var product = new Product();
                         context.Product.Add(product);
-
-                        product.ProductId = model.productId;
+                        
                         product.Name = model.name;
                         product.UnitPrice = model.unitPrice;
                         product.State = ConstantHelper.Status.ACTIVE;
-                        List<Local> LstLocal = new List<Local>();
-                        LstLocal = context.Local.Where(x => x.State == ConstantHelper.Status.ACTIVE).ToList();
 
                         foreach (var local in LstLocal)
                         {
@@ -214,8 +221,7 @@ namespace BusinessBookWebApi.Controllers
                     {
 
                         var product = context.Product.FirstOrDefault(x => x.State == ConstantHelper.Status.ACTIVE && x.ProductId == model.productId);
-
-                        product.ProductId = model.productId;
+                        
                         product.Name = model.name;
                         product.UnitPrice = model.unitPrice;
 

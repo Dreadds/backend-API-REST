@@ -8,6 +8,6 @@ namespace BusinessBookWebApi.Entities
     public class PurchaseDetailEntities
     {
         //Product - Quantity - UnitPrice - PriceSubTotal
-        public List<Tuple<Int32, Int32, float, float>> listPurchaseDetail { set; get; } = new List<Tuple<int, int, float, float>>();
+        public List<DetailEntities> listPurchaseDetail { set; get; } = new List<DetailEntities>();
     }
 }

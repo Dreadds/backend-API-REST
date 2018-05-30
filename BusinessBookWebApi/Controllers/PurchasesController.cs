@@ -108,8 +108,7 @@ namespace BusinessBookWebApi.Controllers
                     {
                         var purchase = new Purchase();
                         context.Purchase.Add(purchase);
-
-                        purchase.PurchaseId = model.purchaseId;
+                        
                         purchase.DateCreation = DateTime.Today;
                         purchase.CodeGuide = model.codeGuide;
                         purchase.LocalId = model.localId;
@@ -164,10 +163,10 @@ namespace BusinessBookWebApi.Controllers
                             context.PurchaseDetail.Add(purchaseDetail);
 
                             purchaseDetail.PurchaseId = PurchaseId;
-                            purchaseDetail.ProductId = pD.Item1;
-                            purchaseDetail.Quantity = pD.Item2;
-                            purchaseDetail.UnitPrice = pD.Item3;
-                            purchaseDetail.PriceSubTotal = pD.Item4;
+                            purchaseDetail.ProductId = pD.productId;
+                            purchaseDetail.Quantity = pD.quantity;
+                            purchaseDetail.UnitPrice = pD.unitPrice;
+                            purchaseDetail.PriceSubTotal = pD.priceSubTotal;
                             purchaseDetail.State = ConstantHelper.Status.ACTIVE;
                             context.SaveChanges();
 
@@ -266,8 +265,7 @@ namespace BusinessBookWebApi.Controllers
                     {
 
                         var purchase = context.Purchase.FirstOrDefault(x => x.State == ConstantHelper.Status.ACTIVE && x.PurchaseId == model.purchaseId);
-
-                        purchase.PurchaseId = model.purchaseId;
+                        
                         purchase.CodeGuide = model.codeGuide;
                         purchase.LocalId = model.localId;
                         purchase.PriceTotal = model.priceTotal;

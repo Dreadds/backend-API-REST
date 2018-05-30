@@ -291,6 +291,7 @@
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Entities\ClientEntities.cs" />
     <Compile Include="Entities\CompanyEntities.cs" />
+    <Compile Include="Entities\DetailEntities.cs" />
     <Compile Include="Entities\EmployeeEntities.cs" />
     <Compile Include="Entities\LocalEntities.cs" />
     <Compile Include="Entities\LoginEntities.cs" />
