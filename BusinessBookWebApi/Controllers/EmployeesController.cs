@@ -115,14 +115,34 @@ namespace BusinessBookWebApi.Controllers
                         else if (employee.TokenEmployeeId.HasValue)
                         {
                             //verificar si el token esta activo 
+                            bool verificar = ValidateToken(employee.TokenEmployee.AccessToken);
+                            if (!verificar)
+                            {
+                                var tokenString = employee.TokenEmployee.AccessToken;
+                                var employeeData = context.Employee.FirstOrDefault(x => x.TokenEmployee.AccessToken == tokenString);
+                                var pwd = CipherLogic.Cipher(CipherAction.Decrypt, CipherType.UserPassword, employee.Password);
+                                var newToken = GeneretaToken(employeeData.Users, pwd);
+                                var tokenEmployee = context.TokenEmployee.FirstOrDefault(x => x.AccessToken == newToken);
 
-                            token.accessToken = employee.TokenEmployee.AccessToken;
-                            token.tokenType = employee.TokenEmployee.TypeToken;
-                            token.expiresIn = employee.TokenEmployee.ExpireInToken;
-                            token.refreshToken = employee.TokenEmployee.RefreshToken;
-                            token.username = employee.Users;
-                            token.issued = employee.TokenEmployee.Issued;
-                            token.expires = employee.TokenEmployee.Expires;
+                                token.accessToken = tokenEmployee.AccessToken;
+                                token.tokenType = tokenEmployee.TypeToken;
+                                token.expiresIn = tokenEmployee.ExpireInToken;
+                                token.refreshToken = tokenEmployee.RefreshToken;
+                                token.username = employeeData.Users;
+                                token.issued = tokenEmployee.Issued;
+                                token.expires = tokenEmployee.Expires;
+
+                            }
+                            {
+                                token.accessToken = employee.TokenEmployee.AccessToken;
+                                token.tokenType = employee.TokenEmployee.TypeToken;
+                                token.expiresIn = employee.TokenEmployee.ExpireInToken;
+                                token.refreshToken = employee.TokenEmployee.RefreshToken;
+                                token.username = employee.Users;
+                                token.issued = employee.TokenEmployee.Issued;
+                                token.expires = employee.TokenEmployee.Expires;
+                            }
+
                             HttpResponse = new HttpResponseMessage(HttpStatusCode.OK);
                             HttpResponse.Content = new StringContent(JsonConvert.SerializeObject(token));
                             HttpResponse.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
