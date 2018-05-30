@@ -181,7 +181,13 @@ namespace BusinessBookWebApi.Controllers
                         HttpResponse = new HttpResponseMessage(HttpStatusCode.NoContent);
                         return HttpResponse;
                     }
-
+                    //IF EMPLOYEEID HAVE 0
+                    if (model.employeeId == 0)
+                    {
+                        HttpResponse = new HttpResponseMessage(HttpStatusCode.BadRequest);
+                        return HttpResponse;
+                    }
+                    
                     //IF USERNAME EXIST
                     var listEmployee = context.Employee.ToList();
                     foreach (var employeee in listEmployee)
@@ -191,13 +197,6 @@ namespace BusinessBookWebApi.Controllers
                             HttpResponse = new HttpResponseMessage(HttpStatusCode.BadRequest);
                             return HttpResponse;
                         }
-                    }
-
-                    //IF EMPLOYEEID HAVE 0
-                    if(model.employeeId == 0)
-                    {
-                        HttpResponse = new HttpResponseMessage(HttpStatusCode.BadRequest);
-                        return HttpResponse;
                     }
                     
                     //CREATE EMPLOYEE
@@ -262,39 +261,53 @@ namespace BusinessBookWebApi.Controllers
                         return HttpResponse;
                     }
 
-                    //IF NAME IS SIMILAR TO ANOTHER USER
-                    var listCompany = context.Company.ToList();
-                    foreach (var companyy in listCompany)
-                    {
-                        if (companyy.Name == model.name)
-                        {
-                            HttpResponse = new HttpResponseMessage(HttpStatusCode.NotAcceptable);
-                            return HttpResponse;
-                        }
-                    }
-
-                    if(model.companyId == 0)
+                    if (model.companyId == 0)
                     {
                         HttpResponse = new HttpResponseMessage(HttpStatusCode.BadRequest);
                         return HttpResponse;
                     }
 
-                    var company = new Company();
-                    if (model.companyId != 0)
+                    var id = GetEmployeeId();
+
+                    if (!id.HasValue)
                     {
-                        context.Company.Add(company);
+                        HttpResponse = new HttpResponseMessage(HttpStatusCode.Unauthorized);
+                        response.Code = HttpStatusCode.Unauthorized;
+                        response.Message = "Unauthorized";
+                        response.Result = null;
+                        return HttpResponse;
+                    }
+                    else
+                    {
+                        //IF NAME IS SIMILAR TO ANOTHER USER
+                        var listCompany = context.Company.ToList();
+                        foreach (var companyy in listCompany)
+                        {
+                            if (companyy.Name == model.name)
+                            {
+                                HttpResponse = new HttpResponseMessage(HttpStatusCode.NotAcceptable);
+                                return HttpResponse;
+                            }
+                        }
+                        
+                        var company = new Company();
+                        if (model.companyId != 0)
+                        {
+                            context.Company.Add(company);
+                        }
+
+                        company.Name = model.name;
+                        company.state = ConstantHelper.Status.ACTIVE;
+                        company.LocationId = model.locationId;
+                        company.EmployeeId = model.employeeId;
+
+                        context.SaveChanges();
+
+                        ts.Complete();
+
+                        HttpResponse = new HttpResponseMessage(HttpStatusCode.OK);
                     }
 
-                    company.Name = model.name;
-                    company.state = ConstantHelper.Status.ACTIVE;
-                    company.LocationId = model.locationId;
-                    company.EmployeeId = model.employeeId;
-                    
-                    context.SaveChanges();
-
-                    ts.Complete();
-
-                    HttpResponse = new HttpResponseMessage(HttpStatusCode.OK);
                     return HttpResponse;
                 }
             }
@@ -321,32 +334,44 @@ namespace BusinessBookWebApi.Controllers
                         HttpResponse = new HttpResponseMessage(HttpStatusCode.NoContent);
                         return HttpResponse;
                     }
-                    
-                    var company = new Company();
 
-                    company = context.Company.FirstOrDefault(x => x.CompanyId == CompanyId);
+                    var id = GetEmployeeId();
 
-                    if (company == null)
+                    if (!id.HasValue)
                     {
-                        HttpResponse = new HttpResponseMessage(HttpStatusCode.NotFound);
-                        return HttpResponse;
+                        HttpResponse = new HttpResponseMessage(HttpStatusCode.Unauthorized);
+                        response.Code = HttpStatusCode.Unauthorized;
+                        response.Message = "Unauthorized";
+                        response.Result = null;
                     }
-
-                     if (company.state == ConstantHelper.Status.INACTIVE)
+                    else
                     {
-                        HttpResponse = new HttpResponseMessage(HttpStatusCode.NotAcceptable);
-                        return HttpResponse;
+                        var company = new Company();
+
+                        company = context.Company.FirstOrDefault(x => x.CompanyId == CompanyId);
+
+                        if (company == null)
+                        {
+                            HttpResponse = new HttpResponseMessage(HttpStatusCode.NotFound);
+                            return HttpResponse;
+                        }
+
+                        if (company.state == ConstantHelper.Status.INACTIVE)
+                        {
+                            HttpResponse = new HttpResponseMessage(HttpStatusCode.NotAcceptable);
+                            return HttpResponse;
+                        }
+
+                        response.Code = HttpStatusCode.OK;
+                        response.Message = "success";
+                        response.Result = company;
+
+                        ts.Complete();
+
+                        HttpResponse = new HttpResponseMessage(HttpStatusCode.OK);
+                        HttpResponse.Content = new StringContent(JsonConvert.SerializeObject(response));
+                        HttpResponse.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                     }
-
-                    response.Code = HttpStatusCode.OK;
-                    response.Message = "success";
-                    response.Result = company;
-
-                    ts.Complete();
-
-                    HttpResponse = new HttpResponseMessage(HttpStatusCode.OK);
-                    HttpResponse.Content = new StringContent(JsonConvert.SerializeObject(response));
-                    HttpResponse.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                     return HttpResponse;
                 }
             }
