@@ -5,40 +5,40 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="8de68bc5535747c8a3fc8a65eb539523" Name="Diagram1">
-        <EntityTypeShape EntityType="BusinessBookModel.Client" Width="1.5" PointX="7.5" PointY="8.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="BusinessBookModel.Company" Width="1.5" PointX="7.5" PointY="4.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="BusinessBookModel.District" Width="1.5" PointX="3" PointY="8.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="BusinessBookModel.Employee" Width="1.5" PointX="7.5" PointY="12.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="BusinessBookModel.Inventory" Width="1.5" PointX="12" PointY="4.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="BusinessBookModel.Local" Width="1.5" PointX="9.75" PointY="4.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="BusinessBookModel.Location" Width="1.5" PointX="5.25" PointY="8.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="BusinessBookModel.Product" Width="1.5" PointX="9.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="BusinessBookModel.Provider" Width="1.5" PointX="12.75" PointY="0.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="BusinessBookModel.Province" Width="1.5" PointX="0.75" PointY="9" IsExpanded="true" />
-        <EntityTypeShape EntityType="BusinessBookModel.Purchase" Width="1.5" PointX="15" PointY="4.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="BusinessBookModel.PurchaseDetail" Width="1.5" PointX="17.25" PointY="4.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="BusinessBookModel.Sale" Width="1.5" PointX="9.75" PointY="8.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="BusinessBookModel.SaleDetail" Width="1.5" PointX="12" PointY="8.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="BusinessBookModel.TokenEmployee" Width="1.5" PointX="5.25" PointY="13.5" IsExpanded="true" />
-        <AssociationConnector Association="BusinessBookModel.FK_Client_Location" ManuallyRouted="false" />
-        <AssociationConnector Association="BusinessBookModel.FK_Sale_Client" ManuallyRouted="false" />
-        <AssociationConnector Association="BusinessBookModel.FK_Company_Employee" ManuallyRouted="false" />
-        <AssociationConnector Association="BusinessBookModel.FK_Company_Location" ManuallyRouted="false" />
-        <AssociationConnector Association="BusinessBookModel.FK_Local_Company" ManuallyRouted="false" />
-        <AssociationConnector Association="BusinessBookModel.FK_District_Province" ManuallyRouted="false" />
-        <AssociationConnector Association="BusinessBookModel.FK_Location_District" ManuallyRouted="false" />
-        <AssociationConnector Association="BusinessBookModel.FK_Employee_Location" ManuallyRouted="false" />
-        <AssociationConnector Association="BusinessBookModel.FK_Employee_TokenEmployee" ManuallyRouted="false" />
-        <AssociationConnector Association="BusinessBookModel.FK_Sale_Employee" ManuallyRouted="false" />
-        <AssociationConnector Association="BusinessBookModel.FK_Inventory_Local" ManuallyRouted="false" />
-        <AssociationConnector Association="BusinessBookModel.FK_Inventory_Product" ManuallyRouted="false" />
-        <AssociationConnector Association="BusinessBookModel.FK_Purchase_Local" ManuallyRouted="false" />
-        <AssociationConnector Association="BusinessBookModel.FK_Sale_Local" ManuallyRouted="false" />
-        <AssociationConnector Association="BusinessBookModel.FK_PurchaseDetail_Product" ManuallyRouted="false" />
-        <AssociationConnector Association="BusinessBookModel.FK_SaleDetail_Product" ManuallyRouted="false" />
-        <AssociationConnector Association="BusinessBookModel.FK_Purchase_Proveedor" ManuallyRouted="false" />
-        <AssociationConnector Association="BusinessBookModel.FK_PurchaseDetail_Purchase" ManuallyRouted="false" />
-        <AssociationConnector Association="BusinessBookModel.FK_SaleDetail_Sale" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="BusinessBookModel.Client" Width="1.5" PointX="7.5" PointY="16.75" />
+        <EntityTypeShape EntityType="BusinessBookModel.Company" Width="1.5" PointX="7.5" PointY="8.375" />
+        <EntityTypeShape EntityType="BusinessBookModel.District" Width="1.5" PointX="3" PointY="8.625" />
+        <EntityTypeShape EntityType="BusinessBookModel.Employee" Width="1.5" PointX="10.5" PointY="7.375" />
+        <EntityTypeShape EntityType="BusinessBookModel.Inventory" Width="1.5" PointX="12" PointY="16.375" />
+        <EntityTypeShape EntityType="BusinessBookModel.Local" Width="1.5" PointX="9.75" PointY="13.375" />
+        <EntityTypeShape EntityType="BusinessBookModel.Location" Width="1.5" PointX="5.25" PointY="8.375" />
+        <EntityTypeShape EntityType="BusinessBookModel.Product" Width="1.5" PointX="15" PointY="17.5" />
+        <EntityTypeShape EntityType="BusinessBookModel.Provider" Width="1.5" PointX="12.75" PointY="8.625" />
+        <EntityTypeShape EntityType="BusinessBookModel.Province" Width="1.5" PointX="0.75" PointY="8.75" />
+        <EntityTypeShape EntityType="BusinessBookModel.Purchase" Width="1.5" PointX="15" PointY="13.25" />
+        <EntityTypeShape EntityType="BusinessBookModel.PurchaseDetail" Width="1.5" PointX="17.25" PointY="13.375" />
+        <EntityTypeShape EntityType="BusinessBookModel.Sale" Width="1.5" PointX="12.75" PointY="12.125" />
+        <EntityTypeShape EntityType="BusinessBookModel.SaleDetail" Width="1.5" PointX="15" PointY="9.5" />
+        <EntityTypeShape EntityType="BusinessBookModel.TokenEmployee" Width="1.5" PointX="8.25" PointY="4.25" />
+        <AssociationConnector Association="BusinessBookModel.FK_Client_Location" />
+        <AssociationConnector Association="BusinessBookModel.FK_Sale_Client" />
+        <AssociationConnector Association="BusinessBookModel.FK_Company_Employee" />
+        <AssociationConnector Association="BusinessBookModel.FK_Company_Location" />
+        <AssociationConnector Association="BusinessBookModel.FK_Local_Company" />
+        <AssociationConnector Association="BusinessBookModel.FK_District_Province" />
+        <AssociationConnector Association="BusinessBookModel.FK_Location_District" />
+        <AssociationConnector Association="BusinessBookModel.FK_Employee_Location" />
+        <AssociationConnector Association="BusinessBookModel.FK_Employee_TokenEmployee" />
+        <AssociationConnector Association="BusinessBookModel.FK_Sale_Employee" />
+        <AssociationConnector Association="BusinessBookModel.FK_Inventory_Local" />
+        <AssociationConnector Association="BusinessBookModel.FK_Inventory_Product" />
+        <AssociationConnector Association="BusinessBookModel.FK_Purchase_Local" />
+        <AssociationConnector Association="BusinessBookModel.FK_Sale_Local" />
+        <AssociationConnector Association="BusinessBookModel.FK_PurchaseDetail_Product" />
+        <AssociationConnector Association="BusinessBookModel.FK_SaleDetail_Product" />
+        <AssociationConnector Association="BusinessBookModel.FK_Purchase_Proveedor" />
+        <AssociationConnector Association="BusinessBookModel.FK_PurchaseDetail_Purchase" />
+        <AssociationConnector Association="BusinessBookModel.FK_SaleDetail_Sale" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

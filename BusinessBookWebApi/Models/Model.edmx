@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="BusinessBookModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="BusinessBookModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Client">
           <Key>
             <PropertyRef Name="ClientId" />
@@ -46,19 +46,19 @@
             <PropertyRef Name="EmployeeId" />
           </Key>
           <Property Name="EmployeeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" />
           <Property Name="LastName" Type="varchar" MaxLength="50" />
           <Property Name="FullName" Type="varchar" MaxLength="50" />
-          <Property Name="DNI" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="Email" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="Phone" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="LocationId" Type="int" Nullable="false" />
-          <Property Name="DateCreation" Type="datetime" Nullable="false" />
+          <Property Name="DNI" Type="varchar" MaxLength="50" />
+          <Property Name="Email" Type="varchar" MaxLength="50" />
+          <Property Name="Phone" Type="varchar" MaxLength="50" />
+          <Property Name="LocationId" Type="int" />
+          <Property Name="DateCreation" Type="datetime" />
           <Property Name="DateUpdate" Type="datetime" />
-          <Property Name="State" Type="varchar" MaxLength="3" Nullable="false" />
-          <Property Name="Sex" Type="varchar" MaxLength="1" Nullable="false" />
+          <Property Name="State" Type="varchar" MaxLength="3" />
+          <Property Name="Sex" Type="varchar" MaxLength="1" />
           <Property Name="Users" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="Password" Type="varchar" MaxLength="500" />
+          <Property Name="Password" Type="varchar" MaxLength="500" Nullable="false" />
           <Property Name="TokenEmployeeId" Type="int" />
         </EntityType>
         <EntityType Name="Inventory">
@@ -231,7 +231,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Employee_Location">
-          <End Role="Location" Type="Self.Location" Multiplicity="1" />
+          <End Role="Location" Type="Self.Location" Multiplicity="0..1" />
           <End Role="Employee" Type="Self.Employee" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Location">
@@ -503,77 +503,169 @@
             <End Role="SaleDetail" EntitySet="SaleDetail" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="BusinessBookModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="BusinessBookEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Client" EntityType="BusinessBookModel.Client" />
+          <EntitySet Name="Company" EntityType="BusinessBookModel.Company" />
+          <EntitySet Name="District" EntityType="BusinessBookModel.District" />
+          <EntitySet Name="Employee" EntityType="BusinessBookModel.Employee" />
+          <EntitySet Name="Inventory" EntityType="BusinessBookModel.Inventory" />
+          <EntitySet Name="Local" EntityType="BusinessBookModel.Local" />
+          <EntitySet Name="Location" EntityType="BusinessBookModel.Location" />
+          <EntitySet Name="Product" EntityType="BusinessBookModel.Product" />
+          <EntitySet Name="Provider" EntityType="BusinessBookModel.Provider" />
+          <EntitySet Name="Province" EntityType="BusinessBookModel.Province" />
+          <EntitySet Name="Purchase" EntityType="BusinessBookModel.Purchase" />
+          <EntitySet Name="PurchaseDetail" EntityType="BusinessBookModel.PurchaseDetail" />
+          <EntitySet Name="Sale" EntityType="BusinessBookModel.Sale" />
+          <EntitySet Name="SaleDetail" EntityType="BusinessBookModel.SaleDetail" />
+          <EntitySet Name="TokenEmployee" EntityType="BusinessBookModel.TokenEmployee" />
+          <AssociationSet Name="FK_Client_Location" Association="BusinessBookModel.FK_Client_Location">
+            <End Role="Location" EntitySet="Location" />
+            <End Role="Client" EntitySet="Client" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Sale_Client" Association="BusinessBookModel.FK_Sale_Client">
+            <End Role="Client" EntitySet="Client" />
+            <End Role="Sale" EntitySet="Sale" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Company_Employee" Association="BusinessBookModel.FK_Company_Employee">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="Company" EntitySet="Company" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Company_Location" Association="BusinessBookModel.FK_Company_Location">
+            <End Role="Location" EntitySet="Location" />
+            <End Role="Company" EntitySet="Company" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Local_Company" Association="BusinessBookModel.FK_Local_Company">
+            <End Role="Company" EntitySet="Company" />
+            <End Role="Local" EntitySet="Local" />
+          </AssociationSet>
+          <AssociationSet Name="FK_District_Province" Association="BusinessBookModel.FK_District_Province">
+            <End Role="Province" EntitySet="Province" />
+            <End Role="District" EntitySet="District" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Location_District" Association="BusinessBookModel.FK_Location_District">
+            <End Role="District" EntitySet="District" />
+            <End Role="Location" EntitySet="Location" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Employee_Location" Association="BusinessBookModel.FK_Employee_Location">
+            <End Role="Location" EntitySet="Location" />
+            <End Role="Employee" EntitySet="Employee" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Employee_TokenEmployee" Association="BusinessBookModel.FK_Employee_TokenEmployee">
+            <End Role="TokenEmployee" EntitySet="TokenEmployee" />
+            <End Role="Employee" EntitySet="Employee" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Sale_Employee" Association="BusinessBookModel.FK_Sale_Employee">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="Sale" EntitySet="Sale" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Inventory_Local" Association="BusinessBookModel.FK_Inventory_Local">
+            <End Role="Local" EntitySet="Local" />
+            <End Role="Inventory" EntitySet="Inventory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Inventory_Product" Association="BusinessBookModel.FK_Inventory_Product">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="Inventory" EntitySet="Inventory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Purchase_Local" Association="BusinessBookModel.FK_Purchase_Local">
+            <End Role="Local" EntitySet="Local" />
+            <End Role="Purchase" EntitySet="Purchase" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Sale_Local" Association="BusinessBookModel.FK_Sale_Local">
+            <End Role="Local" EntitySet="Local" />
+            <End Role="Sale" EntitySet="Sale" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PurchaseDetail_Product" Association="BusinessBookModel.FK_PurchaseDetail_Product">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="PurchaseDetail" EntitySet="PurchaseDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SaleDetail_Product" Association="BusinessBookModel.FK_SaleDetail_Product">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="SaleDetail" EntitySet="SaleDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Purchase_Proveedor" Association="BusinessBookModel.FK_Purchase_Proveedor">
+            <End Role="Provider" EntitySet="Provider" />
+            <End Role="Purchase" EntitySet="Purchase" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PurchaseDetail_Purchase" Association="BusinessBookModel.FK_PurchaseDetail_Purchase">
+            <End Role="Purchase" EntitySet="Purchase" />
+            <End Role="PurchaseDetail" EntitySet="PurchaseDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SaleDetail_Sale" Association="BusinessBookModel.FK_SaleDetail_Sale">
+            <End Role="Sale" EntitySet="Sale" />
+            <End Role="SaleDetail" EntitySet="SaleDetail" />
+          </AssociationSet>
+        </EntityContainer>
         <EntityType Name="Client">
           <Key>
             <PropertyRef Name="ClientId" />
           </Key>
           <Property Name="ClientId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="FullName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="DNI" Type="String" MaxLength="8" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Phone" Type="String" MaxLength="9" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="LastName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="FullName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DNI" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Phone" Type="String" Nullable="false" MaxLength="9" FixedLength="false" Unicode="false" />
           <Property Name="LocationId" Type="Int32" Nullable="false" />
           <Property Name="DateCreation" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="DateUpdate" Type="DateTime" Precision="3" />
-          <Property Name="State" Type="String" MaxLength="3" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="State" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="false" />
           <Property Name="Sex" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Location" Relationship="Self.FK_Client_Location" FromRole="Client" ToRole="Location" />
-          <NavigationProperty Name="Sale" Relationship="Self.FK_Sale_Client" FromRole="Client" ToRole="Sale" />
+          <NavigationProperty Name="Location" Relationship="BusinessBookModel.FK_Client_Location" FromRole="Client" ToRole="Location" />
+          <NavigationProperty Name="Sale" Relationship="BusinessBookModel.FK_Sale_Client" FromRole="Client" ToRole="Sale" />
         </EntityType>
         <EntityType Name="Company">
           <Key>
             <PropertyRef Name="CompanyId" />
           </Key>
           <Property Name="CompanyId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="state" Type="String" MaxLength="3" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="state" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="false" />
           <Property Name="LocationId" Type="Int32" Nullable="false" />
           <Property Name="EmployeeId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Employee" Relationship="Self.FK_Company_Employee" FromRole="Company" ToRole="Employee" />
-          <NavigationProperty Name="Location" Relationship="Self.FK_Company_Location" FromRole="Company" ToRole="Location" />
-          <NavigationProperty Name="Local" Relationship="Self.FK_Local_Company" FromRole="Company" ToRole="Local" />
+          <NavigationProperty Name="Employee" Relationship="BusinessBookModel.FK_Company_Employee" FromRole="Company" ToRole="Employee" />
+          <NavigationProperty Name="Location" Relationship="BusinessBookModel.FK_Company_Location" FromRole="Company" ToRole="Location" />
+          <NavigationProperty Name="Local" Relationship="BusinessBookModel.FK_Local_Company" FromRole="Company" ToRole="Local" />
         </EntityType>
         <EntityType Name="District">
           <Key>
             <PropertyRef Name="DistrictId" />
           </Key>
           <Property Name="DistrictId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="State" Type="String" MaxLength="3" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="State" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="false" />
           <Property Name="ProvinceId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Province" Relationship="Self.FK_District_Province" FromRole="District" ToRole="Province" />
-          <NavigationProperty Name="Location" Relationship="Self.FK_Location_District" FromRole="District" ToRole="Location" />
+          <NavigationProperty Name="Province" Relationship="BusinessBookModel.FK_District_Province" FromRole="District" ToRole="Province" />
+          <NavigationProperty Name="Location" Relationship="BusinessBookModel.FK_Location_District" FromRole="District" ToRole="Location" />
         </EntityType>
         <EntityType Name="Employee">
           <Key>
             <PropertyRef Name="EmployeeId" />
           </Key>
           <Property Name="EmployeeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="FullName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="DNI" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="LocationId" Type="Int32" Nullable="false" />
-          <Property Name="DateCreation" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DNI" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="LocationId" Type="Int32" />
+          <Property Name="DateCreation" Type="DateTime" Precision="3" />
           <Property Name="DateUpdate" Type="DateTime" Precision="3" />
-          <Property Name="State" Type="String" MaxLength="3" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Sex" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Users" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Password" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="State" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Name="Sex" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="Users" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="TokenEmployeeId" Type="Int32" />
-          <NavigationProperty Name="Company" Relationship="Self.FK_Company_Employee" FromRole="Employee" ToRole="Company" />
-          <NavigationProperty Name="Location" Relationship="Self.FK_Employee_Location" FromRole="Employee" ToRole="Location" />
-          <NavigationProperty Name="TokenEmployee" Relationship="Self.FK_Employee_TokenEmployee" FromRole="Employee" ToRole="TokenEmployee" />
-          <NavigationProperty Name="Sale" Relationship="Self.FK_Sale_Employee" FromRole="Employee" ToRole="Sale" />
+          <NavigationProperty Name="Company" Relationship="BusinessBookModel.FK_Company_Employee" FromRole="Employee" ToRole="Company" />
+          <NavigationProperty Name="Location" Relationship="BusinessBookModel.FK_Employee_Location" FromRole="Employee" ToRole="Location" />
+          <NavigationProperty Name="TokenEmployee" Relationship="BusinessBookModel.FK_Employee_TokenEmployee" FromRole="Employee" ToRole="TokenEmployee" />
+          <NavigationProperty Name="Sale" Relationship="BusinessBookModel.FK_Sale_Employee" FromRole="Employee" ToRole="Sale" />
         </EntityType>
         <EntityType Name="Inventory">
           <Key>
@@ -583,10 +675,10 @@
           <Property Name="ProductId" Type="Int32" Nullable="false" />
           <Property Name="Quantity" Type="Int32" Nullable="false" />
           <Property Name="DateUpdate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="State" Type="String" MaxLength="3" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="State" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="false" />
           <Property Name="LocalId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Local" Relationship="Self.FK_Inventory_Local" FromRole="Inventory" ToRole="Local" />
-          <NavigationProperty Name="Product" Relationship="Self.FK_Inventory_Product" FromRole="Inventory" ToRole="Product" />
+          <NavigationProperty Name="Local" Relationship="BusinessBookModel.FK_Inventory_Local" FromRole="Inventory" ToRole="Local" />
+          <NavigationProperty Name="Product" Relationship="BusinessBookModel.FK_Inventory_Product" FromRole="Inventory" ToRole="Product" />
         </EntityType>
         <EntityType Name="Local">
           <Key>
@@ -597,23 +689,23 @@
           <Property Name="State" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
           <Property Name="Direction" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="CompanyId" Type="Int32" />
-          <NavigationProperty Name="Company" Relationship="Self.FK_Local_Company" FromRole="Local" ToRole="Company" />
-          <NavigationProperty Name="Inventory" Relationship="Self.FK_Inventory_Local" FromRole="Local" ToRole="Inventory" />
-          <NavigationProperty Name="Purchase" Relationship="Self.FK_Purchase_Local" FromRole="Local" ToRole="Purchase" />
-          <NavigationProperty Name="Sale" Relationship="Self.FK_Sale_Local" FromRole="Local" ToRole="Sale" />
+          <NavigationProperty Name="Company" Relationship="BusinessBookModel.FK_Local_Company" FromRole="Local" ToRole="Company" />
+          <NavigationProperty Name="Inventory" Relationship="BusinessBookModel.FK_Inventory_Local" FromRole="Local" ToRole="Inventory" />
+          <NavigationProperty Name="Purchase" Relationship="BusinessBookModel.FK_Purchase_Local" FromRole="Local" ToRole="Purchase" />
+          <NavigationProperty Name="Sale" Relationship="BusinessBookModel.FK_Sale_Local" FromRole="Local" ToRole="Sale" />
         </EntityType>
         <EntityType Name="Location">
           <Key>
             <PropertyRef Name="LocationId" />
           </Key>
           <Property Name="LocationId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="State" Type="String" MaxLength="3" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="State" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="false" />
           <Property Name="DistrictId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Client" Relationship="Self.FK_Client_Location" FromRole="Location" ToRole="Client" />
-          <NavigationProperty Name="Company" Relationship="Self.FK_Company_Location" FromRole="Location" ToRole="Company" />
-          <NavigationProperty Name="District" Relationship="Self.FK_Location_District" FromRole="Location" ToRole="District" />
-          <NavigationProperty Name="Employee" Relationship="Self.FK_Employee_Location" FromRole="Location" ToRole="Employee" />
+          <NavigationProperty Name="Client" Relationship="BusinessBookModel.FK_Client_Location" FromRole="Location" ToRole="Client" />
+          <NavigationProperty Name="Company" Relationship="BusinessBookModel.FK_Company_Location" FromRole="Location" ToRole="Company" />
+          <NavigationProperty Name="District" Relationship="BusinessBookModel.FK_Location_District" FromRole="Location" ToRole="District" />
+          <NavigationProperty Name="Employee" Relationship="BusinessBookModel.FK_Employee_Location" FromRole="Location" ToRole="Employee" />
         </EntityType>
         <EntityType Name="Product">
           <Key>
@@ -623,44 +715,44 @@
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="UnitPrice" Type="Double" />
           <Property Name="State" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Inventory" Relationship="Self.FK_Inventory_Product" FromRole="Product" ToRole="Inventory" />
-          <NavigationProperty Name="PurchaseDetail" Relationship="Self.FK_PurchaseDetail_Product" FromRole="Product" ToRole="PurchaseDetail" />
-          <NavigationProperty Name="SaleDetail" Relationship="Self.FK_SaleDetail_Product" FromRole="Product" ToRole="SaleDetail" />
+          <NavigationProperty Name="Inventory" Relationship="BusinessBookModel.FK_Inventory_Product" FromRole="Product" ToRole="Inventory" />
+          <NavigationProperty Name="PurchaseDetail" Relationship="BusinessBookModel.FK_PurchaseDetail_Product" FromRole="Product" ToRole="PurchaseDetail" />
+          <NavigationProperty Name="SaleDetail" Relationship="BusinessBookModel.FK_SaleDetail_Product" FromRole="Product" ToRole="SaleDetail" />
         </EntityType>
         <EntityType Name="Provider">
           <Key>
             <PropertyRef Name="ProviderId" />
           </Key>
           <Property Name="ProviderId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="State" Type="String" MaxLength="3" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="Purchase" Relationship="Self.FK_Purchase_Proveedor" FromRole="Provider" ToRole="Purchase" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="State" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Name="Phone" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="email" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Purchase" Relationship="BusinessBookModel.FK_Purchase_Proveedor" FromRole="Provider" ToRole="Purchase" />
         </EntityType>
         <EntityType Name="Province">
           <Key>
             <PropertyRef Name="ProvinceId" />
           </Key>
           <Property Name="ProvinceId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="State" Type="String" MaxLength="3" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="District" Relationship="Self.FK_District_Province" FromRole="Province" ToRole="District" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="State" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="District" Relationship="BusinessBookModel.FK_District_Province" FromRole="Province" ToRole="District" />
         </EntityType>
         <EntityType Name="Purchase">
           <Key>
             <PropertyRef Name="PurchaseId" />
           </Key>
           <Property Name="PurchaseId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="CodeGuide" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CodeGuide" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="ProviderId" Type="Int32" Nullable="false" />
           <Property Name="PriceTotal" Type="Double" Nullable="false" />
           <Property Name="DateCreation" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="State" Type="String" MaxLength="3" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="State" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="false" />
           <Property Name="LocalId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Local" Relationship="Self.FK_Purchase_Local" FromRole="Purchase" ToRole="Local" />
-          <NavigationProperty Name="Provider" Relationship="Self.FK_Purchase_Proveedor" FromRole="Purchase" ToRole="Provider" />
-          <NavigationProperty Name="PurchaseDetail" Relationship="Self.FK_PurchaseDetail_Purchase" FromRole="Purchase" ToRole="PurchaseDetail" />
+          <NavigationProperty Name="Local" Relationship="BusinessBookModel.FK_Purchase_Local" FromRole="Purchase" ToRole="Local" />
+          <NavigationProperty Name="Provider" Relationship="BusinessBookModel.FK_Purchase_Proveedor" FromRole="Purchase" ToRole="Provider" />
+          <NavigationProperty Name="PurchaseDetail" Relationship="BusinessBookModel.FK_PurchaseDetail_Purchase" FromRole="Purchase" ToRole="PurchaseDetail" />
         </EntityType>
         <EntityType Name="PurchaseDetail">
           <Key>
@@ -671,10 +763,10 @@
           <Property Name="ProductId" Type="Int32" Nullable="false" />
           <Property Name="PriceSubTotal" Type="Double" Nullable="false" />
           <Property Name="Quantity" Type="Int32" Nullable="false" />
-          <Property Name="State" Type="String" MaxLength="3" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="State" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="false" />
           <Property Name="UnitPrice" Type="Double" Nullable="false" />
-          <NavigationProperty Name="Product" Relationship="Self.FK_PurchaseDetail_Product" FromRole="PurchaseDetail" ToRole="Product" />
-          <NavigationProperty Name="Purchase" Relationship="Self.FK_PurchaseDetail_Purchase" FromRole="PurchaseDetail" ToRole="Purchase" />
+          <NavigationProperty Name="Product" Relationship="BusinessBookModel.FK_PurchaseDetail_Product" FromRole="PurchaseDetail" ToRole="Product" />
+          <NavigationProperty Name="Purchase" Relationship="BusinessBookModel.FK_PurchaseDetail_Purchase" FromRole="PurchaseDetail" ToRole="Purchase" />
         </EntityType>
         <EntityType Name="Sale">
           <Key>
@@ -682,17 +774,17 @@
           </Key>
           <Property Name="SaleId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="DateCreation" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="CodeGuide" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CodeGuide" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="LocalId" Type="Int32" />
           <Property Name="PriceTotal" Type="Double" Nullable="false" />
           <Property Name="EmployeeId" Type="Int32" Nullable="false" />
           <Property Name="ClientId" Type="Int32" />
-          <Property Name="State" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="StateDelivery" Type="String" MaxLength="3" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="Client" Relationship="Self.FK_Sale_Client" FromRole="Sale" ToRole="Client" />
-          <NavigationProperty Name="Employee" Relationship="Self.FK_Sale_Employee" FromRole="Sale" ToRole="Employee" />
-          <NavigationProperty Name="Local" Relationship="Self.FK_Sale_Local" FromRole="Sale" ToRole="Local" />
-          <NavigationProperty Name="SaleDetail" Relationship="Self.FK_SaleDetail_Sale" FromRole="Sale" ToRole="SaleDetail" />
+          <Property Name="State" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="StateDelivery" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Client" Relationship="BusinessBookModel.FK_Sale_Client" FromRole="Sale" ToRole="Client" />
+          <NavigationProperty Name="Employee" Relationship="BusinessBookModel.FK_Sale_Employee" FromRole="Sale" ToRole="Employee" />
+          <NavigationProperty Name="Local" Relationship="BusinessBookModel.FK_Sale_Local" FromRole="Sale" ToRole="Local" />
+          <NavigationProperty Name="SaleDetail" Relationship="BusinessBookModel.FK_SaleDetail_Sale" FromRole="Sale" ToRole="SaleDetail" />
         </EntityType>
         <EntityType Name="SaleDetail">
           <Key>
@@ -703,10 +795,10 @@
           <Property Name="ProductId" Type="Int32" Nullable="false" />
           <Property Name="PriceSubTotal" Type="Double" Nullable="false" />
           <Property Name="Quantity" Type="Int32" Nullable="false" />
-          <Property Name="State" Type="String" MaxLength="3" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="State" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="false" />
           <Property Name="UnitPrice" Type="Double" Nullable="false" />
-          <NavigationProperty Name="Product" Relationship="Self.FK_SaleDetail_Product" FromRole="SaleDetail" ToRole="Product" />
-          <NavigationProperty Name="Sale" Relationship="Self.FK_SaleDetail_Sale" FromRole="SaleDetail" ToRole="Sale" />
+          <NavigationProperty Name="Product" Relationship="BusinessBookModel.FK_SaleDetail_Product" FromRole="SaleDetail" ToRole="Product" />
+          <NavigationProperty Name="Sale" Relationship="BusinessBookModel.FK_SaleDetail_Sale" FromRole="SaleDetail" ToRole="Sale" />
         </EntityType>
         <EntityType Name="TokenEmployee">
           <Key>
@@ -721,11 +813,11 @@
           <Property Name="Issued" Type="DateTime" Precision="3" />
           <Property Name="Expires" Type="DateTime" Precision="3" />
           <Property Name="State" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Employee" Relationship="Self.FK_Employee_TokenEmployee" FromRole="TokenEmployee" ToRole="Employee" />
+          <NavigationProperty Name="Employee" Relationship="BusinessBookModel.FK_Employee_TokenEmployee" FromRole="TokenEmployee" ToRole="Employee" />
         </EntityType>
         <Association Name="FK_Client_Location">
-          <End Role="Location" Type="Self.Location" Multiplicity="1" />
-          <End Role="Client" Type="Self.Client" Multiplicity="*" />
+          <End Type="BusinessBookModel.Location" Role="Location" Multiplicity="1" />
+          <End Type="BusinessBookModel.Client" Role="Client" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Location">
               <PropertyRef Name="LocationId" />
@@ -736,8 +828,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Sale_Client">
-          <End Role="Client" Type="Self.Client" Multiplicity="0..1" />
-          <End Role="Sale" Type="Self.Sale" Multiplicity="*" />
+          <End Type="BusinessBookModel.Client" Role="Client" Multiplicity="0..1" />
+          <End Type="BusinessBookModel.Sale" Role="Sale" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Client">
               <PropertyRef Name="ClientId" />
@@ -748,8 +840,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Company_Employee">
-          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
-          <End Role="Company" Type="Self.Company" Multiplicity="*" />
+          <End Type="BusinessBookModel.Employee" Role="Employee" Multiplicity="1" />
+          <End Type="BusinessBookModel.Company" Role="Company" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Employee">
               <PropertyRef Name="EmployeeId" />
@@ -760,8 +852,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Company_Location">
-          <End Role="Location" Type="Self.Location" Multiplicity="1" />
-          <End Role="Company" Type="Self.Company" Multiplicity="*" />
+          <End Type="BusinessBookModel.Location" Role="Location" Multiplicity="1" />
+          <End Type="BusinessBookModel.Company" Role="Company" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Location">
               <PropertyRef Name="LocationId" />
@@ -772,8 +864,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Local_Company">
-          <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
-          <End Role="Local" Type="Self.Local" Multiplicity="*" />
+          <End Type="BusinessBookModel.Company" Role="Company" Multiplicity="0..1" />
+          <End Type="BusinessBookModel.Local" Role="Local" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Company">
               <PropertyRef Name="CompanyId" />
@@ -784,8 +876,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_District_Province">
-          <End Role="Province" Type="Self.Province" Multiplicity="1" />
-          <End Role="District" Type="Self.District" Multiplicity="*" />
+          <End Type="BusinessBookModel.Province" Role="Province" Multiplicity="1" />
+          <End Type="BusinessBookModel.District" Role="District" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Province">
               <PropertyRef Name="ProvinceId" />
@@ -796,8 +888,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Location_District">
-          <End Role="District" Type="Self.District" Multiplicity="1" />
-          <End Role="Location" Type="Self.Location" Multiplicity="*" />
+          <End Type="BusinessBookModel.District" Role="District" Multiplicity="1" />
+          <End Type="BusinessBookModel.Location" Role="Location" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="District">
               <PropertyRef Name="DistrictId" />
@@ -808,8 +900,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Employee_Location">
-          <End Role="Location" Type="Self.Location" Multiplicity="1" />
-          <End Role="Employee" Type="Self.Employee" Multiplicity="*" />
+          <End Type="BusinessBookModel.Location" Role="Location" Multiplicity="0..1" />
+          <End Type="BusinessBookModel.Employee" Role="Employee" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Location">
               <PropertyRef Name="LocationId" />
@@ -820,8 +912,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Employee_TokenEmployee">
-          <End Role="TokenEmployee" Type="Self.TokenEmployee" Multiplicity="0..1" />
-          <End Role="Employee" Type="Self.Employee" Multiplicity="*" />
+          <End Type="BusinessBookModel.TokenEmployee" Role="TokenEmployee" Multiplicity="0..1" />
+          <End Type="BusinessBookModel.Employee" Role="Employee" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="TokenEmployee">
               <PropertyRef Name="TokenEmployeeId" />
@@ -832,8 +924,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Sale_Employee">
-          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
-          <End Role="Sale" Type="Self.Sale" Multiplicity="*" />
+          <End Type="BusinessBookModel.Employee" Role="Employee" Multiplicity="1" />
+          <End Type="BusinessBookModel.Sale" Role="Sale" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Employee">
               <PropertyRef Name="EmployeeId" />
@@ -844,8 +936,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Inventory_Local">
-          <End Role="Local" Type="Self.Local" Multiplicity="1" />
-          <End Role="Inventory" Type="Self.Inventory" Multiplicity="*" />
+          <End Type="BusinessBookModel.Local" Role="Local" Multiplicity="1" />
+          <End Type="BusinessBookModel.Inventory" Role="Inventory" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Local">
               <PropertyRef Name="LocalId" />
@@ -856,8 +948,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Inventory_Product">
-          <End Role="Product" Type="Self.Product" Multiplicity="1" />
-          <End Role="Inventory" Type="Self.Inventory" Multiplicity="*" />
+          <End Type="BusinessBookModel.Product" Role="Product" Multiplicity="1" />
+          <End Type="BusinessBookModel.Inventory" Role="Inventory" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Product">
               <PropertyRef Name="ProductId" />
@@ -868,8 +960,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Purchase_Local">
-          <End Role="Local" Type="Self.Local" Multiplicity="1" />
-          <End Role="Purchase" Type="Self.Purchase" Multiplicity="*" />
+          <End Type="BusinessBookModel.Local" Role="Local" Multiplicity="1" />
+          <End Type="BusinessBookModel.Purchase" Role="Purchase" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Local">
               <PropertyRef Name="LocalId" />
@@ -880,8 +972,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Sale_Local">
-          <End Role="Local" Type="Self.Local" Multiplicity="0..1" />
-          <End Role="Sale" Type="Self.Sale" Multiplicity="*" />
+          <End Type="BusinessBookModel.Local" Role="Local" Multiplicity="0..1" />
+          <End Type="BusinessBookModel.Sale" Role="Sale" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Local">
               <PropertyRef Name="LocalId" />
@@ -892,8 +984,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_PurchaseDetail_Product">
-          <End Role="Product" Type="Self.Product" Multiplicity="1" />
-          <End Role="PurchaseDetail" Type="Self.PurchaseDetail" Multiplicity="*" />
+          <End Type="BusinessBookModel.Product" Role="Product" Multiplicity="1" />
+          <End Type="BusinessBookModel.PurchaseDetail" Role="PurchaseDetail" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Product">
               <PropertyRef Name="ProductId" />
@@ -904,8 +996,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_SaleDetail_Product">
-          <End Role="Product" Type="Self.Product" Multiplicity="1" />
-          <End Role="SaleDetail" Type="Self.SaleDetail" Multiplicity="*" />
+          <End Type="BusinessBookModel.Product" Role="Product" Multiplicity="1" />
+          <End Type="BusinessBookModel.SaleDetail" Role="SaleDetail" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Product">
               <PropertyRef Name="ProductId" />
@@ -916,8 +1008,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Purchase_Proveedor">
-          <End Role="Provider" Type="Self.Provider" Multiplicity="1" />
-          <End Role="Purchase" Type="Self.Purchase" Multiplicity="*" />
+          <End Type="BusinessBookModel.Provider" Role="Provider" Multiplicity="1" />
+          <End Type="BusinessBookModel.Purchase" Role="Purchase" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Provider">
               <PropertyRef Name="ProviderId" />
@@ -928,8 +1020,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_PurchaseDetail_Purchase">
-          <End Role="Purchase" Type="Self.Purchase" Multiplicity="1" />
-          <End Role="PurchaseDetail" Type="Self.PurchaseDetail" Multiplicity="*" />
+          <End Type="BusinessBookModel.Purchase" Role="Purchase" Multiplicity="1" />
+          <End Type="BusinessBookModel.PurchaseDetail" Role="PurchaseDetail" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Purchase">
               <PropertyRef Name="PurchaseId" />
@@ -940,8 +1032,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_SaleDetail_Sale">
-          <End Role="Sale" Type="Self.Sale" Multiplicity="1" />
-          <End Role="SaleDetail" Type="Self.SaleDetail" Multiplicity="*" />
+          <End Type="BusinessBookModel.Sale" Role="Sale" Multiplicity="1" />
+          <End Type="BusinessBookModel.SaleDetail" Role="SaleDetail" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Sale">
               <PropertyRef Name="SaleId" />
@@ -951,99 +1043,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="BusinessBookEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Client" EntityType="Self.Client" />
-          <EntitySet Name="Company" EntityType="Self.Company" />
-          <EntitySet Name="District" EntityType="Self.District" />
-          <EntitySet Name="Employee" EntityType="Self.Employee" />
-          <EntitySet Name="Inventory" EntityType="Self.Inventory" />
-          <EntitySet Name="Local" EntityType="Self.Local" />
-          <EntitySet Name="Location" EntityType="Self.Location" />
-          <EntitySet Name="Product" EntityType="Self.Product" />
-          <EntitySet Name="Provider" EntityType="Self.Provider" />
-          <EntitySet Name="Province" EntityType="Self.Province" />
-          <EntitySet Name="Purchase" EntityType="Self.Purchase" />
-          <EntitySet Name="PurchaseDetail" EntityType="Self.PurchaseDetail" />
-          <EntitySet Name="Sale" EntityType="Self.Sale" />
-          <EntitySet Name="SaleDetail" EntityType="Self.SaleDetail" />
-          <EntitySet Name="TokenEmployee" EntityType="Self.TokenEmployee" />
-          <AssociationSet Name="FK_Client_Location" Association="Self.FK_Client_Location">
-            <End Role="Location" EntitySet="Location" />
-            <End Role="Client" EntitySet="Client" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Sale_Client" Association="Self.FK_Sale_Client">
-            <End Role="Client" EntitySet="Client" />
-            <End Role="Sale" EntitySet="Sale" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Company_Employee" Association="Self.FK_Company_Employee">
-            <End Role="Employee" EntitySet="Employee" />
-            <End Role="Company" EntitySet="Company" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Company_Location" Association="Self.FK_Company_Location">
-            <End Role="Location" EntitySet="Location" />
-            <End Role="Company" EntitySet="Company" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Local_Company" Association="Self.FK_Local_Company">
-            <End Role="Company" EntitySet="Company" />
-            <End Role="Local" EntitySet="Local" />
-          </AssociationSet>
-          <AssociationSet Name="FK_District_Province" Association="Self.FK_District_Province">
-            <End Role="Province" EntitySet="Province" />
-            <End Role="District" EntitySet="District" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Location_District" Association="Self.FK_Location_District">
-            <End Role="District" EntitySet="District" />
-            <End Role="Location" EntitySet="Location" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Employee_Location" Association="Self.FK_Employee_Location">
-            <End Role="Location" EntitySet="Location" />
-            <End Role="Employee" EntitySet="Employee" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Employee_TokenEmployee" Association="Self.FK_Employee_TokenEmployee">
-            <End Role="TokenEmployee" EntitySet="TokenEmployee" />
-            <End Role="Employee" EntitySet="Employee" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Sale_Employee" Association="Self.FK_Sale_Employee">
-            <End Role="Employee" EntitySet="Employee" />
-            <End Role="Sale" EntitySet="Sale" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Inventory_Local" Association="Self.FK_Inventory_Local">
-            <End Role="Local" EntitySet="Local" />
-            <End Role="Inventory" EntitySet="Inventory" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Inventory_Product" Association="Self.FK_Inventory_Product">
-            <End Role="Product" EntitySet="Product" />
-            <End Role="Inventory" EntitySet="Inventory" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Purchase_Local" Association="Self.FK_Purchase_Local">
-            <End Role="Local" EntitySet="Local" />
-            <End Role="Purchase" EntitySet="Purchase" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Sale_Local" Association="Self.FK_Sale_Local">
-            <End Role="Local" EntitySet="Local" />
-            <End Role="Sale" EntitySet="Sale" />
-          </AssociationSet>
-          <AssociationSet Name="FK_PurchaseDetail_Product" Association="Self.FK_PurchaseDetail_Product">
-            <End Role="Product" EntitySet="Product" />
-            <End Role="PurchaseDetail" EntitySet="PurchaseDetail" />
-          </AssociationSet>
-          <AssociationSet Name="FK_SaleDetail_Product" Association="Self.FK_SaleDetail_Product">
-            <End Role="Product" EntitySet="Product" />
-            <End Role="SaleDetail" EntitySet="SaleDetail" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Purchase_Proveedor" Association="Self.FK_Purchase_Proveedor">
-            <End Role="Provider" EntitySet="Provider" />
-            <End Role="Purchase" EntitySet="Purchase" />
-          </AssociationSet>
-          <AssociationSet Name="FK_PurchaseDetail_Purchase" Association="Self.FK_PurchaseDetail_Purchase">
-            <End Role="Purchase" EntitySet="Purchase" />
-            <End Role="PurchaseDetail" EntitySet="PurchaseDetail" />
-          </AssociationSet>
-          <AssociationSet Name="FK_SaleDetail_Sale" Association="Self.FK_SaleDetail_Sale">
-            <End Role="Sale" EntitySet="Sale" />
-            <End Role="SaleDetail" EntitySet="SaleDetail" />
-          </AssociationSet>
-        </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1053,192 +1052,192 @@
           <EntitySetMapping Name="Client">
             <EntityTypeMapping TypeName="BusinessBookModel.Client">
               <MappingFragment StoreEntitySet="Client">
-                <ScalarProperty Name="ClientId" ColumnName="ClientId" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="LastName" ColumnName="LastName" />
-                <ScalarProperty Name="FullName" ColumnName="FullName" />
-                <ScalarProperty Name="DNI" ColumnName="DNI" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="Phone" ColumnName="Phone" />
-                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
-                <ScalarProperty Name="DateCreation" ColumnName="DateCreation" />
-                <ScalarProperty Name="DateUpdate" ColumnName="DateUpdate" />
-                <ScalarProperty Name="State" ColumnName="State" />
                 <ScalarProperty Name="Sex" ColumnName="Sex" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="DateUpdate" ColumnName="DateUpdate" />
+                <ScalarProperty Name="DateCreation" ColumnName="DateCreation" />
+                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="DNI" ColumnName="DNI" />
+                <ScalarProperty Name="FullName" ColumnName="FullName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ClientId" ColumnName="ClientId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Company">
             <EntityTypeMapping TypeName="BusinessBookModel.Company">
               <MappingFragment StoreEntitySet="Company">
-                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="state" ColumnName="state" />
-                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
                 <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
+                <ScalarProperty Name="state" ColumnName="state" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="District">
             <EntityTypeMapping TypeName="BusinessBookModel.District">
               <MappingFragment StoreEntitySet="District">
-                <ScalarProperty Name="DistrictId" ColumnName="DistrictId" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="State" ColumnName="State" />
                 <ScalarProperty Name="ProvinceId" ColumnName="ProvinceId" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="DistrictId" ColumnName="DistrictId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Employee">
             <EntityTypeMapping TypeName="BusinessBookModel.Employee">
               <MappingFragment StoreEntitySet="Employee">
-                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="LastName" ColumnName="LastName" />
-                <ScalarProperty Name="FullName" ColumnName="FullName" />
-                <ScalarProperty Name="DNI" ColumnName="DNI" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="Phone" ColumnName="Phone" />
-                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
-                <ScalarProperty Name="DateCreation" ColumnName="DateCreation" />
-                <ScalarProperty Name="DateUpdate" ColumnName="DateUpdate" />
-                <ScalarProperty Name="State" ColumnName="State" />
-                <ScalarProperty Name="Sex" ColumnName="Sex" />
-                <ScalarProperty Name="Users" ColumnName="Users" />
-                <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="TokenEmployeeId" ColumnName="TokenEmployeeId" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Users" ColumnName="Users" />
+                <ScalarProperty Name="Sex" ColumnName="Sex" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="DateUpdate" ColumnName="DateUpdate" />
+                <ScalarProperty Name="DateCreation" ColumnName="DateCreation" />
+                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="DNI" ColumnName="DNI" />
+                <ScalarProperty Name="FullName" ColumnName="FullName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Inventory">
             <EntityTypeMapping TypeName="BusinessBookModel.Inventory">
               <MappingFragment StoreEntitySet="Inventory">
-                <ScalarProperty Name="InventoryId" ColumnName="InventoryId" />
-                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
-                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
-                <ScalarProperty Name="DateUpdate" ColumnName="DateUpdate" />
-                <ScalarProperty Name="State" ColumnName="State" />
                 <ScalarProperty Name="LocalId" ColumnName="LocalId" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="DateUpdate" ColumnName="DateUpdate" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="InventoryId" ColumnName="InventoryId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Local">
             <EntityTypeMapping TypeName="BusinessBookModel.Local">
               <MappingFragment StoreEntitySet="Local">
-                <ScalarProperty Name="LocalId" ColumnName="LocalId" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="State" ColumnName="State" />
-                <ScalarProperty Name="Direction" ColumnName="Direction" />
                 <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="Direction" ColumnName="Direction" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="LocalId" ColumnName="LocalId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Location">
             <EntityTypeMapping TypeName="BusinessBookModel.Location">
               <MappingFragment StoreEntitySet="Location">
-                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="State" ColumnName="State" />
                 <ScalarProperty Name="DistrictId" ColumnName="DistrictId" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Product">
             <EntityTypeMapping TypeName="BusinessBookModel.Product">
               <MappingFragment StoreEntitySet="Product">
-                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="UnitPrice" ColumnName="UnitPrice" />
                 <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="UnitPrice" ColumnName="UnitPrice" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Provider">
             <EntityTypeMapping TypeName="BusinessBookModel.Provider">
               <MappingFragment StoreEntitySet="Provider">
-                <ScalarProperty Name="ProviderId" ColumnName="ProviderId" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="State" ColumnName="State" />
-                <ScalarProperty Name="Phone" ColumnName="Phone" />
                 <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ProviderId" ColumnName="ProviderId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Province">
             <EntityTypeMapping TypeName="BusinessBookModel.Province">
               <MappingFragment StoreEntitySet="Province">
-                <ScalarProperty Name="ProvinceId" ColumnName="ProvinceId" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ProvinceId" ColumnName="ProvinceId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Purchase">
             <EntityTypeMapping TypeName="BusinessBookModel.Purchase">
               <MappingFragment StoreEntitySet="Purchase">
-                <ScalarProperty Name="PurchaseId" ColumnName="PurchaseId" />
-                <ScalarProperty Name="CodeGuide" ColumnName="CodeGuide" />
-                <ScalarProperty Name="ProviderId" ColumnName="ProviderId" />
-                <ScalarProperty Name="PriceTotal" ColumnName="PriceTotal" />
-                <ScalarProperty Name="DateCreation" ColumnName="DateCreation" />
-                <ScalarProperty Name="State" ColumnName="State" />
                 <ScalarProperty Name="LocalId" ColumnName="LocalId" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="DateCreation" ColumnName="DateCreation" />
+                <ScalarProperty Name="PriceTotal" ColumnName="PriceTotal" />
+                <ScalarProperty Name="ProviderId" ColumnName="ProviderId" />
+                <ScalarProperty Name="CodeGuide" ColumnName="CodeGuide" />
+                <ScalarProperty Name="PurchaseId" ColumnName="PurchaseId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="PurchaseDetail">
             <EntityTypeMapping TypeName="BusinessBookModel.PurchaseDetail">
               <MappingFragment StoreEntitySet="PurchaseDetail">
-                <ScalarProperty Name="PurchaseDetailId" ColumnName="PurchaseDetailId" />
-                <ScalarProperty Name="PurchaseId" ColumnName="PurchaseId" />
-                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
-                <ScalarProperty Name="PriceSubTotal" ColumnName="PriceSubTotal" />
-                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
-                <ScalarProperty Name="State" ColumnName="State" />
                 <ScalarProperty Name="UnitPrice" ColumnName="UnitPrice" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="PriceSubTotal" ColumnName="PriceSubTotal" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="PurchaseId" ColumnName="PurchaseId" />
+                <ScalarProperty Name="PurchaseDetailId" ColumnName="PurchaseDetailId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Sale">
             <EntityTypeMapping TypeName="BusinessBookModel.Sale">
               <MappingFragment StoreEntitySet="Sale">
-                <ScalarProperty Name="SaleId" ColumnName="SaleId" />
-                <ScalarProperty Name="DateCreation" ColumnName="DateCreation" />
-                <ScalarProperty Name="CodeGuide" ColumnName="CodeGuide" />
-                <ScalarProperty Name="LocalId" ColumnName="LocalId" />
-                <ScalarProperty Name="PriceTotal" ColumnName="PriceTotal" />
-                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
-                <ScalarProperty Name="ClientId" ColumnName="ClientId" />
-                <ScalarProperty Name="State" ColumnName="State" />
                 <ScalarProperty Name="StateDelivery" ColumnName="StateDelivery" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="PriceTotal" ColumnName="PriceTotal" />
+                <ScalarProperty Name="LocalId" ColumnName="LocalId" />
+                <ScalarProperty Name="CodeGuide" ColumnName="CodeGuide" />
+                <ScalarProperty Name="DateCreation" ColumnName="DateCreation" />
+                <ScalarProperty Name="SaleId" ColumnName="SaleId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="SaleDetail">
             <EntityTypeMapping TypeName="BusinessBookModel.SaleDetail">
               <MappingFragment StoreEntitySet="SaleDetail">
-                <ScalarProperty Name="SaleDetailId" ColumnName="SaleDetailId" />
-                <ScalarProperty Name="SaleId" ColumnName="SaleId" />
-                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
-                <ScalarProperty Name="PriceSubTotal" ColumnName="PriceSubTotal" />
-                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
-                <ScalarProperty Name="State" ColumnName="State" />
                 <ScalarProperty Name="UnitPrice" ColumnName="UnitPrice" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="PriceSubTotal" ColumnName="PriceSubTotal" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="SaleId" ColumnName="SaleId" />
+                <ScalarProperty Name="SaleDetailId" ColumnName="SaleDetailId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="TokenEmployee">
             <EntityTypeMapping TypeName="BusinessBookModel.TokenEmployee">
               <MappingFragment StoreEntitySet="TokenEmployee">
-                <ScalarProperty Name="TokenEmployeeId" ColumnName="TokenEmployeeId" />
-                <ScalarProperty Name="AccessToken" ColumnName="AccessToken" />
-                <ScalarProperty Name="TypeToken" ColumnName="TypeToken" />
-                <ScalarProperty Name="ExpireInToken" ColumnName="ExpireInToken" />
-                <ScalarProperty Name="RefreshToken" ColumnName="RefreshToken" />
-                <ScalarProperty Name="ErrorToken" ColumnName="ErrorToken" />
-                <ScalarProperty Name="Issued" ColumnName="Issued" />
-                <ScalarProperty Name="Expires" ColumnName="Expires" />
                 <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="Expires" ColumnName="Expires" />
+                <ScalarProperty Name="Issued" ColumnName="Issued" />
+                <ScalarProperty Name="ErrorToken" ColumnName="ErrorToken" />
+                <ScalarProperty Name="RefreshToken" ColumnName="RefreshToken" />
+                <ScalarProperty Name="ExpireInToken" ColumnName="ExpireInToken" />
+                <ScalarProperty Name="TypeToken" ColumnName="TypeToken" />
+                <ScalarProperty Name="AccessToken" ColumnName="AccessToken" />
+                <ScalarProperty Name="TokenEmployeeId" ColumnName="TokenEmployeeId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

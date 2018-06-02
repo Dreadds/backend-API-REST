@@ -4,192 +4,192 @@
     <EntitySetMapping Name="Client">
       <EntityTypeMapping TypeName="BusinessBookModel.Client">
         <MappingFragment StoreEntitySet="Client">
-          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
-          <ScalarProperty Name="Name" ColumnName="Name" />
-          <ScalarProperty Name="LastName" ColumnName="LastName" />
-          <ScalarProperty Name="FullName" ColumnName="FullName" />
-          <ScalarProperty Name="DNI" ColumnName="DNI" />
-          <ScalarProperty Name="Email" ColumnName="Email" />
-          <ScalarProperty Name="Phone" ColumnName="Phone" />
-          <ScalarProperty Name="LocationId" ColumnName="LocationId" />
-          <ScalarProperty Name="DateCreation" ColumnName="DateCreation" />
-          <ScalarProperty Name="DateUpdate" ColumnName="DateUpdate" />
-          <ScalarProperty Name="State" ColumnName="State" />
           <ScalarProperty Name="Sex" ColumnName="Sex" />
+          <ScalarProperty Name="State" ColumnName="State" />
+          <ScalarProperty Name="DateUpdate" ColumnName="DateUpdate" />
+          <ScalarProperty Name="DateCreation" ColumnName="DateCreation" />
+          <ScalarProperty Name="LocationId" ColumnName="LocationId" />
+          <ScalarProperty Name="Phone" ColumnName="Phone" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="DNI" ColumnName="DNI" />
+          <ScalarProperty Name="FullName" ColumnName="FullName" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="Company">
       <EntityTypeMapping TypeName="BusinessBookModel.Company">
         <MappingFragment StoreEntitySet="Company">
-          <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
-          <ScalarProperty Name="Name" ColumnName="Name" />
-          <ScalarProperty Name="state" ColumnName="state" />
-          <ScalarProperty Name="LocationId" ColumnName="LocationId" />
           <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+          <ScalarProperty Name="LocationId" ColumnName="LocationId" />
+          <ScalarProperty Name="state" ColumnName="state" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="District">
       <EntityTypeMapping TypeName="BusinessBookModel.District">
         <MappingFragment StoreEntitySet="District">
-          <ScalarProperty Name="DistrictId" ColumnName="DistrictId" />
-          <ScalarProperty Name="Name" ColumnName="Name" />
-          <ScalarProperty Name="State" ColumnName="State" />
           <ScalarProperty Name="ProvinceId" ColumnName="ProvinceId" />
+          <ScalarProperty Name="State" ColumnName="State" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="DistrictId" ColumnName="DistrictId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="Employee">
       <EntityTypeMapping TypeName="BusinessBookModel.Employee">
         <MappingFragment StoreEntitySet="Employee">
-          <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
-          <ScalarProperty Name="Name" ColumnName="Name" />
-          <ScalarProperty Name="LastName" ColumnName="LastName" />
-          <ScalarProperty Name="FullName" ColumnName="FullName" />
-          <ScalarProperty Name="DNI" ColumnName="DNI" />
-          <ScalarProperty Name="Email" ColumnName="Email" />
-          <ScalarProperty Name="Phone" ColumnName="Phone" />
-          <ScalarProperty Name="LocationId" ColumnName="LocationId" />
-          <ScalarProperty Name="DateCreation" ColumnName="DateCreation" />
-          <ScalarProperty Name="DateUpdate" ColumnName="DateUpdate" />
-          <ScalarProperty Name="State" ColumnName="State" />
-          <ScalarProperty Name="Sex" ColumnName="Sex" />
-          <ScalarProperty Name="Users" ColumnName="Users" />
-          <ScalarProperty Name="Password" ColumnName="Password" />
           <ScalarProperty Name="TokenEmployeeId" ColumnName="TokenEmployeeId" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+          <ScalarProperty Name="Users" ColumnName="Users" />
+          <ScalarProperty Name="Sex" ColumnName="Sex" />
+          <ScalarProperty Name="State" ColumnName="State" />
+          <ScalarProperty Name="DateUpdate" ColumnName="DateUpdate" />
+          <ScalarProperty Name="DateCreation" ColumnName="DateCreation" />
+          <ScalarProperty Name="LocationId" ColumnName="LocationId" />
+          <ScalarProperty Name="Phone" ColumnName="Phone" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="DNI" ColumnName="DNI" />
+          <ScalarProperty Name="FullName" ColumnName="FullName" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="Inventory">
       <EntityTypeMapping TypeName="BusinessBookModel.Inventory">
         <MappingFragment StoreEntitySet="Inventory">
-          <ScalarProperty Name="InventoryId" ColumnName="InventoryId" />
-          <ScalarProperty Name="ProductId" ColumnName="ProductId" />
-          <ScalarProperty Name="Quantity" ColumnName="Quantity" />
-          <ScalarProperty Name="DateUpdate" ColumnName="DateUpdate" />
-          <ScalarProperty Name="State" ColumnName="State" />
           <ScalarProperty Name="LocalId" ColumnName="LocalId" />
+          <ScalarProperty Name="State" ColumnName="State" />
+          <ScalarProperty Name="DateUpdate" ColumnName="DateUpdate" />
+          <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+          <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+          <ScalarProperty Name="InventoryId" ColumnName="InventoryId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="Local">
       <EntityTypeMapping TypeName="BusinessBookModel.Local">
         <MappingFragment StoreEntitySet="Local">
-          <ScalarProperty Name="LocalId" ColumnName="LocalId" />
-          <ScalarProperty Name="Name" ColumnName="Name" />
-          <ScalarProperty Name="State" ColumnName="State" />
-          <ScalarProperty Name="Direction" ColumnName="Direction" />
           <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+          <ScalarProperty Name="Direction" ColumnName="Direction" />
+          <ScalarProperty Name="State" ColumnName="State" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="LocalId" ColumnName="LocalId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="Location">
       <EntityTypeMapping TypeName="BusinessBookModel.Location">
         <MappingFragment StoreEntitySet="Location">
-          <ScalarProperty Name="LocationId" ColumnName="LocationId" />
-          <ScalarProperty Name="Name" ColumnName="Name" />
-          <ScalarProperty Name="State" ColumnName="State" />
           <ScalarProperty Name="DistrictId" ColumnName="DistrictId" />
+          <ScalarProperty Name="State" ColumnName="State" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="LocationId" ColumnName="LocationId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="Product">
       <EntityTypeMapping TypeName="BusinessBookModel.Product">
         <MappingFragment StoreEntitySet="Product">
-          <ScalarProperty Name="ProductId" ColumnName="ProductId" />
-          <ScalarProperty Name="Name" ColumnName="Name" />
-          <ScalarProperty Name="UnitPrice" ColumnName="UnitPrice" />
           <ScalarProperty Name="State" ColumnName="State" />
+          <ScalarProperty Name="UnitPrice" ColumnName="UnitPrice" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="ProductId" ColumnName="ProductId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="Provider">
       <EntityTypeMapping TypeName="BusinessBookModel.Provider">
         <MappingFragment StoreEntitySet="Provider">
-          <ScalarProperty Name="ProviderId" ColumnName="ProviderId" />
-          <ScalarProperty Name="Name" ColumnName="Name" />
-          <ScalarProperty Name="State" ColumnName="State" />
-          <ScalarProperty Name="Phone" ColumnName="Phone" />
           <ScalarProperty Name="email" ColumnName="email" />
+          <ScalarProperty Name="Phone" ColumnName="Phone" />
+          <ScalarProperty Name="State" ColumnName="State" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="ProviderId" ColumnName="ProviderId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="Province">
       <EntityTypeMapping TypeName="BusinessBookModel.Province">
         <MappingFragment StoreEntitySet="Province">
-          <ScalarProperty Name="ProvinceId" ColumnName="ProvinceId" />
-          <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="State" ColumnName="State" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="ProvinceId" ColumnName="ProvinceId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="Purchase">
       <EntityTypeMapping TypeName="BusinessBookModel.Purchase">
         <MappingFragment StoreEntitySet="Purchase">
-          <ScalarProperty Name="PurchaseId" ColumnName="PurchaseId" />
-          <ScalarProperty Name="CodeGuide" ColumnName="CodeGuide" />
-          <ScalarProperty Name="ProviderId" ColumnName="ProviderId" />
-          <ScalarProperty Name="PriceTotal" ColumnName="PriceTotal" />
-          <ScalarProperty Name="DateCreation" ColumnName="DateCreation" />
-          <ScalarProperty Name="State" ColumnName="State" />
           <ScalarProperty Name="LocalId" ColumnName="LocalId" />
+          <ScalarProperty Name="State" ColumnName="State" />
+          <ScalarProperty Name="DateCreation" ColumnName="DateCreation" />
+          <ScalarProperty Name="PriceTotal" ColumnName="PriceTotal" />
+          <ScalarProperty Name="ProviderId" ColumnName="ProviderId" />
+          <ScalarProperty Name="CodeGuide" ColumnName="CodeGuide" />
+          <ScalarProperty Name="PurchaseId" ColumnName="PurchaseId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="PurchaseDetail">
       <EntityTypeMapping TypeName="BusinessBookModel.PurchaseDetail">
         <MappingFragment StoreEntitySet="PurchaseDetail">
-          <ScalarProperty Name="PurchaseDetailId" ColumnName="PurchaseDetailId" />
-          <ScalarProperty Name="PurchaseId" ColumnName="PurchaseId" />
-          <ScalarProperty Name="ProductId" ColumnName="ProductId" />
-          <ScalarProperty Name="PriceSubTotal" ColumnName="PriceSubTotal" />
-          <ScalarProperty Name="Quantity" ColumnName="Quantity" />
-          <ScalarProperty Name="State" ColumnName="State" />
           <ScalarProperty Name="UnitPrice" ColumnName="UnitPrice" />
+          <ScalarProperty Name="State" ColumnName="State" />
+          <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+          <ScalarProperty Name="PriceSubTotal" ColumnName="PriceSubTotal" />
+          <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+          <ScalarProperty Name="PurchaseId" ColumnName="PurchaseId" />
+          <ScalarProperty Name="PurchaseDetailId" ColumnName="PurchaseDetailId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="Sale">
       <EntityTypeMapping TypeName="BusinessBookModel.Sale">
         <MappingFragment StoreEntitySet="Sale">
-          <ScalarProperty Name="SaleId" ColumnName="SaleId" />
-          <ScalarProperty Name="DateCreation" ColumnName="DateCreation" />
-          <ScalarProperty Name="CodeGuide" ColumnName="CodeGuide" />
-          <ScalarProperty Name="LocalId" ColumnName="LocalId" />
-          <ScalarProperty Name="PriceTotal" ColumnName="PriceTotal" />
-          <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
-          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
-          <ScalarProperty Name="State" ColumnName="State" />
           <ScalarProperty Name="StateDelivery" ColumnName="StateDelivery" />
+          <ScalarProperty Name="State" ColumnName="State" />
+          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+          <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+          <ScalarProperty Name="PriceTotal" ColumnName="PriceTotal" />
+          <ScalarProperty Name="LocalId" ColumnName="LocalId" />
+          <ScalarProperty Name="CodeGuide" ColumnName="CodeGuide" />
+          <ScalarProperty Name="DateCreation" ColumnName="DateCreation" />
+          <ScalarProperty Name="SaleId" ColumnName="SaleId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="SaleDetail">
       <EntityTypeMapping TypeName="BusinessBookModel.SaleDetail">
         <MappingFragment StoreEntitySet="SaleDetail">
-          <ScalarProperty Name="SaleDetailId" ColumnName="SaleDetailId" />
-          <ScalarProperty Name="SaleId" ColumnName="SaleId" />
-          <ScalarProperty Name="ProductId" ColumnName="ProductId" />
-          <ScalarProperty Name="PriceSubTotal" ColumnName="PriceSubTotal" />
-          <ScalarProperty Name="Quantity" ColumnName="Quantity" />
-          <ScalarProperty Name="State" ColumnName="State" />
           <ScalarProperty Name="UnitPrice" ColumnName="UnitPrice" />
+          <ScalarProperty Name="State" ColumnName="State" />
+          <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+          <ScalarProperty Name="PriceSubTotal" ColumnName="PriceSubTotal" />
+          <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+          <ScalarProperty Name="SaleId" ColumnName="SaleId" />
+          <ScalarProperty Name="SaleDetailId" ColumnName="SaleDetailId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="TokenEmployee">
       <EntityTypeMapping TypeName="BusinessBookModel.TokenEmployee">
         <MappingFragment StoreEntitySet="TokenEmployee">
-          <ScalarProperty Name="TokenEmployeeId" ColumnName="TokenEmployeeId" />
-          <ScalarProperty Name="AccessToken" ColumnName="AccessToken" />
-          <ScalarProperty Name="TypeToken" ColumnName="TypeToken" />
-          <ScalarProperty Name="ExpireInToken" ColumnName="ExpireInToken" />
-          <ScalarProperty Name="RefreshToken" ColumnName="RefreshToken" />
-          <ScalarProperty Name="ErrorToken" ColumnName="ErrorToken" />
-          <ScalarProperty Name="Issued" ColumnName="Issued" />
-          <ScalarProperty Name="Expires" ColumnName="Expires" />
           <ScalarProperty Name="State" ColumnName="State" />
+          <ScalarProperty Name="Expires" ColumnName="Expires" />
+          <ScalarProperty Name="Issued" ColumnName="Issued" />
+          <ScalarProperty Name="ErrorToken" ColumnName="ErrorToken" />
+          <ScalarProperty Name="RefreshToken" ColumnName="RefreshToken" />
+          <ScalarProperty Name="ExpireInToken" ColumnName="ExpireInToken" />
+          <ScalarProperty Name="TypeToken" ColumnName="TypeToken" />
+          <ScalarProperty Name="AccessToken" ColumnName="AccessToken" />
+          <ScalarProperty Name="TokenEmployeeId" ColumnName="TokenEmployeeId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

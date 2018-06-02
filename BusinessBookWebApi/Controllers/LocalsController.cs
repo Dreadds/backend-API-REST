@@ -20,7 +20,7 @@ namespace BusinessBookWebApi.Controllers
         [Route("locals")]
         [Route("locals/{localId}")]
         [HttpGet]
-        public HttpResponseMessage ListLocals(Int32? LocalId)
+        public HttpResponseMessage ListLocals(Int32? LocalId=null)
         {
             var Httpresponse = new HttpResponseMessage();
             try
@@ -133,7 +133,7 @@ namespace BusinessBookWebApi.Controllers
         [Authorize]
         [Route("locals/{localId}")]
         [HttpDelete]
-        public HttpResponseMessage DeleteLocal(Int16 LocalId)
+        public HttpResponseMessage DeleteLocal(Int16? LocalId=null)
         {
             var Httpresponse = new HttpResponseMessage();
             try

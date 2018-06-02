@@ -22,7 +22,7 @@ namespace BusinessBookWebApi.Controllers
         [Route("districts")]
         [Route("districts/{districtId}")]
         [HttpGet]
-        public HttpResponseMessage ListDistrict(Int32? DistrictId)
+        public HttpResponseMessage ListDistrict(Int32? DistrictId = null)
         {
             var Httpresponse = new HttpResponseMessage();
             try
@@ -88,7 +88,7 @@ namespace BusinessBookWebApi.Controllers
         [Route("provinces")]
         [Route("provinces/{provinceId}")]
         [HttpGet]
-        public HttpResponseMessage ListProvince(Int32? ProvinceId)
+        public HttpResponseMessage ListProvince(Int32? ProvinceId = null)
         {
             var Httpresponse = new HttpResponseMessage();
             try
@@ -154,7 +154,7 @@ namespace BusinessBookWebApi.Controllers
         [Route("locations")]
         [Route("locations/{locationId}")]
         [HttpGet]
-        public HttpResponseMessage ListLocation(Int32? LocationId)
+        public HttpResponseMessage ListLocation(Int32? LocationId = null)
         {
             var Httpresponse = new HttpResponseMessage();
             try

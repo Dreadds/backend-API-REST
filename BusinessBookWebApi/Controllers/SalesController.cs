@@ -209,7 +209,7 @@ namespace BusinessBookWebApi.Controllers
         [Authorize]
         [Route("sales/{saleId}")]
         [HttpDelete]
-        public HttpResponseMessage DeleteSale(Int16 SaleId)
+        public HttpResponseMessage DeleteSale(Int32? SaleId=null)
         {
             var Httpresponse = new HttpResponseMessage();
             try

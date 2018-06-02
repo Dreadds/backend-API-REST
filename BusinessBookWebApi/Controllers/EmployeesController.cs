@@ -81,6 +81,7 @@ namespace BusinessBookWebApi.Controllers
                     {
                         //DOMAIN 
                         String baseAddress = "http://chemita96-001-site1.dtempurl.com";
+                        //String baseAddress = "http://localhost:16669";
                         //CREATE A NEW TOKEN FOR EMPLOYEE
                         if (!employee.TokenEmployeeId.HasValue)
                         {
@@ -229,19 +230,11 @@ namespace BusinessBookWebApi.Controllers
                     {
                         context.Employee.Add(employee);
                     }
-
-                    employee.Name = model.name;
-                    employee.LastName = model.lastName;
-                    employee.FullName = model.fullName;
-                    employee.DNI = model.dni;
-                    employee.Email = model.email;
-                    employee.Phone = model.phone;
-                    employee.LocationId = model.locationId;
                     employee.DateCreation = DateTime.Today;
                     employee.DateUpdate = DateTime.Today;
                     employee.State = ConstantHelper.Status.ACTIVE;
-                    employee.Sex = model.sex;
                     employee.Users = model.users;
+
                     var password = CipherLogic.Cipher(CipherAction.Encrypt, CipherType.UserPassword, model.password);
                     employee.Password = password;
                     context.SaveChanges();
@@ -345,7 +338,7 @@ namespace BusinessBookWebApi.Controllers
         [Authorize]
         [Route("viewcompany/{companyId}")]
         [HttpPost]
-        public HttpResponseMessage ViewCompany(Int32 CompanyId)
+        public HttpResponseMessage ViewCompany(Int32? CompanyId = null)
         {
             var HttpResponse = new HttpResponseMessage();
             try

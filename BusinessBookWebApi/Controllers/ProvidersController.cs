@@ -19,7 +19,7 @@ namespace BusinessBookWebApi.Controllers
         [Route("providers")]
         [Route("providers/{providerId}")]
         [HttpGet]
-        public HttpResponseMessage ListProviders(Int32? ProviderId)
+        public HttpResponseMessage ListProviders(Int32? ProviderId=null)
         {
             var Httpresponse = new HttpResponseMessage();
             try
@@ -132,7 +132,7 @@ namespace BusinessBookWebApi.Controllers
         [Authorize]
         [Route("providers/{providerId}")]
         [HttpDelete]
-        public HttpResponseMessage DeleteProvider(Int16 ProviderId)
+        public HttpResponseMessage DeleteProvider(Int32? ProviderId = null)
         {
             var Httpresponse = new HttpResponseMessage();
             try

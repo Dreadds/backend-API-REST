@@ -338,3 +338,17 @@ C:\Users\BP-PC-15\Desktop\Moviles upc\backend-API-REST\BusinessBookWebApi\bin\An
 C:\Users\BP-PC-15\Desktop\Moviles upc\backend-API-REST\BusinessBookWebApi\obj\Debug\BusinessBookWebApi.csprojResolveAssemblyReference.cache
 C:\Users\BP-PC-15\Desktop\Moviles upc\backend-API-REST\BusinessBookWebApi\obj\Debug\BusinessBookWebApi.dll
 C:\Users\BP-PC-15\Desktop\Moviles upc\backend-API-REST\BusinessBookWebApi\obj\Debug\BusinessBookWebApi.pdb
+C:\Users\Josemaria\Desktop\BusinessBookWebApi\backend-API-REST\BusinessBookWebApi\bin\Microsoft.AspNet.Identity.Core.dll
+C:\Users\Josemaria\Desktop\BusinessBookWebApi\backend-API-REST\BusinessBookWebApi\bin\Microsoft.AspNet.Identity.EntityFramework.dll
+C:\Users\Josemaria\Desktop\BusinessBookWebApi\backend-API-REST\BusinessBookWebApi\bin\Microsoft.AspNet.Identity.Owin.dll
+C:\Users\Josemaria\Desktop\BusinessBookWebApi\backend-API-REST\BusinessBookWebApi\bin\Microsoft.Owin.Security.Cookies.dll
+C:\Users\Josemaria\Desktop\BusinessBookWebApi\backend-API-REST\BusinessBookWebApi\bin\System.Net.Http.dll
+C:\Users\Josemaria\Desktop\BusinessBookWebApi\backend-API-REST\BusinessBookWebApi\bin\System.Net.Http.Extensions.dll
+C:\Users\Josemaria\Desktop\BusinessBookWebApi\backend-API-REST\BusinessBookWebApi\bin\System.Net.Http.Primitives.dll
+C:\Users\Josemaria\Desktop\BusinessBookWebApi\backend-API-REST\BusinessBookWebApi\bin\System.Net.Http.WebRequest.dll
+C:\Users\Josemaria\Desktop\BusinessBookWebApi\backend-API-REST\BusinessBookWebApi\bin\Microsoft.AspNet.Identity.Core.xml
+C:\Users\Josemaria\Desktop\BusinessBookWebApi\backend-API-REST\BusinessBookWebApi\bin\Microsoft.AspNet.Identity.EntityFramework.xml
+C:\Users\Josemaria\Desktop\BusinessBookWebApi\backend-API-REST\BusinessBookWebApi\bin\Microsoft.AspNet.Identity.Owin.xml
+C:\Users\Josemaria\Desktop\BusinessBookWebApi\backend-API-REST\BusinessBookWebApi\bin\Microsoft.Owin.Security.Cookies.xml
+C:\Users\Josemaria\Desktop\BusinessBookWebApi\backend-API-REST\BusinessBookWebApi\bin\System.Net.Http.xml
+C:\Users\Josemaria\Desktop\BusinessBookWebApi\backend-API-REST\BusinessBookWebApi\bin\System.Net.Http.WebRequest.xml

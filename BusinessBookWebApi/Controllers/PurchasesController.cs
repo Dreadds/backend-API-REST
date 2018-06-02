@@ -19,7 +19,7 @@ namespace BusinessBookWebApi.Controllers
         [Route("purchases")]
         [Route("purchases/{purchaseId}")]
         [HttpGet]
-        public HttpResponseMessage ListPurchases(Int32? PurchaseId)
+        public HttpResponseMessage ListPurchases(Int32? PurchaseId=null)
         {
             var Httpresponse = new HttpResponseMessage();
             try
@@ -200,7 +200,7 @@ namespace BusinessBookWebApi.Controllers
         [Authorize]
         [Route("purchases/{purchaseId}")]
         [HttpDelete]
-        public HttpResponseMessage DeletePurchase(Int16 PurchaseId)
+        public HttpResponseMessage DeletePurchase(Int32? PurchaseId = null)
         {
             var Httpresponse = new HttpResponseMessage();
             try

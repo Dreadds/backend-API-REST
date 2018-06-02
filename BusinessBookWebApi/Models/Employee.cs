@@ -28,8 +28,8 @@ namespace BusinessBookWebApi.Models
         public string DNI { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
-        public int LocationId { get; set; }
-        public System.DateTime DateCreation { get; set; }
+        public Nullable<int> LocationId { get; set; }
+        public Nullable<System.DateTime> DateCreation { get; set; }
         public Nullable<System.DateTime> DateUpdate { get; set; }
         public string State { get; set; }
         public string Sex { get; set; }

@@ -32,10 +32,6 @@ namespace BusinessBookWebApi.Controllers
             if (!ValidateToken(tokenString))
             {
                 return null;
-                /*var employee = context.Employee.FirstOrDefault(x => x.TokenEmployee.AccessToken == tokenString);
-                var password = CipherLogic.Cipher(CipherAction.Decrypt,CipherType.UserPassword,employee.Password);
-                newToken = GeneretaToken(employee.Users, password);
-                tokenEmployee = context.TokenEmployee.FirstOrDefault(x => x.AccessToken == newToken);*/
             }
             else
             {
@@ -51,9 +47,17 @@ namespace BusinessBookWebApi.Controllers
             {
                 var tokenEmployee = context.TokenEmployee.FirstOrDefault(x => x.AccessToken == token);
                 //logica expirado o no 
-                var currentHour = DateTime.Now.AddHours(-7).TimeOfDay;
-                var expireIn = tokenEmployee.Expires.Value.TimeOfDay;
-                bool bandera = currentHour >= expireIn ? false : true;
+                var currentHour = DateTime.Now.AddHours(-7);
+                var expireIn = tokenEmployee.Expires.Value;
+
+                bool bandera = true;
+                if (currentHour >= expireIn) {
+                    bandera = false;
+                }
+                else
+                {
+                    bandera = true;
+                }
                 return bandera;
             }
             catch
@@ -66,6 +70,7 @@ namespace BusinessBookWebApi.Controllers
         {
             var fecha = DateTime.Now.AddHours(-7);
             String baseAddress = "http://chemita96-001-site1.dtempurl.com";
+            //String baseAddress = "http://localhost:16669";
             TokenEntities tokenEntities = new TokenEntities();
             using (var client = new HttpClient())
             {

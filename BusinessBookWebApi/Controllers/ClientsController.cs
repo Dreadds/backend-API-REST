@@ -155,7 +155,7 @@ namespace BusinessBookWebApi.Controllers
         [Authorize]
         [Route("clients/{clientId}")]
         [HttpDelete]
-        public HttpResponseMessage DeleteCliente(Int16 Clientid)
+        public HttpResponseMessage DeleteCliente(Int16? Clientid = null)
         { 
             var Httpresponse = new HttpResponseMessage();
             try
