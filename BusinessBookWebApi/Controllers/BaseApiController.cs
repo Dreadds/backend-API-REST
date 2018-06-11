@@ -27,7 +27,6 @@ namespace BusinessBookWebApi.Controllers
 
             var array = token.Split(' ');
             var tokenString = array[1];
-            var newToken = "";
             TokenEmployee tokenEmployee = new TokenEmployee();
             if (!ValidateToken(tokenString))
             {
@@ -98,7 +97,7 @@ namespace BusinessBookWebApi.Controllers
                     EmployeeBD.TokenEmployee.TypeToken = tokenEntities.tokenType;
                     EmployeeBD.TokenEmployee.RefreshToken = tokenEntities.refreshToken;
                     EmployeeBD.TokenEmployee.Issued = fecha;
-                    EmployeeBD.TokenEmployee.Expires = fecha.AddHours(2);
+                    EmployeeBD.TokenEmployee.Expires = fecha.AddHours(24);
                     EmployeeBD.TokenEmployee.State = ConstantHelper.Status.ACTIVE;
 
                     context.SaveChanges();

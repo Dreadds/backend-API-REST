@@ -14,5 +14,6 @@ namespace BusinessBookWebApi.Entities
         //public DateTime dateCreation { set; get; }
         //public String state { set; get; }
         public Int32 localId { set; get; }
+        public Int32 companyId { set; get; }
     }
 }

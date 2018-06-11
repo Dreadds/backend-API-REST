@@ -16,6 +16,10 @@
     <EntitySet Name="Sale" EntityType="BusinessBookModel.Sale" />
     <EntitySet Name="SaleDetail" EntityType="BusinessBookModel.SaleDetail" />
     <EntitySet Name="TokenEmployee" EntityType="BusinessBookModel.TokenEmployee" />
+    <AssociationSet Name="FK_Client_Company" Association="BusinessBookModel.FK_Client_Company">
+      <End Role="Company" EntitySet="Company" />
+      <End Role="Client" EntitySet="Client" />
+    </AssociationSet>
     <AssociationSet Name="FK_Client_Location" Association="BusinessBookModel.FK_Client_Location">
       <End Role="Location" EntitySet="Location" />
       <End Role="Client" EntitySet="Client" />
@@ -35,6 +39,18 @@
     <AssociationSet Name="FK_Local_Company" Association="BusinessBookModel.FK_Local_Company">
       <End Role="Company" EntitySet="Company" />
       <End Role="Local" EntitySet="Local" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Product_Company" Association="BusinessBookModel.FK_Product_Company">
+      <End Role="Company" EntitySet="Company" />
+      <End Role="Product" EntitySet="Product" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Purchase_Company" Association="BusinessBookModel.FK_Purchase_Company">
+      <End Role="Company" EntitySet="Company" />
+      <End Role="Purchase" EntitySet="Purchase" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Sale_Company" Association="BusinessBookModel.FK_Sale_Company">
+      <End Role="Company" EntitySet="Company" />
+      <End Role="Sale" EntitySet="Sale" />
     </AssociationSet>
     <AssociationSet Name="FK_District_Province" Association="BusinessBookModel.FK_District_Province">
       <End Role="Province" EntitySet="Province" />
@@ -109,6 +125,8 @@
     <Property Name="DateUpdate" Type="DateTime" Precision="3" />
     <Property Name="State" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="false" />
     <Property Name="Sex" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+    <Property Name="CompanyId" Type="Int32" />
+    <NavigationProperty Name="Company" Relationship="BusinessBookModel.FK_Client_Company" FromRole="Client" ToRole="Company" />
     <NavigationProperty Name="Location" Relationship="BusinessBookModel.FK_Client_Location" FromRole="Client" ToRole="Location" />
     <NavigationProperty Name="Sale" Relationship="BusinessBookModel.FK_Sale_Client" FromRole="Client" ToRole="Sale" />
   </EntityType>
@@ -121,9 +139,13 @@
     <Property Name="state" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="false" />
     <Property Name="LocationId" Type="Int32" Nullable="false" />
     <Property Name="EmployeeId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Client" Relationship="BusinessBookModel.FK_Client_Company" FromRole="Company" ToRole="Client" />
     <NavigationProperty Name="Employee" Relationship="BusinessBookModel.FK_Company_Employee" FromRole="Company" ToRole="Employee" />
     <NavigationProperty Name="Location" Relationship="BusinessBookModel.FK_Company_Location" FromRole="Company" ToRole="Location" />
     <NavigationProperty Name="Local" Relationship="BusinessBookModel.FK_Local_Company" FromRole="Company" ToRole="Local" />
+    <NavigationProperty Name="Product" Relationship="BusinessBookModel.FK_Product_Company" FromRole="Company" ToRole="Product" />
+    <NavigationProperty Name="Purchase" Relationship="BusinessBookModel.FK_Purchase_Company" FromRole="Company" ToRole="Purchase" />
+    <NavigationProperty Name="Sale" Relationship="BusinessBookModel.FK_Sale_Company" FromRole="Company" ToRole="Sale" />
   </EntityType>
   <EntityType Name="District">
     <Key>
@@ -208,6 +230,8 @@
     <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="UnitPrice" Type="Double" />
     <Property Name="State" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
+    <Property Name="CompanyId" Type="Int32" />
+    <NavigationProperty Name="Company" Relationship="BusinessBookModel.FK_Product_Company" FromRole="Product" ToRole="Company" />
     <NavigationProperty Name="Inventory" Relationship="BusinessBookModel.FK_Inventory_Product" FromRole="Product" ToRole="Inventory" />
     <NavigationProperty Name="PurchaseDetail" Relationship="BusinessBookModel.FK_PurchaseDetail_Product" FromRole="Product" ToRole="PurchaseDetail" />
     <NavigationProperty Name="SaleDetail" Relationship="BusinessBookModel.FK_SaleDetail_Product" FromRole="Product" ToRole="SaleDetail" />
@@ -243,6 +267,8 @@
     <Property Name="DateCreation" Type="DateTime" Nullable="false" Precision="3" />
     <Property Name="State" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="false" />
     <Property Name="LocalId" Type="Int32" Nullable="false" />
+    <Property Name="CompanyId" Type="Int32" />
+    <NavigationProperty Name="Company" Relationship="BusinessBookModel.FK_Purchase_Company" FromRole="Purchase" ToRole="Company" />
     <NavigationProperty Name="Local" Relationship="BusinessBookModel.FK_Purchase_Local" FromRole="Purchase" ToRole="Local" />
     <NavigationProperty Name="Provider" Relationship="BusinessBookModel.FK_Purchase_Proveedor" FromRole="Purchase" ToRole="Provider" />
     <NavigationProperty Name="PurchaseDetail" Relationship="BusinessBookModel.FK_PurchaseDetail_Purchase" FromRole="Purchase" ToRole="PurchaseDetail" />
@@ -269,12 +295,14 @@
     <Property Name="DateCreation" Type="DateTime" Nullable="false" Precision="3" />
     <Property Name="CodeGuide" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="LocalId" Type="Int32" />
-    <Property Name="PriceTotal" Type="Double" Nullable="false" />
-    <Property Name="EmployeeId" Type="Int32" Nullable="false" />
+    <Property Name="PriceTotal" Type="Double" />
+    <Property Name="EmployeeId" Type="Int32" />
     <Property Name="ClientId" Type="Int32" />
     <Property Name="State" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="StateDelivery" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="false" />
+    <Property Name="CompanyId" Type="Int32" />
     <NavigationProperty Name="Client" Relationship="BusinessBookModel.FK_Sale_Client" FromRole="Sale" ToRole="Client" />
+    <NavigationProperty Name="Company" Relationship="BusinessBookModel.FK_Sale_Company" FromRole="Sale" ToRole="Company" />
     <NavigationProperty Name="Employee" Relationship="BusinessBookModel.FK_Sale_Employee" FromRole="Sale" ToRole="Employee" />
     <NavigationProperty Name="Local" Relationship="BusinessBookModel.FK_Sale_Local" FromRole="Sale" ToRole="Local" />
     <NavigationProperty Name="SaleDetail" Relationship="BusinessBookModel.FK_SaleDetail_Sale" FromRole="Sale" ToRole="SaleDetail" />
@@ -308,6 +336,18 @@
     <Property Name="State" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <NavigationProperty Name="Employee" Relationship="BusinessBookModel.FK_Employee_TokenEmployee" FromRole="TokenEmployee" ToRole="Employee" />
   </EntityType>
+  <Association Name="FK_Client_Company">
+    <End Type="BusinessBookModel.Company" Role="Company" Multiplicity="0..1" />
+    <End Type="BusinessBookModel.Client" Role="Client" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Company">
+        <PropertyRef Name="CompanyId" />
+      </Principal>
+      <Dependent Role="Client">
+        <PropertyRef Name="CompanyId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_Client_Location">
     <End Type="BusinessBookModel.Location" Role="Location" Multiplicity="1" />
     <End Type="BusinessBookModel.Client" Role="Client" Multiplicity="*" />
@@ -368,6 +408,42 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_Product_Company">
+    <End Type="BusinessBookModel.Company" Role="Company" Multiplicity="0..1" />
+    <End Type="BusinessBookModel.Product" Role="Product" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Company">
+        <PropertyRef Name="CompanyId" />
+      </Principal>
+      <Dependent Role="Product">
+        <PropertyRef Name="CompanyId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Purchase_Company">
+    <End Type="BusinessBookModel.Company" Role="Company" Multiplicity="0..1" />
+    <End Type="BusinessBookModel.Purchase" Role="Purchase" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Company">
+        <PropertyRef Name="CompanyId" />
+      </Principal>
+      <Dependent Role="Purchase">
+        <PropertyRef Name="CompanyId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Sale_Company">
+    <End Type="BusinessBookModel.Company" Role="Company" Multiplicity="0..1" />
+    <End Type="BusinessBookModel.Sale" Role="Sale" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Company">
+        <PropertyRef Name="CompanyId" />
+      </Principal>
+      <Dependent Role="Sale">
+        <PropertyRef Name="CompanyId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_District_Province">
     <End Type="BusinessBookModel.Province" Role="Province" Multiplicity="1" />
     <End Type="BusinessBookModel.District" Role="District" Multiplicity="*" />
@@ -417,7 +493,7 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_Sale_Employee">
-    <End Type="BusinessBookModel.Employee" Role="Employee" Multiplicity="1" />
+    <End Type="BusinessBookModel.Employee" Role="Employee" Multiplicity="0..1" />
     <End Type="BusinessBookModel.Sale" Role="Sale" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Employee">

@@ -16,6 +16,7 @@
     <Property Name="DateUpdate" Type="datetime" />
     <Property Name="State" Type="varchar" MaxLength="3" Nullable="false" />
     <Property Name="Sex" Type="varchar" MaxLength="1" />
+    <Property Name="CompanyId" Type="int" />
   </EntityType>
   <EntityType Name="Company">
     <Key>
@@ -94,6 +95,7 @@
     <Property Name="Name" Type="varchar" MaxLength="50" />
     <Property Name="UnitPrice" Type="float" />
     <Property Name="State" Type="varchar" MaxLength="3" />
+    <Property Name="CompanyId" Type="int" />
   </EntityType>
   <EntityType Name="Provider">
     <Key>
@@ -124,6 +126,7 @@
     <Property Name="DateCreation" Type="datetime" Nullable="false" />
     <Property Name="State" Type="varchar" MaxLength="3" Nullable="false" />
     <Property Name="LocalId" Type="int" Nullable="false" />
+    <Property Name="CompanyId" Type="int" />
   </EntityType>
   <EntityType Name="PurchaseDetail">
     <Key>
@@ -145,11 +148,12 @@
     <Property Name="DateCreation" Type="datetime" Nullable="false" />
     <Property Name="CodeGuide" Type="varchar" MaxLength="50" Nullable="false" />
     <Property Name="LocalId" Type="int" />
-    <Property Name="PriceTotal" Type="float" Nullable="false" />
-    <Property Name="EmployeeId" Type="int" Nullable="false" />
+    <Property Name="PriceTotal" Type="float" />
+    <Property Name="EmployeeId" Type="int" />
     <Property Name="ClientId" Type="int" />
     <Property Name="State" Type="varchar" MaxLength="50" Nullable="false" />
     <Property Name="StateDelivery" Type="varchar" MaxLength="3" Nullable="false" />
+    <Property Name="CompanyId" Type="int" />
   </EntityType>
   <EntityType Name="SaleDetail">
     <Key>
@@ -177,6 +181,18 @@
     <Property Name="Expires" Type="datetime" />
     <Property Name="State" Type="varchar" MaxLength="50" />
   </EntityType>
+  <Association Name="FK_Client_Company">
+    <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
+    <End Role="Client" Type="Self.Client" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Company">
+        <PropertyRef Name="CompanyId" />
+      </Principal>
+      <Dependent Role="Client">
+        <PropertyRef Name="CompanyId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_Client_Location">
     <End Role="Location" Type="Self.Location" Multiplicity="1" />
     <End Role="Client" Type="Self.Client" Multiplicity="*" />
@@ -297,6 +313,30 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_Product_Company">
+    <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
+    <End Role="Product" Type="Self.Product" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Company">
+        <PropertyRef Name="CompanyId" />
+      </Principal>
+      <Dependent Role="Product">
+        <PropertyRef Name="CompanyId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Purchase_Company">
+    <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
+    <End Role="Purchase" Type="Self.Purchase" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Company">
+        <PropertyRef Name="CompanyId" />
+      </Principal>
+      <Dependent Role="Purchase">
+        <PropertyRef Name="CompanyId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_Purchase_Local">
     <End Role="Local" Type="Self.Local" Multiplicity="1" />
     <End Role="Purchase" Type="Self.Purchase" Multiplicity="*" />
@@ -357,8 +397,20 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_Sale_Company">
+    <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
+    <End Role="Sale" Type="Self.Sale" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Company">
+        <PropertyRef Name="CompanyId" />
+      </Principal>
+      <Dependent Role="Sale">
+        <PropertyRef Name="CompanyId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_Sale_Employee">
-    <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+    <End Role="Employee" Type="Self.Employee" Multiplicity="0..1" />
     <End Role="Sale" Type="Self.Sale" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Employee">
@@ -421,6 +473,10 @@
     <EntitySet Name="Sale" EntityType="Self.Sale" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="SaleDetail" EntityType="Self.SaleDetail" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TokenEmployee" EntityType="Self.TokenEmployee" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_Client_Company" Association="Self.FK_Client_Company">
+      <End Role="Company" EntitySet="Company" />
+      <End Role="Client" EntitySet="Client" />
+    </AssociationSet>
     <AssociationSet Name="FK_Client_Location" Association="Self.FK_Client_Location">
       <End Role="Location" EntitySet="Location" />
       <End Role="Client" EntitySet="Client" />
@@ -461,6 +517,14 @@
       <End Role="District" EntitySet="District" />
       <End Role="Location" EntitySet="Location" />
     </AssociationSet>
+    <AssociationSet Name="FK_Product_Company" Association="Self.FK_Product_Company">
+      <End Role="Company" EntitySet="Company" />
+      <End Role="Product" EntitySet="Product" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Purchase_Company" Association="Self.FK_Purchase_Company">
+      <End Role="Company" EntitySet="Company" />
+      <End Role="Purchase" EntitySet="Purchase" />
+    </AssociationSet>
     <AssociationSet Name="FK_Purchase_Local" Association="Self.FK_Purchase_Local">
       <End Role="Local" EntitySet="Local" />
       <End Role="Purchase" EntitySet="Purchase" />
@@ -479,6 +543,10 @@
     </AssociationSet>
     <AssociationSet Name="FK_Sale_Client" Association="Self.FK_Sale_Client">
       <End Role="Client" EntitySet="Client" />
+      <End Role="Sale" EntitySet="Sale" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Sale_Company" Association="Self.FK_Sale_Company">
+      <End Role="Company" EntitySet="Company" />
       <End Role="Sale" EntitySet="Sale" />
     </AssociationSet>
     <AssociationSet Name="FK_Sale_Employee" Association="Self.FK_Sale_Employee">

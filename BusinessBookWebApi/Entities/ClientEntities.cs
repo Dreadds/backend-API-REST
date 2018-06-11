@@ -10,11 +10,11 @@ namespace BusinessBookWebApi.Entities
         public Int32 clientId { set; get; }
         public String name { set; get; }
         public String lastName { set; get; }
-        public String fullName { set; get; }
         public String dni { set; get; }
         public String email { set; get; }
         public String phone { set; get; }
         public Int32 locationId { set; get; }
+        public Int32 companyId { set; get; }
         /*public DateTime dateCreation { set; get; }
         public DateTime dateUpdate { set; get; }
         public String state { set; get; }*/

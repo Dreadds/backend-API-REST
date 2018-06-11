@@ -58,6 +58,12 @@ namespace BusinessBookWebApi.Controllers
                 if(model == null)
                 {
                     HttpResponse = new HttpResponseMessage(HttpStatusCode.NoContent);
+                    response.Code = HttpStatusCode.NoContent;
+                    response.Message = "No Content";
+                    response.Result = null;
+
+                    HttpResponse.Content = new StringContent(JsonConvert.SerializeObject(response));
+                    HttpResponse.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                     return HttpResponse;
                 }
                 Employee employee = new Employee();
@@ -71,6 +77,12 @@ namespace BusinessBookWebApi.Controllers
                     if (employee == null)
                     {
                         HttpResponse = new HttpResponseMessage(HttpStatusCode.NotFound);
+                        response.Code = HttpStatusCode.NotFound;
+                        response.Message = "Not Found";
+                        response.Result = null;
+
+                        HttpResponse.Content = new StringContent(JsonConvert.SerializeObject(response));
+                        HttpResponse.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                         return HttpResponse;
                     }
 
@@ -101,6 +113,12 @@ namespace BusinessBookWebApi.Controllers
                                 if (tokenEntities.accessToken == null)
                                 {
                                     HttpResponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
+                                    response.Code = HttpStatusCode.BadRequest;
+                                    response.Message = "Bad Request";
+                                    response.Result = null;
+
+                                    HttpResponse.Content = new StringContent(JsonConvert.SerializeObject(response));
+                                    HttpResponse.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                                     return HttpResponse;
                                 }
                                 else
@@ -114,7 +132,7 @@ namespace BusinessBookWebApi.Controllers
                                     tokenEmployee.TypeToken = tokenEntities.tokenType;
                                     tokenEmployee.RefreshToken = tokenEntities.refreshToken;
                                     tokenEmployee.Issued = fecha;
-                                    tokenEmployee.Expires = fecha.AddHours(2);
+                                    tokenEmployee.Expires = fecha.AddHours(24);
                                     tokenEmployee.State = ConstantHelper.Status.ACTIVE;
                                     context.SaveChanges();
                                     //LINK EMPLOYEE WITH TOKEN
@@ -130,11 +148,15 @@ namespace BusinessBookWebApi.Controllers
                             token.refreshToken = tokenEntities.refreshToken;
                             token.username = employee.Users;
                             token.issued = fecha;
-                            token.expires = fecha.AddHours(2);
+                            token.expires = fecha.AddHours(24);
+
+                            response.Code = HttpStatusCode.OK;
+                            response.Message = "Success";
+                            response.Result = token;
 
                             //RESULT
                             HttpResponse = new HttpResponseMessage(HttpStatusCode.OK);
-                            HttpResponse.Content = new StringContent(JsonConvert.SerializeObject(token));
+                            HttpResponse.Content = new StringContent(JsonConvert.SerializeObject(response));
                             HttpResponse.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                         }
                         else if (employee.TokenEmployeeId.HasValue)
@@ -167,9 +189,12 @@ namespace BusinessBookWebApi.Controllers
                                 token.issued = employee.TokenEmployee.Issued;
                                 token.expires = employee.TokenEmployee.Expires;
                             }
+                            response.Code = HttpStatusCode.OK;
+                            response.Message = "Success";
+                            response.Result = token;
 
                             HttpResponse = new HttpResponseMessage(HttpStatusCode.OK);
-                            HttpResponse.Content = new StringContent(JsonConvert.SerializeObject(token));
+                            HttpResponse.Content = new StringContent(JsonConvert.SerializeObject(response));
                             HttpResponse.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                         }
                     }
@@ -179,13 +204,23 @@ namespace BusinessBookWebApi.Controllers
                 if(employee.State == ConstantHelper.Status.INACTIVE)
                 {
                     HttpResponse = new HttpResponseMessage(HttpStatusCode.NotFound);
+                    response.Code = HttpStatusCode.NotFound;
+                    response.Message = "Not Found";
+                    response.Result = null;
+
+                    HttpResponse.Content = new StringContent(JsonConvert.SerializeObject(response));
+                    HttpResponse.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                     return HttpResponse;
                 }
                 return HttpResponse;
             }
             catch(Exception ex)
             {
-                HttpResponse = new HttpResponseMessage(HttpStatusCode.BadRequest);
+                HttpResponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
+                response.Message = "Bad Gateway";
+                response.Result = null;
+                HttpResponse.Content = new StringContent(JsonConvert.SerializeObject(response));
+                HttpResponse.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                 return HttpResponse;
             }
         }
@@ -204,12 +239,25 @@ namespace BusinessBookWebApi.Controllers
                     if (model == null)
                     {
                         HttpResponse = new HttpResponseMessage(HttpStatusCode.NoContent);
+                        response.Code = HttpStatusCode.NoContent;
+                        response.Message = "No Content";
+                        response.Result = null;
+                        
+                        HttpResponse.Content = new StringContent(JsonConvert.SerializeObject(response));
+                        HttpResponse.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                         return HttpResponse;
                     }
                     //IF EMPLOYEEID HAVE 0
                     if (model.employeeId == 0)
                     {
+
                         HttpResponse = new HttpResponseMessage(HttpStatusCode.BadRequest);
+                        response.Code = HttpStatusCode.BadRequest;
+                        response.Message = "Bad Request";
+                        response.Result = null;
+
+                        HttpResponse.Content = new StringContent(JsonConvert.SerializeObject(response));
+                        HttpResponse.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                         return HttpResponse;
                     }
                     
@@ -219,7 +267,13 @@ namespace BusinessBookWebApi.Controllers
                     {
                         if (employeee.Users == model.users)
                         {
-                            HttpResponse = new HttpResponseMessage(HttpStatusCode.BadRequest);
+                            HttpResponse = new HttpResponseMessage(HttpStatusCode.NotAcceptable);
+                            response.Code = HttpStatusCode.NotAcceptable;
+                            response.Message = "Not Acceptable";
+                            response.Result = null;
+
+                            HttpResponse.Content = new StringContent(JsonConvert.SerializeObject(response));
+                            HttpResponse.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                             return HttpResponse;
                         }
                     }
@@ -240,15 +294,23 @@ namespace BusinessBookWebApi.Controllers
                     context.SaveChanges();
 
 
+                    ts.Complete();
+
                     //INSERT TO LOGIN
                     /*var loginResult = this.LoginEmployee(new LoginEntities()
                     {
                         users = model.users,
                         password = model.password
                     });*/
-                    ts.Complete();
+
+                    response.Code = HttpStatusCode.OK;
+                    response.Message = "Success";
+                    response.Result = null;
 
                     HttpResponse = new HttpResponseMessage(HttpStatusCode.OK);
+                    HttpResponse.Content = new StringContent(JsonConvert.SerializeObject(response));
+                    HttpResponse.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
                     return HttpResponse;
                 }
 
@@ -256,12 +318,16 @@ namespace BusinessBookWebApi.Controllers
             }
             catch (Exception e)
             {
-                HttpResponse = new HttpResponseMessage(HttpStatusCode.BadRequest);
+                HttpResponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
+                response.Message = "Bad Gateway";
+                response.Result = null;
+                HttpResponse.Content = new StringContent(JsonConvert.SerializeObject(response));
+                HttpResponse.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                 return HttpResponse;
+
             }
         }
-
-        [Authorize]
+        
         [Route("registercompany")]
         [HttpPost]
         public HttpResponseMessage RegisterCompany(CompanyEntities model)
@@ -277,8 +343,10 @@ namespace BusinessBookWebApi.Controllers
                     {
                         HttpResponse = new HttpResponseMessage(HttpStatusCode.Unauthorized);
                         response.Code = HttpStatusCode.Unauthorized;
-                        response.Message = "Unauthorized";
+                        response.Message = "Authorization has been denied for this request.";
                         response.Result = null;
+                        HttpResponse.Content = new StringContent(JsonConvert.SerializeObject(response));
+                        HttpResponse.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                         return HttpResponse;
                     }
                     else
@@ -287,12 +355,22 @@ namespace BusinessBookWebApi.Controllers
                         if (model == null)
                         {
                             HttpResponse = new HttpResponseMessage(HttpStatusCode.NoContent);
+                            response.Code = HttpStatusCode.NoContent;
+                            response.Message = "No Content";
+                            response.Result = null;
+                            HttpResponse.Content = new StringContent(JsonConvert.SerializeObject(response));
+                            HttpResponse.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                             return HttpResponse;
                         }
 
                         if (model.companyId == 0)
                         {
                             HttpResponse = new HttpResponseMessage(HttpStatusCode.BadRequest);
+                            response.Code = HttpStatusCode.BadRequest;
+                            response.Message = "Bad Request";
+                            response.Result = null;
+                            HttpResponse.Content = new StringContent(JsonConvert.SerializeObject(response));
+                            HttpResponse.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                             return HttpResponse;
                         }
 
@@ -303,6 +381,11 @@ namespace BusinessBookWebApi.Controllers
                             if (companyy.Name == model.name)
                             {
                                 HttpResponse = new HttpResponseMessage(HttpStatusCode.NotAcceptable);
+                                response.Code = HttpStatusCode.NotAcceptable;
+                                response.Message = "Not Acceptable";
+                                response.Result = null;
+                                HttpResponse.Content = new StringContent(JsonConvert.SerializeObject(response));
+                                HttpResponse.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                                 return HttpResponse;
                             }
                         }
@@ -323,7 +406,13 @@ namespace BusinessBookWebApi.Controllers
                         ts.Complete();
 
                         HttpResponse = new HttpResponseMessage(HttpStatusCode.OK);
+                        response.Code = HttpStatusCode.OK;
+                        response.Message = "Success";
+                        response.Result = null;
                     }
+
+                    HttpResponse.Content = new StringContent(JsonConvert.SerializeObject(response));
+                    HttpResponse.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
                     return HttpResponse;
                 }
@@ -331,13 +420,17 @@ namespace BusinessBookWebApi.Controllers
             catch
             {
                 HttpResponse = new HttpResponseMessage(HttpStatusCode.BadRequest);
+                response.Code = HttpStatusCode.BadRequest;
+                response.Message = "Bad Request";
+                response.Result = null;
+                HttpResponse.Content = new StringContent(JsonConvert.SerializeObject(response));
+                HttpResponse.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                 return HttpResponse;
             }
         }
-
-        [Authorize]
+        
         [Route("viewcompany/{companyId}")]
-        [HttpPost]
+        [HttpGet]
         public HttpResponseMessage ViewCompany(Int32? CompanyId = null)
         {
             var HttpResponse = new HttpResponseMessage();
@@ -351,8 +444,11 @@ namespace BusinessBookWebApi.Controllers
                     {
                         HttpResponse = new HttpResponseMessage(HttpStatusCode.Unauthorized);
                         response.Code = HttpStatusCode.Unauthorized;
-                        response.Message = "Unauthorized";
+                        response.Message = "Authorization has been denied for this request.";
                         response.Result = null;
+                        HttpResponse.Content = new StringContent(JsonConvert.SerializeObject(response));
+                        HttpResponse.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                        return HttpResponse;
                     }
                     else
                     {
@@ -360,6 +456,11 @@ namespace BusinessBookWebApi.Controllers
                         if (CompanyId == null)
                         {
                             HttpResponse = new HttpResponseMessage(HttpStatusCode.NoContent);
+                            response.Code = HttpStatusCode.NoContent;
+                            response.Message = "No Content";
+                            response.Result = null;
+                            HttpResponse.Content = new StringContent(JsonConvert.SerializeObject(response));
+                            HttpResponse.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                             return HttpResponse;
                         }
 
@@ -370,12 +471,22 @@ namespace BusinessBookWebApi.Controllers
                         if (company == null)
                         {
                             HttpResponse = new HttpResponseMessage(HttpStatusCode.NotFound);
+                            response.Code = HttpStatusCode.NotFound;
+                            response.Message = "Not Found";
+                            response.Result = null;
+                            HttpResponse.Content = new StringContent(JsonConvert.SerializeObject(response));
+                            HttpResponse.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                             return HttpResponse;
                         }
 
                         if (company.state == ConstantHelper.Status.INACTIVE)
                         {
                             HttpResponse = new HttpResponseMessage(HttpStatusCode.NotAcceptable);
+                            response.Code = HttpStatusCode.NotAcceptable;
+                            response.Message = "Not Acceptable";
+                            response.Result = null;
+                            HttpResponse.Content = new StringContent(JsonConvert.SerializeObject(response));
+                            HttpResponse.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                             return HttpResponse;
                         }
 
@@ -385,6 +496,7 @@ namespace BusinessBookWebApi.Controllers
 
                         ts.Complete();
 
+                       
                         HttpResponse = new HttpResponseMessage(HttpStatusCode.OK);
                         HttpResponse.Content = new StringContent(JsonConvert.SerializeObject(response));
                         HttpResponse.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
@@ -395,7 +507,76 @@ namespace BusinessBookWebApi.Controllers
             catch
             {
                 HttpResponse = new HttpResponseMessage(HttpStatusCode.BadRequest);
+                response.Code = HttpStatusCode.BadRequest;
+                response.Message = "Bad Request";
+                response.Result = null;
+                HttpResponse.Content = new StringContent(JsonConvert.SerializeObject(response));
+                HttpResponse.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                 return HttpResponse;
+            }
+        }
+
+        public void Login(LoginEntities model)
+        {
+            if (!String.IsNullOrEmpty(model.users) || !String.IsNullOrEmpty(model.password))
+            {
+                var employee = context.Employee.FirstOrDefault(x => x.Users == model.users && x.State == ConstantHelper.Status.ACTIVE);
+
+                
+                var password = CipherLogic.Cipher(CipherAction.Decrypt, CipherType.UserPassword, employee.Password);
+
+                //COMPARATION PASSWORD
+                if (password == model.password)
+                {
+                    //DOMAIN 
+                    String baseAddress = "http://chemita96-001-site1.dtempurl.com";
+                    //String baseAddress = "http://localhost:16669";
+                    //CREATE A NEW TOKEN FOR EMPLOYEE
+                    if (!employee.TokenEmployeeId.HasValue)
+                    {
+                        var fecha = DateTime.Now.AddHours(-7);
+                        TokenEntities tokenEntities = new TokenEntities();
+                        using (var client = new HttpClient())
+                        {
+                            var form = new Dictionary<string, string>
+                                {
+                                    {"grant_type", "password"},
+                                    {"username", employee.Users},
+                                    {"password", password},
+                                };
+                            var tokenResponse = client.PostAsync(baseAddress + "/oauth/token", new FormUrlEncodedContent(form)).Result;
+                            //CONVERT 
+                            tokenEntities = tokenResponse.Content.ReadAsAsync<TokenEntities>(new[] { new JsonMediaTypeFormatter() }).Result;
+                            if (tokenEntities.accessToken != null)
+                            {
+                                //IF TOKEN IS NULL ADD KEY AND SAVE IN DATA BASE
+                                var tokenEmployee = new TokenEmployee();
+                                context.TokenEmployee.Add(tokenEmployee);
+                                tokenEmployee.AccessToken = tokenEntities.accessToken;
+                                tokenEmployee.ExpireInToken = tokenEntities.expiresIn;
+                                tokenEmployee.ErrorToken = tokenEntities.error;
+                                tokenEmployee.TypeToken = tokenEntities.tokenType;
+                                tokenEmployee.RefreshToken = tokenEntities.refreshToken;
+                                tokenEmployee.Issued = fecha;
+                                tokenEmployee.Expires = fecha.AddHours(24);
+                                tokenEmployee.State = ConstantHelper.Status.ACTIVE;
+                                context.SaveChanges();
+                                //LINK EMPLOYEE WITH TOKEN
+                                employee.TokenEmployeeId = tokenEmployee.TokenEmployeeId;
+                                context.SaveChanges();
+                            }
+                        }
+
+                        //SHOW HOW TO JSON 
+                        token.accessToken = tokenEntities.accessToken;
+                        token.tokenType = tokenEntities.tokenType;
+                        token.expiresIn = tokenEntities.expiresIn;
+                        token.refreshToken = tokenEntities.refreshToken;
+                        token.username = employee.Users;
+                        token.issued = fecha;
+                        token.expires = fecha.AddHours(24);
+                    }
+                }
             }
         }
     }

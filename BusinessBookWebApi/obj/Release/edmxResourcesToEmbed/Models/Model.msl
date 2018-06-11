@@ -4,6 +4,7 @@
     <EntitySetMapping Name="Client">
       <EntityTypeMapping TypeName="BusinessBookModel.Client">
         <MappingFragment StoreEntitySet="Client">
+          <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
           <ScalarProperty Name="Sex" ColumnName="Sex" />
           <ScalarProperty Name="State" ColumnName="State" />
           <ScalarProperty Name="DateUpdate" ColumnName="DateUpdate" />
@@ -97,6 +98,7 @@
     <EntitySetMapping Name="Product">
       <EntityTypeMapping TypeName="BusinessBookModel.Product">
         <MappingFragment StoreEntitySet="Product">
+          <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
           <ScalarProperty Name="State" ColumnName="State" />
           <ScalarProperty Name="UnitPrice" ColumnName="UnitPrice" />
           <ScalarProperty Name="Name" ColumnName="Name" />
@@ -127,6 +129,7 @@
     <EntitySetMapping Name="Purchase">
       <EntityTypeMapping TypeName="BusinessBookModel.Purchase">
         <MappingFragment StoreEntitySet="Purchase">
+          <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
           <ScalarProperty Name="LocalId" ColumnName="LocalId" />
           <ScalarProperty Name="State" ColumnName="State" />
           <ScalarProperty Name="DateCreation" ColumnName="DateCreation" />
@@ -153,6 +156,7 @@
     <EntitySetMapping Name="Sale">
       <EntityTypeMapping TypeName="BusinessBookModel.Sale">
         <MappingFragment StoreEntitySet="Sale">
+          <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
           <ScalarProperty Name="StateDelivery" ColumnName="StateDelivery" />
           <ScalarProperty Name="State" ColumnName="State" />
           <ScalarProperty Name="ClientId" ColumnName="ClientId" />

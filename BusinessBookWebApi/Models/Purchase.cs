@@ -27,7 +27,9 @@ namespace BusinessBookWebApi.Models
         public System.DateTime DateCreation { get; set; }
         public string State { get; set; }
         public int LocalId { get; set; }
+        public Nullable<int> CompanyId { get; set; }
     
+        public virtual Company Company { get; set; }
         public virtual Local Local { get; set; }
         public virtual Provider Provider { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

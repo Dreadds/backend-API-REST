@@ -17,7 +17,11 @@ namespace BusinessBookWebApi.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Company()
         {
+            this.Client = new HashSet<Client>();
             this.Local = new HashSet<Local>();
+            this.Product = new HashSet<Product>();
+            this.Purchase = new HashSet<Purchase>();
+            this.Sale = new HashSet<Sale>();
         }
     
         public int CompanyId { get; set; }
@@ -26,9 +30,17 @@ namespace BusinessBookWebApi.Models
         public int LocationId { get; set; }
         public int EmployeeId { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Client> Client { get; set; }
         public virtual Employee Employee { get; set; }
         public virtual Location Location { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Local> Local { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Product> Product { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Purchase> Purchase { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Sale> Sale { get; set; }
     }
 }

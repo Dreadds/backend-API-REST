@@ -16,11 +16,10 @@ namespace BusinessBookWebApi.Controllers
     [RoutePrefix("businessbookapi/v1")]
     public class ClientsController : BaseApiController
     {
-        [Authorize]
-        [Route("clients")]
-        [Route("clients/{clientId}")]
+        [Route("companies/{companyId}/clients")]
+        [Route("companies/{companyId}/clients/{clientId}")]
         [HttpGet]
-        public HttpResponseMessage ListClients(Int32? clientId = null)
+        public HttpResponseMessage ListClients(Int32? companyId = null, Int32? clientId = null)
         {
             var Httpresponse = new HttpResponseMessage();
             try
@@ -32,43 +31,28 @@ namespace BusinessBookWebApi.Controllers
                 {
                     Httpresponse = new HttpResponseMessage(HttpStatusCode.Unauthorized);
                     response.Code = HttpStatusCode.Unauthorized;
-                    response.Message = "Unauthorized";
+                    response.Message = "Authorization has been denied for this request.";
                     response.Result = null;
+
+                    Httpresponse.Content = new StringContent(JsonConvert.SerializeObject(response));
+                    Httpresponse.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                     return Httpresponse;
                 }
                 else
                 {
-                    Httpresponse = new HttpResponseMessage(HttpStatusCode.OK);
 
-                    response.Code = HttpStatusCode.OK;
-                    response.Message = "Success";
-
-
-                    if (clientId.HasValue)
+                    if (companyId.HasValue)
                     {
-                        response.Result = context.Client.Where(x => x.State == ConstantHelper.Status.ACTIVE && x.ClientId == clientId)
-                        .Select(x => new
+
+                        Httpresponse = new HttpResponseMessage(HttpStatusCode.OK);
+                        response.Code = HttpStatusCode.OK;
+                        response.Message = "Success";
+                        if (clientId.HasValue)
                         {
-                            name = x.Name,
-                            lastName = x.LastName,
-                            fullName = x.FullName,
-                            dni = x.DNI,
-                            email = x.Email,
-                            phone = x.Phone,
-                            location = x.Location.Name,
-                            dateCreation = x.DateCreation,
-                            dateUpdate = x.DateUpdate,
-                            state = x.State,
-                            sex = x.Sex == "M" ? "Male" : "Female"
-                        }).ToList();
-
-                    }
-                    else
-                    {
-
-                        response.Result = context.Client.Where(x => x.State == ConstantHelper.Status.ACTIVE)
+                            response.Result = context.Client.Where(x => x.State == ConstantHelper.Status.ACTIVE && x.ClientId == clientId && x.CompanyId == companyId)
                             .Select(x => new
                             {
+                                clientId = x.ClientId,
                                 name = x.Name,
                                 lastName = x.LastName,
                                 fullName = x.FullName,
@@ -82,6 +66,33 @@ namespace BusinessBookWebApi.Controllers
                                 sex = x.Sex == "M" ? "Male" : "Female"
                             }).ToList();
 
+                        }
+                        else
+                        {
+
+                            response.Result = context.Client.Where(x => x.State == ConstantHelper.Status.ACTIVE && x.CompanyId == companyId)
+                                .Select(x => new
+                                {
+                                    clientId = x.ClientId,
+                                    name = x.Name,
+                                    lastName = x.LastName,
+                                    fullName = x.FullName,
+                                    dni = x.DNI,
+                                    email = x.Email,
+                                    phone = x.Phone,
+                                    location = x.Location.Name,
+                                    dateCreation = x.DateCreation,
+                                    dateUpdate = x.DateUpdate,
+                                    state = x.State,
+                                    sex = x.Sex == "M" ? "Male" : "Female"
+                                }).ToList();
+
+                        }
+                    }
+                    else
+                    {
+                        Httpresponse = new HttpResponseMessage(HttpStatusCode.NotFound);
+                        return Httpresponse;
                     }
 
                     Httpresponse.Content = new StringContent(JsonConvert.SerializeObject(response));
@@ -96,7 +107,6 @@ namespace BusinessBookWebApi.Controllers
             }
         }
 
-        [Authorize]
         [Route("clients")]
         [HttpPost]
         public HttpResponseMessage AddClient(ClientEntities model)
@@ -110,8 +120,11 @@ namespace BusinessBookWebApi.Controllers
                 {
                     Httpresponse = new HttpResponseMessage(HttpStatusCode.Unauthorized);
                     response.Code = HttpStatusCode.Unauthorized;
-                    response.Message = "Unauthorized";
+                    response.Message = "Authorization has been denied for this request.";
                     response.Result = null;
+
+                    Httpresponse.Content = new StringContent(JsonConvert.SerializeObject(response));
+                    Httpresponse.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                     return Httpresponse;
                 }
                 else
@@ -130,7 +143,7 @@ namespace BusinessBookWebApi.Controllers
                         client.ClientId = model.clientId;
                         client.Name = model.name;
                         client.LastName = model.lastName;
-                        client.FullName = model.fullName;
+                        client.FullName = model.name + " " + model.lastName;
                         client.DNI = model.dni;
                         client.Email = model.email;
                         client.Phone = model.phone;
@@ -139,10 +152,17 @@ namespace BusinessBookWebApi.Controllers
                         client.DateUpdate = DateTime.Today;
                         client.State = ConstantHelper.Status.ACTIVE;
                         client.Sex = model.sex;
+                        client.CompanyId = model.companyId;
                         context.SaveChanges();
                     }
                     Httpresponse = new HttpResponseMessage(HttpStatusCode.OK);
+                    response.Code = HttpStatusCode.OK;
+                    response.Message = "Success";
+                    response.Result = null;
                 }
+                
+                Httpresponse.Content = new StringContent(JsonConvert.SerializeObject(response));
+                Httpresponse.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                 return Httpresponse;
             }
             catch
@@ -151,8 +171,7 @@ namespace BusinessBookWebApi.Controllers
                 return Httpresponse;
             }
         }
-
-        [Authorize]
+        
         [Route("clients/{clientId}")]
         [HttpDelete]
         public HttpResponseMessage DeleteCliente(Int16? Clientid = null)
@@ -166,8 +185,11 @@ namespace BusinessBookWebApi.Controllers
                 {
                     Httpresponse = new HttpResponseMessage(HttpStatusCode.Unauthorized);
                     response.Code = HttpStatusCode.Unauthorized;
-                    response.Message = "Unauthorized";
+                    response.Message = "Authorization has been denied for this request.";
                     response.Result = null;
+
+                    Httpresponse.Content = new StringContent(JsonConvert.SerializeObject(response));
+                    Httpresponse.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                     return Httpresponse;
                 }
                 else
@@ -186,7 +208,13 @@ namespace BusinessBookWebApi.Controllers
                     }
 
                     Httpresponse = new HttpResponseMessage(HttpStatusCode.OK);
+                    response.Code = HttpStatusCode.OK;
+                    response.Message = "Success";
+                    response.Result = null;
                 }
+
+                Httpresponse.Content = new StringContent(JsonConvert.SerializeObject(response));
+                Httpresponse.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                 return Httpresponse;
             }
             catch
@@ -195,8 +223,7 @@ namespace BusinessBookWebApi.Controllers
                 return Httpresponse;
             }
         }
-
-        [Authorize]
+        
         [Route("clients")]
         [HttpPut]
         public HttpResponseMessage UpdateCliente(ClientEntities model)
@@ -210,8 +237,11 @@ namespace BusinessBookWebApi.Controllers
                 {
                     Httpresponse = new HttpResponseMessage(HttpStatusCode.Unauthorized);
                     response.Code = HttpStatusCode.Unauthorized;
-                    response.Message = "Unauthorized";
+                    response.Message = "Authorization has been denied for this request.";
                     response.Result = null;
+
+                    Httpresponse.Content = new StringContent(JsonConvert.SerializeObject(response));
+                    Httpresponse.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                     return Httpresponse;
                 }
                 else
@@ -229,7 +259,7 @@ namespace BusinessBookWebApi.Controllers
                         client.ClientId = model.clientId;
                         client.Name = model.name;
                         client.LastName = model.lastName;
-                        client.FullName = model.fullName;
+                        client.FullName = model.name + " " + model.lastName;
                         client.DNI = model.dni;
                         client.Email = model.email;
                         client.Phone = model.phone;
@@ -242,7 +272,13 @@ namespace BusinessBookWebApi.Controllers
                     }
 
                     Httpresponse = new HttpResponseMessage(HttpStatusCode.OK);
+                    response.Code = HttpStatusCode.OK;
+                    response.Message = "Success";
+                    response.Result = null;
                 }
+
+                Httpresponse.Content = new StringContent(JsonConvert.SerializeObject(response));
+                Httpresponse.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                 return Httpresponse;
             }
             catch

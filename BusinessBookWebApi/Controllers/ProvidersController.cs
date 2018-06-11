@@ -15,11 +15,10 @@ namespace BusinessBookWebApi.Controllers
     [RoutePrefix("businessbookapi/v1")]
     public class ProvidersController : BaseApiController
     {
-        [Authorize]
-        [Route("providers")]
-        [Route("providers/{providerId}")]
+        [Route("companies/{companyId}/providers")]
+        [Route("companies/{companyId}/providers/{providerId}")]
         [HttpGet]
-        public HttpResponseMessage ListProviders(Int32? ProviderId=null)
+        public HttpResponseMessage ListProviders(Int32? CompanyId = null, Int32? ProviderId=null)
         {
             var Httpresponse = new HttpResponseMessage();
             try
@@ -31,8 +30,11 @@ namespace BusinessBookWebApi.Controllers
 
                     Httpresponse = new HttpResponseMessage(HttpStatusCode.Unauthorized);
                     response.Code = HttpStatusCode.Unauthorized;
-                    response.Message = "Unauthorized";
+                    response.Message = "Authorization has been denied for this request.";
                     response.Result = null;
+
+                    Httpresponse.Content = new StringContent(JsonConvert.SerializeObject(response));
+                    Httpresponse.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                     return Httpresponse;
                 }
                 else
@@ -41,34 +43,40 @@ namespace BusinessBookWebApi.Controllers
                     Httpresponse = new HttpResponseMessage(HttpStatusCode.OK);
                     response.Code = HttpStatusCode.OK;
                     response.Message = "success";
-
-                    if (ProviderId.HasValue)
+                    if (CompanyId.HasValue)
                     {
+                        if (ProviderId.HasValue)
+                        {
 
-                        response.Result = context.Provider.Where(x => x.State == ConstantHelper.Status.ACTIVE && x.ProviderId == ProviderId)
-                            .Select(x => new
-                            {
-                                ProviderId = x.ProviderId,
-                                Name = x.Name,
-                                State = x.State,
-                                Phone = x.Phone,
-                                Email = x.email
-                            }).ToList();
+                            response.Result = context.Provider.Where(x => x.State == ConstantHelper.Status.ACTIVE && x.ProviderId == ProviderId)
+                                .Select(x => new
+                                {
+                                    providerId = x.ProviderId,
+                                    name = x.Name,
+                                    state = x.State,
+                                    phone = x.Phone,
+                                    email = x.email
+                                }).ToList();
 
-                    }
-                    else
+                        }
+                        else
+                        {
+
+                            response.Result = context.Provider.Where(x => x.State == ConstantHelper.Status.ACTIVE)
+                                .Select(x => new
+                                {
+                                    providerId = x.ProviderId,
+                                    name = x.Name,
+                                    state = x.State,
+                                    phone = x.Phone,
+                                    email = x.email
+                                }).ToList();
+
+                        }
+                    }else
                     {
-
-                        response.Result = context.Provider.Where(x => x.State == ConstantHelper.Status.ACTIVE)
-                            .Select(x => new
-                            {
-                                ProviderId = x.ProviderId,
-                                Name = x.Name,
-                                State = x.State,
-                                Phone = x.Phone,
-                                Email = x.email
-                            }).ToList();
-
+                        Httpresponse = new HttpResponseMessage(HttpStatusCode.NotFound);
+                        return Httpresponse;
                     }
                 }
 
@@ -82,7 +90,7 @@ namespace BusinessBookWebApi.Controllers
                 return Httpresponse;
             }
         }
-        [Authorize]
+       
         [Route("providers")]
         [HttpPost]
         public HttpResponseMessage AddProvider(ProviderEntities model)
@@ -96,8 +104,11 @@ namespace BusinessBookWebApi.Controllers
                 {
                     Httpresponse = new HttpResponseMessage(HttpStatusCode.Unauthorized);
                     response.Code = HttpStatusCode.Unauthorized;
-                    response.Message = "Unauthorized";
+                    response.Message = "Authorization has been denied for this request.";
                     response.Result = null;
+
+                    Httpresponse.Content = new StringContent(JsonConvert.SerializeObject(response));
+                    Httpresponse.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                     return Httpresponse;
                 }
                 else
@@ -119,7 +130,13 @@ namespace BusinessBookWebApi.Controllers
                         context.SaveChanges();
                     }
                     Httpresponse = new HttpResponseMessage(HttpStatusCode.OK);
+                    response.Code = HttpStatusCode.OK;
+                    response.Message = "Success";
+                    response.Result = null;
                 }
+
+                Httpresponse.Content = new StringContent(JsonConvert.SerializeObject(response));
+                Httpresponse.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                 return Httpresponse;
             }
             catch
@@ -129,7 +146,6 @@ namespace BusinessBookWebApi.Controllers
             }
         }
 
-        [Authorize]
         [Route("providers/{providerId}")]
         [HttpDelete]
         public HttpResponseMessage DeleteProvider(Int32? ProviderId = null)
@@ -143,8 +159,11 @@ namespace BusinessBookWebApi.Controllers
                 {
                     Httpresponse = new HttpResponseMessage(HttpStatusCode.Unauthorized);
                     response.Code = HttpStatusCode.Unauthorized;
-                    response.Message = "Unauthorized";
+                    response.Message = "Authorization has been denied for this request.";
                     response.Result = null;
+
+                    Httpresponse.Content = new StringContent(JsonConvert.SerializeObject(response));
+                    Httpresponse.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                     return Httpresponse;
                 }
                 else
@@ -163,7 +182,13 @@ namespace BusinessBookWebApi.Controllers
                     }
 
                     Httpresponse = new HttpResponseMessage(HttpStatusCode.OK);
+                    response.Code = HttpStatusCode.OK;
+                    response.Message = "Success";
+                    response.Result = null;
                 }
+
+                Httpresponse.Content = new StringContent(JsonConvert.SerializeObject(response));
+                Httpresponse.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                 return Httpresponse;
             }
             catch
@@ -173,7 +198,6 @@ namespace BusinessBookWebApi.Controllers
             }
         }
 
-        [Authorize]
         [Route("providers")]
         [HttpPut]
         public HttpResponseMessage UpdateProvider(ProviderEntities model)
@@ -187,8 +211,11 @@ namespace BusinessBookWebApi.Controllers
                 {
                     Httpresponse = new HttpResponseMessage(HttpStatusCode.Unauthorized);
                     response.Code = HttpStatusCode.Unauthorized;
-                    response.Message = "Unauthorized";
+                    response.Message = "Authorization has been denied for this request.";
                     response.Result = null;
+
+                    Httpresponse.Content = new StringContent(JsonConvert.SerializeObject(response));
+                    Httpresponse.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                     return Httpresponse;
                 }
                 else
@@ -212,7 +239,13 @@ namespace BusinessBookWebApi.Controllers
                     }
 
                     Httpresponse = new HttpResponseMessage(HttpStatusCode.OK);
+                    response.Code = HttpStatusCode.OK;
+                    response.Message = "Success";
+                    response.Result = null;
                 }
+
+                Httpresponse.Content = new StringContent(JsonConvert.SerializeObject(response));
+                Httpresponse.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                 return Httpresponse;
             }
             catch

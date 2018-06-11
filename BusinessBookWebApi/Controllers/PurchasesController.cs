@@ -16,10 +16,10 @@ namespace BusinessBookWebApi.Controllers
     public class PurchasesController : BaseApiController
     {
         [Authorize]
-        [Route("purchases")]
-        [Route("purchases/{purchaseId}")]
+        [Route("companies/{companyId}/purchases")]
+        [Route("companies/{companyId}/purchases/{purchaseId}")]
         [HttpGet]
-        public HttpResponseMessage ListPurchases(Int32? PurchaseId=null)
+        public HttpResponseMessage ListPurchases(Int32? companyId = null, Int32? purchaseId=null)
         {
             var Httpresponse = new HttpResponseMessage();
             try
@@ -32,41 +32,58 @@ namespace BusinessBookWebApi.Controllers
                     response.Code = HttpStatusCode.Unauthorized;
                     response.Message = "Unauthorized";
                     response.Result = null;
+
+                    Httpresponse.Content = new StringContent(JsonConvert.SerializeObject(response));
+                    Httpresponse.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                     return Httpresponse;
                 }
                 else
                 {
-                    Httpresponse = new HttpResponseMessage(HttpStatusCode.OK);
-                    response.Code = HttpStatusCode.OK;
-                    response.Message = "success";
-                    if (PurchaseId.HasValue)
+                    
+                    if (companyId.HasValue)
                     {
-                        response.Result = context.Purchase.Where(x => x.State == ConstantHelper.Status.ACTIVE && x.PurchaseId == PurchaseId)
-                            .Select(x => new
-                            {
-                                PurchaseId = x.PurchaseId,
-                                DateCreation = x.DateCreation,
-                                CodeGuide = x.CodeGuide,
-                                LocalName = x.Local.Name,
-                                PriceTotal = x.PriceTotal,
-                                ProveedorName = x.Provider.Name,
-                                State = x.State
-                            }).ToList();
+                        Httpresponse = new HttpResponseMessage(HttpStatusCode.OK);
+                        response.Code = HttpStatusCode.OK;
+                        response.Message = "success";
+                        if (purchaseId.HasValue)
+                        {
+                            response.Result = context.Purchase.Where(x => x.State == ConstantHelper.Status.ACTIVE && x.PurchaseId == purchaseId && x.CompanyId == companyId)
+                                .Select(x => new
+                                {
+                                    purchaseId = x.PurchaseId,
+                                    dateCreation = x.DateCreation,
+                                    codeGuide = x.CodeGuide,
+                                    localName = x.Local.Name,
+                                    priceTotal = x.PriceTotal,
+                                    proveedorName = x.Provider.Name,
+                                    state = x.State
+                                }).ToList();
 
+                        }
+                        else
+                        {
+                            response.Result = context.Purchase.Where(x => x.State == ConstantHelper.Status.ACTIVE && x.CompanyId == companyId)
+                                .Select(x => new
+                                {
+                                    purchaseId = x.PurchaseId,
+                                    dateCreation = x.DateCreation,
+                                    codeGuide = x.CodeGuide,
+                                    localName = x.Local.Name,
+                                    priceTotal = x.PriceTotal,
+                                    proveedorName = x.Provider.Name,
+                                    state = x.State
+                                }).ToList();
+                        }
                     }
                     else
                     {
-                        response.Result = context.Purchase.Where(x => x.State == ConstantHelper.Status.ACTIVE)
-                            .Select(x => new
-                            {
-                                PurchaseId = x.PurchaseId,
-                                DateCreation = x.DateCreation,
-                                CodeGuide = x.CodeGuide,
-                                LocalName = x.Local.Name,
-                                PriceTotal = x.PriceTotal,
-                                ProveedorName = x.Provider.Name,
-                                State = x.State
-                            }).ToList();
+                        Httpresponse = new HttpResponseMessage(HttpStatusCode.NotFound);
+                        response.Code = HttpStatusCode.NotFound;
+                        response.Message = "Not Found";
+                        response.Result = null;
+                        Httpresponse.Content = new StringContent(JsonConvert.SerializeObject(response));
+                        Httpresponse.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                        return Httpresponse;
                     }
                 }
                 Httpresponse.Content = new StringContent(JsonConvert.SerializeObject(response));
@@ -76,6 +93,11 @@ namespace BusinessBookWebApi.Controllers
             catch
             {
                 Httpresponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
+                response.Code = HttpStatusCode.BadGateway;
+                response.Message = "Bad Gateway";
+                response.Result = null;
+                Httpresponse.Content = new StringContent(JsonConvert.SerializeObject(response));
+                Httpresponse.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                 return Httpresponse;
             }
         }
@@ -95,6 +117,8 @@ namespace BusinessBookWebApi.Controllers
                     response.Code = HttpStatusCode.Unauthorized;
                     response.Message = "Unauthorized";
                     response.Result = null;
+                    Httpresponse.Content = new StringContent(JsonConvert.SerializeObject(response));
+                    Httpresponse.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                     return Httpresponse;
                 }
                 else
@@ -102,6 +126,11 @@ namespace BusinessBookWebApi.Controllers
                     if (model == null)
                     {
                         Httpresponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
+                        response.Code = HttpStatusCode.BadGateway;
+                        response.Message = "Bad Gateway";
+                        response.Result = null;
+                        Httpresponse.Content = new StringContent(JsonConvert.SerializeObject(response));
+                        Httpresponse.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                         return Httpresponse;
                     }
                     else
@@ -115,16 +144,27 @@ namespace BusinessBookWebApi.Controllers
                         purchase.State = ConstantHelper.Status.ACTIVE;
                         purchase.PriceTotal = model.priceTotal;
                         purchase.ProviderId = model.providerId;
-
+                        purchase.CompanyId = model.companyId;
                         context.SaveChanges();
                     }
                     Httpresponse = new HttpResponseMessage(HttpStatusCode.OK);
+                    response.Code = HttpStatusCode.OK;
+                    response.Message = "Success";
+                    response.Result = null;
                 }
+
+                Httpresponse.Content = new StringContent(JsonConvert.SerializeObject(response));
+                Httpresponse.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                 return Httpresponse;
             }
             catch
             {
                 Httpresponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
+                response.Code = HttpStatusCode.BadGateway;
+                response.Message = "Bad Gateway";
+                response.Result = null;
+                Httpresponse.Content = new StringContent(JsonConvert.SerializeObject(response));
+                Httpresponse.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                 return Httpresponse;
             }
         }
@@ -145,6 +185,8 @@ namespace BusinessBookWebApi.Controllers
                     response.Code = HttpStatusCode.Unauthorized;
                     response.Message = "Unauthorized";
                     response.Result = null;
+                    Httpresponse.Content = new StringContent(JsonConvert.SerializeObject(response));
+                    Httpresponse.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                     return Httpresponse;
                 }
                 else
@@ -152,6 +194,11 @@ namespace BusinessBookWebApi.Controllers
                     if (model == null || PurchaseId == null)
                     {
                         Httpresponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
+                        response.Code = HttpStatusCode.BadGateway;
+                        response.Message = "Bad Gateway";
+                        response.Result = null;
+                        Httpresponse.Content = new StringContent(JsonConvert.SerializeObject(response));
+                        Httpresponse.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                         return Httpresponse;
                     }
                     else
@@ -187,12 +234,23 @@ namespace BusinessBookWebApi.Controllers
                         context.SaveChanges();
                     }
                     Httpresponse = new HttpResponseMessage(HttpStatusCode.OK);
+                    response.Code = HttpStatusCode.OK;
+                    response.Message = "Success";
+                    response.Result = null;
                 }
+
+                Httpresponse.Content = new StringContent(JsonConvert.SerializeObject(response));
+                Httpresponse.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                 return Httpresponse;
             }
             catch
             {
                 Httpresponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
+                response.Code = HttpStatusCode.BadGateway;
+                response.Message = "Bad Gateway";
+                response.Result = null;
+                Httpresponse.Content = new StringContent(JsonConvert.SerializeObject(response));
+                Httpresponse.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                 return Httpresponse;
             }
         }
@@ -213,6 +271,8 @@ namespace BusinessBookWebApi.Controllers
                     response.Code = HttpStatusCode.Unauthorized;
                     response.Message = "Unauthorized";
                     response.Result = null;
+                    Httpresponse.Content = new StringContent(JsonConvert.SerializeObject(response));
+                    Httpresponse.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                     return Httpresponse;
                 }
                 else
@@ -220,6 +280,11 @@ namespace BusinessBookWebApi.Controllers
                     if (PurchaseId == null)
                     {
                         Httpresponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
+                        response.Code = HttpStatusCode.BadGateway;
+                        response.Message = "Bad Gateway";
+                        response.Result = null;
+                        Httpresponse.Content = new StringContent(JsonConvert.SerializeObject(response));
+                        Httpresponse.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                         return Httpresponse;
                     }
                     else
@@ -231,12 +296,23 @@ namespace BusinessBookWebApi.Controllers
                     }
 
                     Httpresponse = new HttpResponseMessage(HttpStatusCode.OK);
+                    response.Code = HttpStatusCode.OK;
+                    response.Message = "Success";
+                    response.Result = null;
                 }
+
+                Httpresponse.Content = new StringContent(JsonConvert.SerializeObject(response));
+                Httpresponse.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                 return Httpresponse;
             }
             catch
             {
                 Httpresponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
+                response.Code = HttpStatusCode.BadGateway;
+                response.Message = "Bad Gateway";
+                response.Result = null;
+                Httpresponse.Content = new StringContent(JsonConvert.SerializeObject(response));
+                Httpresponse.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                 return Httpresponse;
             }
         }
@@ -257,6 +333,8 @@ namespace BusinessBookWebApi.Controllers
                     response.Code = HttpStatusCode.Unauthorized;
                     response.Message = "Unauthorized";
                     response.Result = null;
+                    Httpresponse.Content = new StringContent(JsonConvert.SerializeObject(response));
+                    Httpresponse.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                     return Httpresponse;
                 }
                 else
@@ -264,6 +342,11 @@ namespace BusinessBookWebApi.Controllers
                     if (model == null)
                     {
                         Httpresponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
+                        response.Code = HttpStatusCode.BadGateway;
+                        response.Message = "Bad Gateway";
+                        response.Result = null;
+                        Httpresponse.Content = new StringContent(JsonConvert.SerializeObject(response));
+                        Httpresponse.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                         return Httpresponse;
                     }
                     else
@@ -274,17 +357,27 @@ namespace BusinessBookWebApi.Controllers
                         purchase.CodeGuide = model.codeGuide;
                         purchase.LocalId = model.localId;
                         purchase.PriceTotal = model.priceTotal;
-
                         context.SaveChanges();
                     }
 
                     Httpresponse = new HttpResponseMessage(HttpStatusCode.OK);
+                    response.Code = HttpStatusCode.OK;
+                    response.Message = "Success";
+                    response.Result = null;
                 }
+
+                Httpresponse.Content = new StringContent(JsonConvert.SerializeObject(response));
+                Httpresponse.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                 return Httpresponse;
             }
             catch
             {
                 Httpresponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
+                response.Code = HttpStatusCode.BadGateway;
+                response.Message = "Bad Gateway";
+                response.Result = null;
+                Httpresponse.Content = new StringContent(JsonConvert.SerializeObject(response));
+                Httpresponse.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                 return Httpresponse;
             }
         }

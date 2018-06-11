@@ -14,8 +14,9 @@ namespace BusinessBookWebApi.Entities
         public float priceTotal { set; get; }
         public Int32 EmployeeId { set; get; }
         public Int32 clientId { set; get; }
+        public Int32 companyId { set; get; }
         //public String state { set; get; }
         //public String stateDelivery { set; get; }
-        
+
     }
 }

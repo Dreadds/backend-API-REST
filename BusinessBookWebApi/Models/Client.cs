@@ -32,7 +32,9 @@ namespace BusinessBookWebApi.Models
         public Nullable<System.DateTime> DateUpdate { get; set; }
         public string State { get; set; }
         public string Sex { get; set; }
+        public Nullable<int> CompanyId { get; set; }
     
+        public virtual Company Company { get; set; }
         public virtual Location Location { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Sale> Sale { get; set; }

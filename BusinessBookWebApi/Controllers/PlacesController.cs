@@ -17,8 +17,7 @@ namespace BusinessBookWebApi.Controllers
     public class PlacesController : BaseApiController
     {
         //List District
-
-        [Authorize]
+        
         [Route("districts")]
         [Route("districts/{districtId}")]
         [HttpGet]
@@ -34,7 +33,7 @@ namespace BusinessBookWebApi.Controllers
 
                     Httpresponse = new HttpResponseMessage(HttpStatusCode.Unauthorized);
                     response.Code = HttpStatusCode.Unauthorized;
-                    response.Message = "Unauthorized";
+                    response.Message = "Authorization has been denied for this request.";
                     response.Result = null;
                     return Httpresponse;
                 }
@@ -67,7 +66,6 @@ namespace BusinessBookWebApi.Controllers
                                 name = x.Name,
                                 state = x.State
                             }).ToList();
-
                     }
                 }
 
@@ -83,8 +81,7 @@ namespace BusinessBookWebApi.Controllers
         }
 
         //List Province
-
-        [Authorize]
+        
         [Route("provinces")]
         [Route("provinces/{provinceId}")]
         [HttpGet]
@@ -100,7 +97,7 @@ namespace BusinessBookWebApi.Controllers
 
                     Httpresponse = new HttpResponseMessage(HttpStatusCode.Unauthorized);
                     response.Code = HttpStatusCode.Unauthorized;
-                    response.Message = "Unauthorized";
+                    response.Message = "Authorization has been denied for this request.";
                     response.Result = null;
                     return Httpresponse;
                 }
@@ -148,9 +145,7 @@ namespace BusinessBookWebApi.Controllers
             }
         }
 
-        //List Direction
-
-        [Authorize]
+        //List Dire
         [Route("locations")]
         [Route("locations/{locationId}")]
         [HttpGet]
@@ -166,7 +161,7 @@ namespace BusinessBookWebApi.Controllers
 
                     Httpresponse = new HttpResponseMessage(HttpStatusCode.Unauthorized);
                     response.Code = HttpStatusCode.Unauthorized;
-                    response.Message = "Unauthorized";
+                    response.Message = "Authorization has been denied for this request.";
                     response.Result = null;
                     return Httpresponse;
                 }
