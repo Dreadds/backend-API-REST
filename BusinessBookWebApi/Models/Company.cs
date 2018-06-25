@@ -27,8 +27,11 @@ namespace BusinessBookWebApi.Models
         public int CompanyId { get; set; }
         public string Name { get; set; }
         public string state { get; set; }
-        public int LocationId { get; set; }
-        public int EmployeeId { get; set; }
+        public Nullable<int> LocationId { get; set; }
+        public Nullable<int> EmployeeId { get; set; }
+        public string Phone { get; set; }
+        public string Email { get; set; }
+        public string Mobile { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Client> Client { get; set; }

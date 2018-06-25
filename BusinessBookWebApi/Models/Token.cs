@@ -15,5 +15,8 @@ namespace BusinessBookWebApi
         public String username { set; get; }
         public DateTime? issued { set; get; }
         public DateTime? expires { set; get; }
+        public Int32? companyId { set; get; }
+        public Int32? employeeId { set; get; }
+
     }
 }

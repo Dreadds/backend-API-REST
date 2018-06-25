@@ -12,5 +12,8 @@ namespace BusinessBookWebApi.Entities
         //public String state { set; get; }
         public Int32 locationId { set; get; }
         public Int32 employeeId { set; get; }
+        public String mobile { set; get; }
+        public String phone { set; get; }
+        public String email { set; get; }
     }
 }

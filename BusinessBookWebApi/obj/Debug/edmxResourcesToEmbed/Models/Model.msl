@@ -23,6 +23,9 @@
     <EntitySetMapping Name="Company">
       <EntityTypeMapping TypeName="BusinessBookModel.Company">
         <MappingFragment StoreEntitySet="Company">
+          <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="Phone" ColumnName="Phone" />
           <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
           <ScalarProperty Name="LocationId" ColumnName="LocationId" />
           <ScalarProperty Name="state" ColumnName="state" />

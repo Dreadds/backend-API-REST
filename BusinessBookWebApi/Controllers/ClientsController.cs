@@ -129,6 +129,7 @@ namespace BusinessBookWebApi.Controllers
                 }
                 else
                 {
+                    var client = new Client();
                     if (model == null)
                     {
                         Httpresponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
@@ -137,7 +138,7 @@ namespace BusinessBookWebApi.Controllers
                     else
                     {
 
-                        var client = new Client();
+                        
                         context.Client.Add(client);
 
                         client.ClientId = model.clientId;
@@ -158,7 +159,7 @@ namespace BusinessBookWebApi.Controllers
                     Httpresponse = new HttpResponseMessage(HttpStatusCode.OK);
                     response.Code = HttpStatusCode.OK;
                     response.Message = "Success";
-                    response.Result = null;
+                    response.Result = client;
                 }
                 
                 Httpresponse.Content = new StringContent(JsonConvert.SerializeObject(response));

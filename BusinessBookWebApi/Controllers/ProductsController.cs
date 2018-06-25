@@ -120,6 +120,7 @@ namespace BusinessBookWebApi.Controllers
                 }
                 else
                 {
+                    var product = new Product();
                     if (model == null)
                     {
                         Httpresponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
@@ -142,7 +143,7 @@ namespace BusinessBookWebApi.Controllers
                             return Httpresponse;
                         }
 
-                        var product = new Product();
+                        
                         context.Product.Add(product);
                         
                         product.Name = model.name;
@@ -166,7 +167,7 @@ namespace BusinessBookWebApi.Controllers
                     Httpresponse = new HttpResponseMessage(HttpStatusCode.OK);
                     response.Code = HttpStatusCode.OK;
                     response.Message = "Success";
-                    response.Result = null;
+                    response.Result = product;
                 }
 
                 Httpresponse.Content = new StringContent(JsonConvert.SerializeObject(response));
@@ -188,7 +189,7 @@ namespace BusinessBookWebApi.Controllers
         
         [Route("products/{productId}")]
         [HttpDelete]
-        public HttpResponseMessage DeleteProduct(Int32? ProductId=null)
+        public HttpResponseMessage DeleteProduct(Int32? productId=null)
         {
             var Httpresponse = new HttpResponseMessage();
             try
@@ -208,7 +209,7 @@ namespace BusinessBookWebApi.Controllers
                 }
                 else
                 {
-                    if (ProductId == null)
+                    if (productId == null)
                     {
                         Httpresponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
                         response.Code = HttpStatusCode.BadGateway;
@@ -221,7 +222,7 @@ namespace BusinessBookWebApi.Controllers
                     else
                     {
                         var product = new Product();
-                        product = context.Product.FirstOrDefault(x => x.ProductId == ProductId);
+                        product = context.Product.FirstOrDefault(x => x.ProductId == productId);
                         product.State = ConstantHelper.Status.INACTIVE;
                         context.SaveChanges();
                     }
@@ -270,6 +271,7 @@ namespace BusinessBookWebApi.Controllers
                 }
                 else
                 {
+                    var product = new Product();
                     if (model == null)
                     {
                         Httpresponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
@@ -283,7 +285,7 @@ namespace BusinessBookWebApi.Controllers
                     else
                     {
 
-                        var product = context.Product.FirstOrDefault(x => x.State == ConstantHelper.Status.ACTIVE && x.ProductId == model.productId);
+                        product = context.Product.FirstOrDefault(x => x.State == ConstantHelper.Status.ACTIVE && x.ProductId == model.productId);
 
                         product.Name = model.name;
                         product.UnitPrice = model.unitPrice;
@@ -294,7 +296,7 @@ namespace BusinessBookWebApi.Controllers
                         Httpresponse = new HttpResponseMessage(HttpStatusCode.OK);
                         response.Code = HttpStatusCode.OK;
                         response.Message = "Success";
-                        response.Result = null;
+                        response.Result = product;
                     }
                 }
 
@@ -314,6 +316,139 @@ namespace BusinessBookWebApi.Controllers
             }
         }
 
-        
+
+        [Route("inventories")]
+        [Route("inventories/{inventoryId}")]
+        [HttpGet]
+        public HttpResponseMessage GetInventory(Int32? inventoryId = null)
+        {
+            var Httpresponse = new HttpResponseMessage();
+            try
+            {
+                var employeeId = GetEmployeeId();
+
+                if (!employeeId.HasValue)
+                {
+
+                    Httpresponse = new HttpResponseMessage(HttpStatusCode.Unauthorized);
+                    response.Code = HttpStatusCode.Unauthorized;
+                    response.Message = "Authorization has been denied for this request.";
+                    response.Result = null;
+
+                    Httpresponse.Content = new StringContent(JsonConvert.SerializeObject(response));
+                    Httpresponse.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                    return Httpresponse;
+                }
+                else
+                {
+
+                    
+                    Httpresponse = new HttpResponseMessage(HttpStatusCode.OK);
+                    response.Code = HttpStatusCode.OK;
+                    response.Message = "success";
+                    if (inventoryId.HasValue)
+                    {
+
+                        response.Result = context.Inventory.Where(x => x.State == ConstantHelper.Status.ACTIVE && x.InventoryId == inventoryId)
+                            .Select(x => new
+                            {
+                                inventoryId = x.InventoryId,
+                                productName = x.Product.Name,
+                                localName = x.Local.Name,
+                                quantity = x.Quantity,
+                                state = x.State
+                            }).ToList();
+                    }
+                    else
+                    {
+                        response.Result = context.Inventory.Where(x => x.State == ConstantHelper.Status.ACTIVE)
+                                                   .Select(x => new
+                                                   {
+                                                       inventoryId = x.InventoryId,
+                                                       productName = x.Product.Name,
+                                                       localName = x.Local.Name,
+                                                       quantity = x.Quantity,
+                                                       state = x.State
+                                                   }).ToList();
+                    }
+                }
+
+                Httpresponse.Content = new StringContent(JsonConvert.SerializeObject(response));
+                Httpresponse.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                return Httpresponse;
+            }
+            catch
+            {
+                Httpresponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
+                response.Code = HttpStatusCode.BadGateway;
+                response.Message = "Bad Gateway";
+                response.Result = null;
+                Httpresponse.Content = new StringContent(JsonConvert.SerializeObject(response));
+                Httpresponse.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                return Httpresponse;
+            }
+        }
+
+        [Route("inventories")]
+        [HttpPut]
+        public HttpResponseMessage UpdateInventory(InventoryEntities model)
+        {
+            var Httpresponse = new HttpResponseMessage();
+            try
+            {
+                var id = GetEmployeeId();
+
+                if (!id.HasValue)
+                {
+                    Httpresponse = new HttpResponseMessage(HttpStatusCode.Unauthorized);
+                    response.Code = HttpStatusCode.Unauthorized;
+                    response.Message = "Authorization has been denied for this request.";
+                    response.Result = null;
+
+                    Httpresponse.Content = new StringContent(JsonConvert.SerializeObject(response));
+                    Httpresponse.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                    return Httpresponse;
+                }
+                else
+                {
+                    Inventory inventory = new Inventory();
+                    if (model == null)
+                    {
+                        Httpresponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
+                        response.Code = HttpStatusCode.BadGateway;
+                        response.Message = "Bad Gateway";
+                        response.Result = null;
+                        Httpresponse.Content = new StringContent(JsonConvert.SerializeObject(response));
+                        Httpresponse.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                        return Httpresponse;
+                    }
+                    else
+                    {
+
+                        inventory = context.Inventory.FirstOrDefault(x => x.State == ConstantHelper.Status.ACTIVE && x.InventoryId == model.inventoryId);
+                        inventory.Quantity = model.quantity;
+                        context.SaveChanges();
+                        Httpresponse = new HttpResponseMessage(HttpStatusCode.OK);
+                        response.Code = HttpStatusCode.OK;
+                        response.Message = "Success";
+                        response.Result = inventory;
+                    }
+                }
+
+                Httpresponse.Content = new StringContent(JsonConvert.SerializeObject(response));
+                Httpresponse.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                return Httpresponse;
+            }
+            catch
+            {
+                Httpresponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
+                response.Code = HttpStatusCode.BadGateway;
+                response.Message = "Bad Gateway";
+                response.Result = null;
+                Httpresponse.Content = new StringContent(JsonConvert.SerializeObject(response));
+                Httpresponse.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                return Httpresponse;
+            }
+        }
     }
 }

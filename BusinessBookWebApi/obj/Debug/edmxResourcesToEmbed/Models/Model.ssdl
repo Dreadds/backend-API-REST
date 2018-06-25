@@ -25,8 +25,11 @@
     <Property Name="CompanyId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
     <Property Name="state" Type="varchar" MaxLength="3" Nullable="false" />
-    <Property Name="LocationId" Type="int" Nullable="false" />
-    <Property Name="EmployeeId" Type="int" Nullable="false" />
+    <Property Name="LocationId" Type="int" />
+    <Property Name="EmployeeId" Type="int" />
+    <Property Name="Phone" Type="varchar" MaxLength="50" />
+    <Property Name="Email" Type="varchar" MaxLength="50" />
+    <Property Name="Mobile" Type="varchar" MaxLength="50" />
   </EntityType>
   <EntityType Name="District">
     <Key>
@@ -206,7 +209,7 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_Company_Employee">
-    <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+    <End Role="Employee" Type="Self.Employee" Multiplicity="0..1" />
     <End Role="Company" Type="Self.Company" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Employee">
@@ -218,7 +221,7 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_Company_Location">
-    <End Role="Location" Type="Self.Location" Multiplicity="1" />
+    <End Role="Location" Type="Self.Location" Multiplicity="0..1" />
     <End Role="Company" Type="Self.Company" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Location">

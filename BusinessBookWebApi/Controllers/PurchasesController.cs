@@ -123,6 +123,7 @@ namespace BusinessBookWebApi.Controllers
                 }
                 else
                 {
+                    var purchase = new Purchase();
                     if (model == null)
                     {
                         Httpresponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
@@ -135,7 +136,7 @@ namespace BusinessBookWebApi.Controllers
                     }
                     else
                     {
-                        var purchase = new Purchase();
+                       
                         context.Purchase.Add(purchase);
                         
                         purchase.DateCreation = DateTime.Today;
@@ -150,7 +151,7 @@ namespace BusinessBookWebApi.Controllers
                     Httpresponse = new HttpResponseMessage(HttpStatusCode.OK);
                     response.Code = HttpStatusCode.OK;
                     response.Message = "Success";
-                    response.Result = null;
+                    response.Result = purchase;
                 }
 
                 Httpresponse.Content = new StringContent(JsonConvert.SerializeObject(response));

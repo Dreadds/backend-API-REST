@@ -30,8 +30,11 @@
           <Property Name="CompanyId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="state" Type="varchar" MaxLength="3" Nullable="false" />
-          <Property Name="LocationId" Type="int" Nullable="false" />
-          <Property Name="EmployeeId" Type="int" Nullable="false" />
+          <Property Name="LocationId" Type="int" />
+          <Property Name="EmployeeId" Type="int" />
+          <Property Name="Phone" Type="varchar" MaxLength="50" />
+          <Property Name="Email" Type="varchar" MaxLength="50" />
+          <Property Name="Mobile" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="District">
           <Key>
@@ -211,7 +214,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Company_Employee">
-          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+          <End Role="Employee" Type="Self.Employee" Multiplicity="0..1" />
           <End Role="Company" Type="Self.Company" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Employee">
@@ -223,7 +226,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Company_Location">
-          <End Role="Location" Type="Self.Location" Multiplicity="1" />
+          <End Role="Location" Type="Self.Location" Multiplicity="0..1" />
           <End Role="Company" Type="Self.Company" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Location">
@@ -712,8 +715,11 @@
           <Property Name="CompanyId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="state" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="false" />
-          <Property Name="LocationId" Type="Int32" Nullable="false" />
-          <Property Name="EmployeeId" Type="Int32" Nullable="false" />
+          <Property Name="LocationId" Type="Int32" />
+          <Property Name="EmployeeId" Type="Int32" />
+          <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Mobile" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Client" Relationship="BusinessBookModel.FK_Client_Company" FromRole="Company" ToRole="Client" />
           <NavigationProperty Name="Employee" Relationship="BusinessBookModel.FK_Company_Employee" FromRole="Company" ToRole="Employee" />
           <NavigationProperty Name="Location" Relationship="BusinessBookModel.FK_Company_Location" FromRole="Company" ToRole="Location" />
@@ -948,7 +954,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Company_Employee">
-          <End Type="BusinessBookModel.Employee" Role="Employee" Multiplicity="1" />
+          <End Type="BusinessBookModel.Employee" Role="Employee" Multiplicity="0..1" />
           <End Type="BusinessBookModel.Company" Role="Company" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Employee">
@@ -960,7 +966,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Company_Location">
-          <End Type="BusinessBookModel.Location" Role="Location" Multiplicity="1" />
+          <End Type="BusinessBookModel.Location" Role="Location" Multiplicity="0..1" />
           <End Type="BusinessBookModel.Company" Role="Company" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Location">
@@ -1215,6 +1221,9 @@
           <EntitySetMapping Name="Company">
             <EntityTypeMapping TypeName="BusinessBookModel.Company">
               <MappingFragment StoreEntitySet="Company">
+                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
                 <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
                 <ScalarProperty Name="LocationId" ColumnName="LocationId" />
                 <ScalarProperty Name="state" ColumnName="state" />

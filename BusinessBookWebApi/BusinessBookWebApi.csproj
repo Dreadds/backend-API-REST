@@ -293,6 +293,7 @@
     <Compile Include="Entities\CompanyEntities.cs" />
     <Compile Include="Entities\DetailEntities.cs" />
     <Compile Include="Entities\EmployeeEntities.cs" />
+    <Compile Include="Entities\InventoryEntities.cs" />
     <Compile Include="Entities\LocalEntities.cs" />
     <Compile Include="Entities\LoginEntities.cs" />
     <Compile Include="Entities\ProductEntities.cs" />

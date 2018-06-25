@@ -149,6 +149,9 @@ namespace BusinessBookWebApi.Controllers
                             token.username = employee.Users;
                             token.issued = fecha;
                             token.expires = fecha.AddHours(24);
+                            var company = context.Company.FirstOrDefault(x => x.EmployeeId == employee.EmployeeId);
+                            token.companyId = company.CompanyId;
+                            token.employeeId = employee.EmployeeId;
 
                             response.Code = HttpStatusCode.OK;
                             response.Message = "Success";
@@ -178,6 +181,9 @@ namespace BusinessBookWebApi.Controllers
                                 token.username = employeeData.Users;
                                 token.issued = tokenEmployee.Issued;
                                 token.expires = tokenEmployee.Expires;
+                                var company = context.Company.FirstOrDefault(x => x.EmployeeId == employee.EmployeeId);
+                                token.companyId = company.CompanyId;
+                                token.employeeId = employee.EmployeeId;
 
                             }
                             {
@@ -188,6 +194,9 @@ namespace BusinessBookWebApi.Controllers
                                 token.username = employee.Users;
                                 token.issued = employee.TokenEmployee.Issued;
                                 token.expires = employee.TokenEmployee.Expires;
+                                var company = context.Company.FirstOrDefault(x => x.EmployeeId == employee.EmployeeId);
+                                token.companyId = company.CompanyId;
+                                token.employeeId = employee.EmployeeId;
                             }
                             response.Code = HttpStatusCode.OK;
                             response.Message = "Success";
@@ -328,7 +337,7 @@ namespace BusinessBookWebApi.Controllers
             }
         }
         
-        [Route("registercompany")]
+        [Route("companies")]
         [HttpPost]
         public HttpResponseMessage RegisterCompany(CompanyEntities model)
         {
@@ -400,15 +409,29 @@ namespace BusinessBookWebApi.Controllers
                         company.state = ConstantHelper.Status.ACTIVE;
                         company.LocationId = model.locationId;
                         company.EmployeeId = model.employeeId;
+                        company.Email = model.email;
+                        company.Phone = model.phone;
+                        company.Mobile = model.mobile;
 
                         context.SaveChanges();
 
                         ts.Complete();
 
+                        //Resultado a mostrar
+                        CompanyEntities ce = new CompanyEntities();
+                        ce.companyId = company.CompanyId;
+                        ce.name = company.Name;
+                        ce.locationId = company.LocationId.Value;
+                        ce.employeeId = company.EmployeeId.Value;
+                        ce.email = company.Email;
+                        ce.mobile = company.Mobile;
+                        ce.phone = company.Phone;
+
+
                         HttpResponse = new HttpResponseMessage(HttpStatusCode.OK);
                         response.Code = HttpStatusCode.OK;
                         response.Message = "Success";
-                        response.Result = null;
+                        response.Result = ce;
                     }
 
                     HttpResponse.Content = new StringContent(JsonConvert.SerializeObject(response));
@@ -428,7 +451,106 @@ namespace BusinessBookWebApi.Controllers
                 return HttpResponse;
             }
         }
-        
+
+        [Route("companies")]
+        [HttpPut]
+        public HttpResponseMessage EditCompany(CompanyEntities model)
+        {
+            var HttpResponse = new HttpResponseMessage();
+            try
+            {
+                using (var ts = new TransactionScope())
+                {
+                    var id = GetEmployeeId();
+
+                    if (!id.HasValue)
+                    {
+                        HttpResponse = new HttpResponseMessage(HttpStatusCode.Unauthorized);
+                        response.Code = HttpStatusCode.Unauthorized;
+                        response.Message = "Authorization has been denied for this request.";
+                        response.Result = null;
+                        HttpResponse.Content = new StringContent(JsonConvert.SerializeObject(response));
+                        HttpResponse.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                        return HttpResponse;
+                    }
+                    else
+                    {
+                        //FI MODEL IS NULL
+                        if (model == null)
+                        {
+                            HttpResponse = new HttpResponseMessage(HttpStatusCode.NoContent);
+                            response.Code = HttpStatusCode.NoContent;
+                            response.Message = "No Content";
+                            response.Result = null;
+                            HttpResponse.Content = new StringContent(JsonConvert.SerializeObject(response));
+                            HttpResponse.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                            return HttpResponse;
+                        }
+
+                        if (model.companyId == 0)
+                        {
+                            HttpResponse = new HttpResponseMessage(HttpStatusCode.BadRequest);
+                            response.Code = HttpStatusCode.BadRequest;
+                            response.Message = "Bad Request";
+                            response.Result = null;
+                            HttpResponse.Content = new StringContent(JsonConvert.SerializeObject(response));
+                            HttpResponse.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                            return HttpResponse;
+                        }
+
+                        var company = new Company();
+                        if (model.companyId.HasValue)
+                        {
+                            company = context.Company.FirstOrDefault(x=>x.CompanyId == model.companyId);
+                        }
+
+                        company.Name = model.name;
+                        company.state = ConstantHelper.Status.ACTIVE;
+                        company.LocationId = model.locationId;
+                        company.EmployeeId = model.employeeId;
+                        company.Email = model.email;
+                        company.Phone = model.phone;
+                        company.Mobile = model.mobile;
+
+                        context.SaveChanges();
+
+                        ts.Complete();
+
+                        //Resultado a mostrar
+                        CompanyEntities ce = new CompanyEntities();
+                        ce.companyId = company.CompanyId;
+                        ce.name = company.Name;
+                        ce.locationId = company.LocationId.Value;
+                        ce.employeeId = company.EmployeeId.Value;
+                        ce.email = company.Email;
+                        ce.mobile = company.Mobile;
+                        ce.phone = company.Phone;
+
+
+                        HttpResponse = new HttpResponseMessage(HttpStatusCode.OK);
+                        response.Code = HttpStatusCode.OK;
+                        response.Message = "Success";
+                        response.Result = ce;
+                    }
+
+                    HttpResponse.Content = new StringContent(JsonConvert.SerializeObject(response));
+                    HttpResponse.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+                    return HttpResponse;
+                }
+            }
+            catch
+            {
+                HttpResponse = new HttpResponseMessage(HttpStatusCode.BadRequest);
+                response.Code = HttpStatusCode.BadRequest;
+                response.Message = "Bad Request";
+                response.Result = null;
+                HttpResponse.Content = new StringContent(JsonConvert.SerializeObject(response));
+                HttpResponse.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                return HttpResponse;
+            }
+        }
+
         [Route("viewcompany/{companyId}")]
         [HttpGet]
         public HttpResponseMessage ViewCompany(Int32? CompanyId = null)
@@ -529,8 +651,8 @@ namespace BusinessBookWebApi.Controllers
                 if (password == model.password)
                 {
                     //DOMAIN 
-                    String baseAddress = "http://chemita96-001-site1.dtempurl.com";
-                    //String baseAddress = "http://localhost:16669";
+                    //String baseAddress = "http://chemita96-001-site1.dtempurl.com";
+                    String baseAddress = "http://localhost:16669";
                     //CREATE A NEW TOKEN FOR EMPLOYEE
                     if (!employee.TokenEmployeeId.HasValue)
                     {
